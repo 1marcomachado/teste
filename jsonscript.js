@@ -1,5 +1,5 @@
 let quizData;
-const jsonUrl = "https://cdn.jsdelivr.net/gh/1marcomachado/teste@main/jsonformatter.json";
+const jsonUrl = "https://raw.githubusercontent.com/1marcomachado/teste/refs/heads/main/jsonformatter.json?v=1";
 
 fetch(jsonUrl)
   .then(res => res.json())
