@@ -50,7 +50,7 @@ function renderStep() {
     optionsDiv.append(`<button class="option" onclick="selectOption('${step}', \`${opt}\`)">${opt}</button>`);
   });
   renderHistory();
-  $("#custom-back").css("display", currentStep > 0 ? "block" : "none");
+  $("#custom-back").css("display", "block");
 }
 
 function selectOption(step, value) {
@@ -90,6 +90,8 @@ function goBack() {
     history.pop();
     currentStep--;
     renderStep();
+  }else{
+    location.reload();
   }
 }
 
