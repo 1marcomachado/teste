@@ -1,5 +1,5 @@
 let quizData;
-const jsonUrl = "https://cdn.jsdelivr.net/gh/1marcomachado/teste@12.36/jsonformatter.json";
+const jsonUrl = "https://cdn.jsdelivr.net/gh/1marcomachado/teste@13.00/jsonformatter.json";
 
 fetch(jsonUrl)
   .then(res => res.json())
@@ -13,18 +13,18 @@ function normalizar(txt) {
 
 const titulosPorTipo = {
 "fashion": {
-"família": "Qual o tipo de produto fashion?",
-"categoria": "Qual a categoria fashion?",
-"marca": "Marca fashion preferida?",
-"tamanho": "Escolhe o tamanho fashion",
-"orçamento": "Qual o teu orçamento fashion?"
+"família": "QUE TIPO DE ARTIGO ELA GOSTA MAIS?",
+"categoria": "QUE TIPO DE ARTIGO ELA GOSTA MAIS?",
+"marca": "QUAL É A MARCA QUE ELA MAIS GOSTA?",
+"tamanho": "QUAL É O TAMANHO DELA?",
+"orçamento": "QUAL O TEU BUDGET?"
 },
 "desporto": {
-"família": "Que tipo de artigo desportivo?",
-"categoria": "Categoria desportiva?",
-"marca": "Marca desportiva preferida?",
-"tamanho": "Tamanho ideal para desporto?",
-"orçamento": "Quanto queres gastar?"
+"família": "QUAL É A MODALIDADE QUE ELA PRATICA?",
+"categoria": "QUE TIPO DE ARTIGO ELA GOSTA MAIS?",
+"marca": "QUAL É A MARCA QUE ELA MAIS GOSTA?",
+"tamanho": "QUAL É O TAMANHO DELA?",
+"orçamento": "QUAL O TEU BUDGET?"
 }
 };
 const steps = ["fam\u00edlia", "categoria", "marca", "tamanho", "or\u00e7amento"];
