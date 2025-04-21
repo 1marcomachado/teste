@@ -3,10 +3,202 @@
     {
       "família": "calçado",
       "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/36/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "36",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "36",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/36/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/37/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "37",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/37/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "37",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/37/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/38/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "38",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "38",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/38/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/39/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "39",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/39/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "39",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/39/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/40/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "40",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/40/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "40",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/40/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "41",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/41/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "41",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/41/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "41",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/41/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "42",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/42/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "42",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/42/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "42",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/42/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "43",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/43/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "43",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/43/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas sportswear",
+      "tamanho": "43",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_sportswear/43/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
       "marca": "adidas originals",
       "tamanho": "35",
       "orçamento": "50",
-      "link": "https://www.bzronline.com/pt/mulher-calcado/sapatilhas_475-448.html?ft=cHJlY29fbWF4fHw1MHx8fHByZWNvX21pbnx8MzA="
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/35/50"
     },
     {
       "família": "calçado",
@@ -15,6 +207,14 @@
       "tamanho": "35",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/35/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
+      "tamanho": "35",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/35/150"
     },
     {
       "família": "calçado",
@@ -36,6 +236,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "adidas originals",
+      "tamanho": "36",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/36/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
       "tamanho": "37",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/37/50"
@@ -47,6 +255,14 @@
       "tamanho": "37",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/37/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
+      "tamanho": "37",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/37/150"
     },
     {
       "família": "calçado",
@@ -68,6 +284,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "adidas originals",
+      "tamanho": "38",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/38/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
       "tamanho": "39",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/39/50"
@@ -79,6 +303,14 @@
       "tamanho": "39",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/39/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
+      "tamanho": "39",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/39/150"
     },
     {
       "família": "calçado",
@@ -100,6 +332,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "adidas originals",
+      "tamanho": "40",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/40/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
       "tamanho": "41",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/41/50"
@@ -111,6 +351,14 @@
       "tamanho": "41",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/41/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
+      "tamanho": "41",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/41/150"
     },
     {
       "família": "calçado",
@@ -132,6 +380,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "adidas originals",
+      "tamanho": "42",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/42/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
       "tamanho": "43",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/43/50"
@@ -143,6 +399,14 @@
       "tamanho": "43",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/43/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "adidas originals",
+      "tamanho": "43",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/adidas_originals/43/150"
     },
     {
       "família": "calçado",
@@ -740,6 +1004,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "converse",
+      "tamanho": "35",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/35/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
       "tamanho": "36",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/36/50"
@@ -751,6 +1023,14 @@
       "tamanho": "36",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
+      "tamanho": "36",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/36/150"
     },
     {
       "família": "calçado",
@@ -772,6 +1052,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "converse",
+      "tamanho": "37",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/37/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
       "tamanho": "38",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/38/50"
@@ -783,6 +1071,14 @@
       "tamanho": "38",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
+      "tamanho": "38",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/38/150"
     },
     {
       "família": "calçado",
@@ -804,6 +1100,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "converse",
+      "tamanho": "39",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/39/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
       "tamanho": "40",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/40/50"
@@ -815,6 +1119,14 @@
       "tamanho": "40",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/40/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
+      "tamanho": "40",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/40/150"
     },
     {
       "família": "calçado",
@@ -836,6 +1148,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "converse",
+      "tamanho": "41",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/41/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
       "tamanho": "42",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/42/50"
@@ -852,6 +1172,14 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "converse",
+      "tamanho": "42",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/42/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
       "tamanho": "43",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/43/50"
@@ -863,6 +1191,22 @@
       "tamanho": "43",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/converse/43/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "converse",
+      "tamanho": "43",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/converse/43/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "gant",
+      "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/gant/36/50"
     },
     {
       "família": "calçado",
@@ -885,6 +1229,14 @@
       "categoria": "sapatilhas",
       "marca": "gant",
       "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/gant/37/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "gant",
+      "tamanho": "37",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/gant/37/100"
     },
@@ -895,6 +1247,14 @@
       "tamanho": "37",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/gant/37/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "gant",
+      "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/gant/38/50"
     },
     {
       "família": "calçado",
@@ -917,6 +1277,14 @@
       "categoria": "sapatilhas",
       "marca": "gant",
       "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/gant/39/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "gant",
+      "tamanho": "39",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/gant/39/100"
     },
@@ -927,6 +1295,14 @@
       "tamanho": "39",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/gant/39/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "gant",
+      "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/gant/40/50"
     },
     {
       "família": "calçado",
@@ -949,6 +1325,22 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/36/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "36",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "36",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/36/150"
     },
@@ -959,6 +1351,22 @@
       "tamanho": "36",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/36/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/37/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "37",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/37/100"
     },
     {
       "família": "calçado",
@@ -981,6 +1389,22 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/38/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "38",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "38",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/38/150"
     },
@@ -991,6 +1415,22 @@
       "tamanho": "38",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/38/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/39/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "39",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/39/100"
     },
     {
       "família": "calçado",
@@ -1013,6 +1453,22 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/40/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "40",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/40/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "40",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/40/150"
     },
@@ -1023,6 +1479,22 @@
       "tamanho": "40",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/40/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "41",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/41/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "41",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/41/100"
     },
     {
       "família": "calçado",
@@ -1045,6 +1517,22 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "42",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/42/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "42",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/hoka/42/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "42",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/42/150"
     },
@@ -1055,6 +1543,22 @@
       "tamanho": "42",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/hoka/42/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/36/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "36",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/36/100"
     },
     {
       "família": "calçado",
@@ -1077,6 +1581,22 @@
       "categoria": "sapatilhas",
       "marca": "on running",
       "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/37/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "37",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/37/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "37",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/37/150"
     },
@@ -1087,6 +1607,22 @@
       "tamanho": "37",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/37/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/38/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "38",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/38/100"
     },
     {
       "família": "calçado",
@@ -1109,6 +1645,22 @@
       "categoria": "sapatilhas",
       "marca": "on running",
       "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/39/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "39",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/39/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "39",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/39/150"
     },
@@ -1119,6 +1671,22 @@
       "tamanho": "39",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/39/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/40/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "40",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/40/100"
     },
     {
       "família": "calçado",
@@ -1141,6 +1709,22 @@
       "categoria": "sapatilhas",
       "marca": "on running",
       "tamanho": "41",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/41/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "41",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/41/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "41",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/41/150"
     },
@@ -1151,6 +1735,22 @@
       "tamanho": "41",
       "orçamento": "200",
       "link": "https://exemplo.com/calçado/sapatilhas/on_running/41/200"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "42",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/42/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "on running",
+      "tamanho": "42",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/sapatilhas/on_running/42/100"
     },
     {
       "família": "calçado",
@@ -1173,8 +1773,32 @@
       "categoria": "sapatilhas",
       "marca": "pixis",
       "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/36/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "36",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/pixis/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "36",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/36/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/37/50"
     },
     {
       "família": "calçado",
@@ -1188,9 +1812,41 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "pixis",
+      "tamanho": "37",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/37/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/38/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
       "tamanho": "38",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/pixis/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "38",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/38/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/39/50"
     },
     {
       "família": "calçado",
@@ -1204,6 +1860,22 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "pixis",
+      "tamanho": "39",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/39/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/40/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
       "tamanho": "40",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/pixis/40/100"
@@ -1212,9 +1884,33 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "pixis",
+      "tamanho": "40",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/40/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "41",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/41/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
       "tamanho": "41",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sapatilhas/pixis/41/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sapatilhas",
+      "marca": "pixis",
+      "tamanho": "41",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sapatilhas/pixis/41/150"
     },
     {
       "família": "calçado",
@@ -1244,30 +1940,6 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "ugg",
-      "tamanho": "36",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/36/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/36/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/36/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
       "tamanho": "37",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/ugg/37/50"
@@ -1287,30 +1959,6 @@
       "tamanho": "37",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/ugg/37/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "37",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/37/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "37",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/37/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "37",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/37/300"
     },
     {
       "família": "calçado",
@@ -1340,30 +1988,6 @@
       "família": "calçado",
       "categoria": "sapatilhas",
       "marca": "ugg",
-      "tamanho": "38",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/38/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "38",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/38/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "38",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/38/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
       "tamanho": "39",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sapatilhas/ugg/39/50"
@@ -1383,30 +2007,6 @@
       "tamanho": "39",
       "orçamento": "150",
       "link": "https://exemplo.com/calçado/sapatilhas/ugg/39/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "39",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/39/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "39",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/39/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "39",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/39/300"
     },
     {
       "família": "calçado",
@@ -1434,35 +2034,19 @@
     },
     {
       "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "40",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/40/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "40",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/40/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sapatilhas",
-      "marca": "ugg",
-      "tamanho": "40",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sapatilhas/ugg/40/300"
+      "categoria": "chinelos",
+      "marca": "adidas originals",
+      "tamanho": "35",
+      "orçamento": "50",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/35/50"
     },
     {
       "família": "calçado",
       "categoria": "chinelos",
       "marca": "adidas originals",
       "tamanho": "35",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/35/50"
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/35/100"
     },
     {
       "família": "calçado",
@@ -1476,9 +2060,25 @@
       "família": "calçado",
       "categoria": "chinelos",
       "marca": "adidas originals",
+      "tamanho": "36",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
       "tamanho": "37",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/chinelos/adidas_originals/37/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
+      "tamanho": "37",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/37/100"
     },
     {
       "família": "calçado",
@@ -1492,9 +2092,25 @@
       "família": "calçado",
       "categoria": "chinelos",
       "marca": "adidas originals",
+      "tamanho": "38",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
       "tamanho": "39",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/chinelos/adidas_originals/39/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
+      "tamanho": "39",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/39/100"
     },
     {
       "família": "calçado",
@@ -1508,6 +2124,14 @@
       "família": "calçado",
       "categoria": "chinelos",
       "marca": "adidas originals",
+      "tamanho": "40",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/40/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
       "tamanho": "41",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/chinelos/adidas_originals/41/50"
@@ -1516,9 +2140,25 @@
       "família": "calçado",
       "categoria": "chinelos",
       "marca": "adidas originals",
+      "tamanho": "41",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/41/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
       "tamanho": "42",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/chinelos/adidas_originals/42/50"
+    },
+    {
+      "família": "calçado",
+      "categoria": "chinelos",
+      "marca": "adidas originals",
+      "tamanho": "42",
+      "orçamento": "100",
+      "link": "https://exemplo.com/calçado/chinelos/adidas_originals/42/100"
     },
     {
       "família": "calçado",
@@ -1874,582 +2514,6 @@
     },
     {
       "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "35",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/35/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/36/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "37",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/37/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "38",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/38/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "39",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/39/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "40",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/40/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "41",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/41/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "chinelos",
-      "marca": "pixis",
-      "tamanho": "42",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/chinelos/pixis/42/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "35",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/35/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/36/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "41",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/41/300"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "50",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/50"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "100",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/100"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "150",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/150"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "200",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/200"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "250",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/250"
-    },
-    {
-      "família": "calçado",
-      "categoria": "sandálias",
-      "marca": "havainas",
-      "tamanho": "42",
-      "orçamento": "300",
-      "link": "https://exemplo.com/calçado/sandálias/havainas/42/300"
-    },
-    {
-      "família": "calçado",
       "categoria": "sandálias",
       "marca": "ugg",
       "tamanho": "36",
@@ -2463,6 +2527,14 @@
       "tamanho": "36",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sandálias/ugg/36/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
+      "tamanho": "36",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/36/150"
     },
     {
       "família": "calçado",
@@ -2484,6 +2556,14 @@
       "família": "calçado",
       "categoria": "sandálias",
       "marca": "ugg",
+      "tamanho": "37",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/37/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
       "tamanho": "38",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sandálias/ugg/38/50"
@@ -2495,6 +2575,14 @@
       "tamanho": "38",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sandálias/ugg/38/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
+      "tamanho": "38",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/38/150"
     },
     {
       "família": "calçado",
@@ -2516,6 +2604,14 @@
       "família": "calçado",
       "categoria": "sandálias",
       "marca": "ugg",
+      "tamanho": "39",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/39/150"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
       "tamanho": "40",
       "orçamento": "50",
       "link": "https://exemplo.com/calçado/sandálias/ugg/40/50"
@@ -2527,6 +2623,14 @@
       "tamanho": "40",
       "orçamento": "100",
       "link": "https://exemplo.com/calçado/sandálias/ugg/40/100"
+    },
+    {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
+      "tamanho": "40",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/40/150"
     },
     {
       "família": "calçado",
@@ -2545,9 +2649,17 @@
       "link": "https://exemplo.com/calçado/sandálias/ugg/41/100"
     },
     {
+      "família": "calçado",
+      "categoria": "sandálias",
+      "marca": "ugg",
+      "tamanho": "41",
+      "orçamento": "150",
+      "link": "https://exemplo.com/calçado/sandálias/ugg/41/150"
+    },
+    {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "XS",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças/Nike/XS/50"
@@ -2555,7 +2667,7 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "XS",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças/Nike/XS/100"
@@ -2563,7 +2675,15 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/calças/Nike/XS/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "calças",
+      "marca": "Nike",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças/Nike/S/50"
@@ -2571,7 +2691,7 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças/Nike/S/100"
@@ -2579,7 +2699,15 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/calças/Nike/S/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "calças",
+      "marca": "Nike",
       "tamanho": "M",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças/Nike/M/50"
@@ -2587,7 +2715,7 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças/Nike/M/100"
@@ -2595,7 +2723,15 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/calças/Nike/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "calças",
+      "marca": "Nike",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças/Nike/L/50"
@@ -2603,7 +2739,7 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "L",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças/Nike/L/100"
@@ -2611,7 +2747,15 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/calças/Nike/L/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "calças",
+      "marca": "Nike",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças/Nike/XL/50"
@@ -2619,15 +2763,23 @@
     {
       "família": "roupa",
       "categoria": "calças",
-      "marca": "nike",
+      "marca": "Nike",
       "tamanho": "XL",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças/Nike/XL/100"
     },
     {
       "família": "roupa",
+      "categoria": "calças",
+      "marca": "Nike",
+      "tamanho": "XL",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/calças/Nike/XL/150"
+    },
+    {
+      "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "24",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/24/50"
@@ -2635,7 +2787,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "24",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/24/100"
@@ -2643,7 +2795,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "24",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/24/150"
@@ -2651,7 +2803,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "24",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/24/200"
@@ -2659,7 +2811,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "25",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/25/50"
@@ -2667,7 +2819,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "25",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/25/100"
@@ -2675,7 +2827,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "25",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/25/150"
@@ -2683,7 +2835,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "25",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/25/200"
@@ -2691,7 +2843,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "26",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/26/50"
@@ -2699,7 +2851,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "26",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/26/100"
@@ -2707,7 +2859,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "26",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/26/150"
@@ -2715,7 +2867,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "26",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/26/200"
@@ -2723,7 +2875,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "27",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/27/50"
@@ -2731,7 +2883,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "27",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/27/100"
@@ -2739,7 +2891,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "27",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/27/150"
@@ -2747,7 +2899,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "27",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/27/200"
@@ -2755,7 +2907,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "28",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/28/50"
@@ -2763,7 +2915,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "28",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/28/100"
@@ -2771,7 +2923,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "28",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/28/150"
@@ -2779,7 +2931,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "28",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/28/200"
@@ -2787,7 +2939,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "29",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/29/50"
@@ -2795,7 +2947,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "29",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/29/100"
@@ -2803,7 +2955,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "29",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/29/150"
@@ -2811,7 +2963,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "levis",
+      "marca": "Levis",
       "tamanho": "29",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Levis/29/200"
@@ -2819,7 +2971,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "26",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/26/50"
@@ -2827,7 +2979,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "26",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/26/100"
@@ -2835,7 +2987,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "26",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/26/150"
@@ -2843,7 +2995,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "26",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/26/200"
@@ -2851,7 +3003,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "27",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/27/50"
@@ -2859,7 +3011,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "27",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/27/100"
@@ -2867,7 +3019,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "27",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/27/150"
@@ -2875,7 +3027,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "27",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/27/200"
@@ -2883,7 +3035,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "28",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/28/50"
@@ -2891,7 +3043,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "28",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/28/100"
@@ -2899,7 +3051,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "28",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/28/150"
@@ -2907,7 +3059,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "28",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/28/200"
@@ -2915,7 +3067,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "29",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/29/50"
@@ -2923,7 +3075,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "29",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/29/100"
@@ -2931,7 +3083,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "29",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/29/150"
@@ -2939,7 +3091,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "29",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/29/200"
@@ -2947,7 +3099,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "30",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/30/50"
@@ -2955,7 +3107,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "30",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/30/100"
@@ -2963,7 +3115,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "30",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/30/150"
@@ -2971,7 +3123,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "30",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/30/200"
@@ -2979,7 +3131,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "31",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/31/50"
@@ -2987,7 +3139,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "31",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/31/100"
@@ -2995,7 +3147,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "31",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/31/150"
@@ -3003,7 +3155,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "31",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/31/200"
@@ -3011,7 +3163,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/S/50"
@@ -3019,7 +3171,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/S/100"
@@ -3027,7 +3179,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "S",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/S/150"
@@ -3035,7 +3187,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "S",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/S/200"
@@ -3043,7 +3195,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/XL/50"
@@ -3051,7 +3203,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "XL",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/XL/100"
@@ -3059,7 +3211,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "XL",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/XL/150"
@@ -3067,7 +3219,7 @@
     {
       "família": "roupa",
       "categoria": "calças de ganga",
-      "marca": "only",
+      "marca": "Only",
       "tamanho": "XL",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/calças de ganga/Only/XL/200"
@@ -3092,6 +3244,14 @@
       "família": "roupa",
       "categoria": "camisolas",
       "marca": "lacoste",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/lacoste/XS/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "lacoste",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas/lacoste/S/50"
@@ -3103,6 +3263,14 @@
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/lacoste/S/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "lacoste",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/lacoste/S/150"
     },
     {
       "família": "roupa",
@@ -3124,6 +3292,14 @@
       "família": "roupa",
       "categoria": "camisolas",
       "marca": "lacoste",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/lacoste/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "lacoste",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas/lacoste/L/50"
@@ -3135,6 +3311,22 @@
       "tamanho": "L",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/lacoste/L/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "lacoste",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/lacoste/L/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "nike",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas/nike/XS/50"
     },
     {
       "família": "roupa",
@@ -3157,6 +3349,14 @@
       "categoria": "camisolas",
       "marca": "nike",
       "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas/nike/S/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "nike",
+      "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/nike/S/100"
     },
@@ -3173,6 +3373,14 @@
       "categoria": "camisolas",
       "marca": "nike",
       "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas/nike/M/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "nike",
+      "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/nike/M/100"
     },
@@ -3183,6 +3391,14 @@
       "tamanho": "M",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/camisolas/nike/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "nike",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas/nike/L/50"
     },
     {
       "família": "roupa",
@@ -3220,6 +3436,14 @@
       "família": "roupa",
       "categoria": "camisolas",
       "marca": "only",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/only/XS/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "only",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas/only/S/50"
@@ -3231,6 +3455,14 @@
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/only/S/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "only",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/only/S/150"
     },
     {
       "família": "roupa",
@@ -3252,6 +3484,14 @@
       "família": "roupa",
       "categoria": "camisolas",
       "marca": "only",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/only/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "only",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas/only/L/50"
@@ -3268,6 +3508,14 @@
       "família": "roupa",
       "categoria": "camisolas",
       "marca": "only",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/only/L/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "only",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas/only/XL/50"
@@ -3279,6 +3527,14 @@
       "tamanho": "XL",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas/only/XL/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas",
+      "marca": "only",
+      "tamanho": "XL",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas/only/XL/150"
     },
     {
       "família": "roupa",
@@ -3588,6 +3844,14 @@
       "família": "roupa",
       "categoria": "camisolas capuz",
       "marca": "pixis",
+      "tamanho": "XXS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XXS/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
       "tamanho": "XS",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XS/50"
@@ -3599,6 +3863,14 @@
       "tamanho": "XS",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XS/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XS/150"
     },
     {
       "família": "roupa",
@@ -3620,6 +3892,14 @@
       "família": "roupa",
       "categoria": "camisolas capuz",
       "marca": "pixis",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/S/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
       "tamanho": "M",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/M/50"
@@ -3631,6 +3911,14 @@
       "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/M/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/M/150"
     },
     {
       "família": "roupa",
@@ -3652,6 +3940,14 @@
       "família": "roupa",
       "categoria": "camisolas capuz",
       "marca": "pixis",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/L/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XL/50"
@@ -3663,6 +3959,22 @@
       "tamanho": "XL",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XL/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "pixis",
+      "tamanho": "XL",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/camisolas capuz/pixis/XL/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "new balance",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/XS/50"
     },
     {
       "família": "roupa",
@@ -3685,6 +3997,14 @@
       "categoria": "camisolas capuz",
       "marca": "new balance",
       "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/S/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "new balance",
+      "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/S/100"
     },
@@ -3701,6 +4021,14 @@
       "categoria": "camisolas capuz",
       "marca": "new balance",
       "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/M/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "new balance",
+      "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/M/100"
     },
@@ -3711,6 +4039,14 @@
       "tamanho": "M",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "camisolas capuz",
+      "marca": "new balance",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/camisolas capuz/new_balance/L/50"
     },
     {
       "família": "roupa",
@@ -3748,6 +4084,14 @@
       "família": "roupa",
       "categoria": "casacos",
       "marca": "levis",
+      "tamanho": "XXS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/casacos/levis/XXS/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "levis",
       "tamanho": "XS",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/casacos/levis/XS/50"
@@ -3759,6 +4103,14 @@
       "tamanho": "XS",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/levis/XS/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "levis",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/casacos/levis/XS/150"
     },
     {
       "família": "roupa",
@@ -3780,6 +4132,14 @@
       "família": "roupa",
       "categoria": "casacos",
       "marca": "levis",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/casacos/levis/S/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "levis",
       "tamanho": "M",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/casacos/levis/M/50"
@@ -3796,6 +4156,14 @@
       "família": "roupa",
       "categoria": "casacos",
       "marca": "levis",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/casacos/levis/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "levis",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/casacos/levis/L/50"
@@ -3807,6 +4175,22 @@
       "tamanho": "L",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/levis/L/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "levis",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/roupa/casacos/levis/L/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "nike",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/nike/XS/50"
     },
     {
       "família": "roupa",
@@ -3829,6 +4213,14 @@
       "categoria": "casacos",
       "marca": "nike",
       "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/nike/S/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "nike",
+      "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/nike/S/100"
     },
@@ -3845,6 +4237,14 @@
       "categoria": "casacos",
       "marca": "nike",
       "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/nike/M/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "nike",
+      "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/nike/M/100"
     },
@@ -3855,6 +4255,14 @@
       "tamanho": "M",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/casacos/nike/M/150"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "nike",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/nike/L/50"
     },
     {
       "família": "roupa",
@@ -3915,7 +4323,15 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
       "tamanho": "XS",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/100"
@@ -3923,7 +4339,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "XS",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/150"
@@ -3931,7 +4347,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "XS",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/200"
@@ -3939,7 +4355,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "XS",
       "orçamento": "250",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/250"
@@ -3947,7 +4363,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "XS",
       "orçamento": "300",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/300"
@@ -3955,7 +4371,23 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
+      "tamanho": "XS",
+      "orçamento": "350",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/XS/350"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
+      "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/100"
@@ -3963,7 +4395,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "S",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/150"
@@ -3971,7 +4403,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "S",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/200"
@@ -3979,7 +4411,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "S",
       "orçamento": "250",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/250"
@@ -3987,7 +4419,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "S",
       "orçamento": "300",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/300"
@@ -3995,7 +4427,23 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
+      "tamanho": "S",
+      "orçamento": "350",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/S/350"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
+      "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
       "tamanho": "M",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/100"
@@ -4003,7 +4451,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "M",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/150"
@@ -4011,7 +4459,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "M",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/200"
@@ -4019,7 +4467,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "M",
       "orçamento": "250",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/250"
@@ -4027,7 +4475,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "M",
       "orçamento": "300",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/300"
@@ -4035,7 +4483,23 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
+      "tamanho": "M",
+      "orçamento": "350",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/M/350"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
       "tamanho": "L",
       "orçamento": "100",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/100"
@@ -4043,7 +4507,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "L",
       "orçamento": "150",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/150"
@@ -4051,7 +4515,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "L",
       "orçamento": "200",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/200"
@@ -4059,7 +4523,7 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "L",
       "orçamento": "250",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/250"
@@ -4067,10 +4531,18 @@
     {
       "família": "roupa",
       "categoria": "casacos",
-      "marca": "the north face",
+      "marca": "The North Face",
       "tamanho": "L",
       "orçamento": "300",
       "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/300"
+    },
+    {
+      "família": "roupa",
+      "categoria": "casacos",
+      "marca": "The North Face",
+      "tamanho": "L",
+      "orçamento": "350",
+      "link": "https://exemplo.com/roupa/casacos/The_North_Face/L/350"
     },
     {
       "família": "roupa",
@@ -4084,9 +4556,25 @@
       "família": "roupa",
       "categoria": "t-shirts",
       "marca": "lacoste",
+      "tamanho": "XXS",
+      "orçamento": "100",
+      "link": "https://exemplo.com/roupa/t-shirts/lacoste/XXS/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "lacoste",
       "tamanho": "XS",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/t-shirts/lacoste/XS/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "lacoste",
+      "tamanho": "XS",
+      "orçamento": "100",
+      "link": "https://exemplo.com/roupa/t-shirts/lacoste/XS/100"
     },
     {
       "família": "roupa",
@@ -4100,6 +4588,14 @@
       "família": "roupa",
       "categoria": "t-shirts",
       "marca": "lacoste",
+      "tamanho": "S",
+      "orçamento": "100",
+      "link": "https://exemplo.com/roupa/t-shirts/lacoste/S/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "lacoste",
       "tamanho": "M",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/t-shirts/lacoste/M/50"
@@ -4108,9 +4604,25 @@
       "família": "roupa",
       "categoria": "t-shirts",
       "marca": "lacoste",
+      "tamanho": "M",
+      "orçamento": "100",
+      "link": "https://exemplo.com/roupa/t-shirts/lacoste/M/100"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "lacoste",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/t-shirts/lacoste/L/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "lacoste",
+      "tamanho": "L",
+      "orçamento": "100",
+      "link": "https://exemplo.com/roupa/t-shirts/lacoste/L/100"
     },
     {
       "família": "roupa",
@@ -4199,6 +4711,38 @@
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/roupa/t-shirts/nike/XL/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "only",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/t-shirts/only/XS/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "only",
+      "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/t-shirts/only/S/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "only",
+      "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/t-shirts/only/M/50"
+    },
+    {
+      "família": "roupa",
+      "categoria": "t-shirts",
+      "marca": "only",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/roupa/t-shirts/only/L/50"
     },
     {
       "família": "roupa",
@@ -4393,196 +4937,12 @@
       "link": "https://exemplo.com/roupa/saias/levis/28/50"
     },
     {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
+      "família": "acessórios",
+      "categoria": "bolsas a tiracolo",
+      "marca": "havaianas",
+      "tamanho": "Único",
       "orçamento": "50",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/50"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
-      "orçamento": "100",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/100"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
-      "orçamento": "150",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/150"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
-      "orçamento": "200",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/200"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
-      "orçamento": "250",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/250"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "S",
-      "orçamento": "300",
-      "link": "https://exemplo.com/roupa/polos/pixis/S/300"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "50",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/50"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "100",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/100"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "150",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/150"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "200",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/200"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "250",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/250"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "M",
-      "orçamento": "300",
-      "link": "https://exemplo.com/roupa/polos/pixis/M/300"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "50",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/50"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "100",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/100"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "150",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/150"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "200",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/200"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "250",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/250"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "L",
-      "orçamento": "300",
-      "link": "https://exemplo.com/roupa/polos/pixis/L/300"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "50",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/50"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "100",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/100"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "150",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/150"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "200",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/200"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "250",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/250"
-    },
-    {
-      "família": "roupa",
-      "categoria": "polos",
-      "marca": "pixis",
-      "tamanho": "XL",
-      "orçamento": "300",
-      "link": "https://exemplo.com/roupa/polos/pixis/XL/300"
+      "link": "https://exemplo.com/acessórios/bolsas a tiracolo/havaianas/Único/50"
     },
     {
       "família": "acessórios",
@@ -4591,6 +4951,14 @@
       "tamanho": "Único",
       "orçamento": "50",
       "link": "https://exemplo.com/acessórios/bolsas a tiracolo/nike/Único/50"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "malas",
+      "marca": "lacoste",
+      "tamanho": "Único",
+      "orçamento": "50",
+      "link": "https://exemplo.com/acessórios/malas/lacoste/Único/50"
     },
     {
       "família": "acessórios",
@@ -4615,6 +4983,14 @@
       "tamanho": "Único",
       "orçamento": "200",
       "link": "https://exemplo.com/acessórios/malas/lacoste/Único/200"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "malas",
+      "marca": "lacoste",
+      "tamanho": "Único",
+      "orçamento": "250",
+      "link": "https://exemplo.com/acessórios/malas/lacoste/Único/250"
     },
     {
       "família": "acessórios",
@@ -4643,46 +5019,6 @@
     {
       "família": "acessórios",
       "categoria": "bonés",
-      "marca": "adidas sportswear",
-      "tamanho": "Único",
-      "orçamento": "100",
-      "link": "https://exemplo.com/acessórios/bonés/adidas_sportswear/Único/100"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "bonés",
-      "marca": "adidas sportswear",
-      "tamanho": "Único",
-      "orçamento": "150",
-      "link": "https://exemplo.com/acessórios/bonés/adidas_sportswear/Único/150"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "bonés",
-      "marca": "adidas sportswear",
-      "tamanho": "Único",
-      "orçamento": "200",
-      "link": "https://exemplo.com/acessórios/bonés/adidas_sportswear/Único/200"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "bonés",
-      "marca": "adidas sportswear",
-      "tamanho": "Único",
-      "orçamento": "250",
-      "link": "https://exemplo.com/acessórios/bonés/adidas_sportswear/Único/250"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "bonés",
-      "marca": "adidas sportswear",
-      "tamanho": "Único",
-      "orçamento": "300",
-      "link": "https://exemplo.com/acessórios/bonés/adidas_sportswear/Único/300"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "bonés",
       "marca": "new balance",
       "tamanho": "Único",
       "orçamento": "50",
@@ -4695,6 +5031,30 @@
       "tamanho": "Único",
       "orçamento": "50",
       "link": "https://exemplo.com/acessórios/bonés/dickies/Único/50"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "malas de viagem",
+      "marca": "eastpak",
+      "tamanho": "Único",
+      "orçamento": "50",
+      "link": "https://exemplo.com/acessórios/malas de viagem/eastpak/Único/50"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "malas de viagem",
+      "marca": "eastpak",
+      "tamanho": "Único",
+      "orçamento": "100",
+      "link": "https://exemplo.com/acessórios/malas de viagem/eastpak/Único/100"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "malas de viagem",
+      "marca": "eastpak",
+      "tamanho": "Único",
+      "orçamento": "150",
+      "link": "https://exemplo.com/acessórios/malas de viagem/eastpak/Único/150"
     },
     {
       "família": "acessórios",
@@ -4722,51 +5082,59 @@
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
       "marca": "fujifilm",
       "tamanho": "Único",
       "orçamento": "50",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/fujifilm/Único/50"
+      "link": "https://exemplo.com/acessórios/fotografia/fujifilm/Único/50"
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
       "marca": "fujifilm",
       "tamanho": "Único",
       "orçamento": "100",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/fujifilm/Único/100"
+      "link": "https://exemplo.com/acessórios/fotografia/fujifilm/Único/100"
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
       "marca": "fujifilm",
       "tamanho": "Único",
       "orçamento": "150",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/fujifilm/Único/150"
+      "link": "https://exemplo.com/acessórios/fotografia/fujifilm/Único/150"
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
+      "marca": "fujifilm",
+      "tamanho": "Único",
+      "orçamento": "200",
+      "link": "https://exemplo.com/acessórios/fotografia/fujifilm/Único/200"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "fotografia",
       "marca": "polaroid",
       "tamanho": "Único",
       "orçamento": "50",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/polaroid/Único/50"
+      "link": "https://exemplo.com/acessórios/fotografia/polaroid/Único/50"
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
       "marca": "polaroid",
       "tamanho": "Único",
       "orçamento": "100",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/polaroid/Único/100"
+      "link": "https://exemplo.com/acessórios/fotografia/polaroid/Único/100"
     },
     {
       "família": "acessórios",
-      "categoria": "máquina fotográfica",
+      "categoria": "fotografia",
       "marca": "polaroid",
       "tamanho": "Único",
       "orçamento": "150",
-      "link": "https://exemplo.com/acessórios/máquina fotográfica/polaroid/Único/150"
+      "link": "https://exemplo.com/acessórios/fotografia/polaroid/Único/150"
     },
     {
       "família": "acessórios",
@@ -4786,6 +5154,22 @@
     },
     {
       "família": "acessórios",
+      "categoria": "musica",
+      "marca": "vinil",
+      "tamanho": "Único",
+      "orçamento": "150",
+      "link": "https://exemplo.com/acessórios/musica/vinil/Único/150"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "meias",
+      "marca": "adidas originals",
+      "tamanho": "Único",
+      "orçamento": "50",
+      "link": "https://exemplo.com/acessórios/meias/adidas_originals/Único/50"
+    },
+    {
+      "família": "acessórios",
       "categoria": "meias",
       "marca": "new balance",
       "tamanho": "Único",
@@ -4795,42 +5179,18 @@
     {
       "família": "acessórios",
       "categoria": "meias",
-      "marca": "new balance",
+      "marca": "nike",
       "tamanho": "Único",
-      "orçamento": "100",
-      "link": "https://exemplo.com/acessórios/meias/new_balance/Único/100"
+      "orçamento": "50",
+      "link": "https://exemplo.com/acessórios/meias/nike/Único/50"
     },
     {
       "família": "acessórios",
       "categoria": "meias",
-      "marca": "new balance",
+      "marca": "pixis",
       "tamanho": "Único",
-      "orçamento": "150",
-      "link": "https://exemplo.com/acessórios/meias/new_balance/Único/150"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "meias",
-      "marca": "new balance",
-      "tamanho": "Único",
-      "orçamento": "200",
-      "link": "https://exemplo.com/acessórios/meias/new_balance/Único/200"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "meias",
-      "marca": "new balance",
-      "tamanho": "Único",
-      "orçamento": "250",
-      "link": "https://exemplo.com/acessórios/meias/new_balance/Único/250"
-    },
-    {
-      "família": "acessórios",
-      "categoria": "meias",
-      "marca": "new balance",
-      "tamanho": "Único",
-      "orçamento": "300",
-      "link": "https://exemplo.com/acessórios/meias/new_balance/Único/300"
+      "orçamento": "50",
+      "link": "https://exemplo.com/acessórios/meias/pixis/Único/50"
     },
     {
       "família": "acessórios",
@@ -4850,11 +5210,27 @@
     },
     {
       "família": "acessórios",
+      "categoria": "necessaires",
+      "marca": "herschel",
+      "tamanho": "Único",
+      "orçamento": "100",
+      "link": "https://exemplo.com/acessórios/necessaires/herschel/Único/100"
+    },
+    {
+      "família": "acessórios",
       "categoria": "óculos de sol",
       "marca": "vans",
       "tamanho": "Único",
       "orçamento": "50",
       "link": "https://exemplo.com/acessórios/óculos de sol/vans/Único/50"
+    },
+    {
+      "família": "acessórios",
+      "categoria": "óculos de sol",
+      "marca": "vans",
+      "tamanho": "Único",
+      "orçamento": "100",
+      "link": "https://exemplo.com/acessórios/óculos de sol/vans/Único/100"
     }
   ],
   "desporto": [
@@ -4966,9 +5342,25 @@
       "família": "ginásio",
       "categoria": "roupa",
       "marca": "new balance",
+      "tamanho": "XS",
+      "orçamento": "100",
+      "link": "https://exemplo.com/ginásio/roupa/new_balance/XS/100"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "new balance",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/ginásio/roupa/new_balance/S/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "new balance",
+      "tamanho": "S",
+      "orçamento": "100",
+      "link": "https://exemplo.com/ginásio/roupa/new_balance/S/100"
     },
     {
       "família": "ginásio",
@@ -4982,6 +5374,14 @@
       "família": "ginásio",
       "categoria": "roupa",
       "marca": "new balance",
+      "tamanho": "M",
+      "orçamento": "100",
+      "link": "https://exemplo.com/ginásio/roupa/new_balance/M/100"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "new balance",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/ginásio/roupa/new_balance/L/50"
@@ -4990,9 +5390,65 @@
       "família": "ginásio",
       "categoria": "roupa",
       "marca": "new balance",
+      "tamanho": "L",
+      "orçamento": "100",
+      "link": "https://exemplo.com/ginásio/roupa/new_balance/L/100"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "new balance",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/ginásio/roupa/new_balance/XL/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "new balance",
+      "tamanho": "XL",
+      "orçamento": "100",
+      "link": "https://exemplo.com/ginásio/roupa/new_balance/XL/100"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "pixis",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/ginásio/roupa/pixis/XS/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "pixis",
+      "tamanho": "S",
+      "orçamento": "50",
+      "link": "https://exemplo.com/ginásio/roupa/pixis/S/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "pixis",
+      "tamanho": "M",
+      "orçamento": "50",
+      "link": "https://exemplo.com/ginásio/roupa/pixis/M/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "pixis",
+      "tamanho": "L",
+      "orçamento": "50",
+      "link": "https://exemplo.com/ginásio/roupa/pixis/L/50"
+    },
+    {
+      "família": "ginásio",
+      "categoria": "roupa",
+      "marca": "pixis",
+      "tamanho": "XL",
+      "orçamento": "50",
+      "link": "https://exemplo.com/ginásio/roupa/pixis/XL/50"
     },
     {
       "família": "ginásio",
@@ -5009,6 +5465,14 @@
       "tamanho": "Único",
       "orçamento": "100",
       "link": "https://exemplo.com/ginásio/acessórios/nike/Único/100"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "35",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/35/50"
     },
     {
       "família": "running",
@@ -5039,6 +5503,14 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "36",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/36/50"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "36",
       "orçamento": "100",
       "link": "https://exemplo.com/running/sapatilhas/hoka/36/100"
     },
@@ -5057,6 +5529,14 @@
       "tamanho": "36",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/hoka/36/200"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "37",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/37/50"
     },
     {
       "família": "running",
@@ -5087,6 +5567,14 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "38",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/38/50"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "38",
       "orçamento": "100",
       "link": "https://exemplo.com/running/sapatilhas/hoka/38/100"
     },
@@ -5111,6 +5599,14 @@
       "categoria": "sapatilhas",
       "marca": "hoka",
       "tamanho": "39",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/39/50"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "39",
       "orçamento": "100",
       "link": "https://exemplo.com/running/sapatilhas/hoka/39/100"
     },
@@ -5129,6 +5625,14 @@
       "tamanho": "39",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/hoka/39/200"
+    },
+    {
+      "família": "running",
+      "categoria": "sapatilhas",
+      "marca": "hoka",
+      "tamanho": "40",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/sapatilhas/hoka/40/50"
     },
     {
       "família": "running",
@@ -5526,22 +6030,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "on running",
-      "tamanho": "35",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/35/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "35",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/35/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
       "tamanho": "36",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/on_running/36/50"
@@ -5569,22 +6057,6 @@
       "tamanho": "36",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/on_running/36/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/36/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/36/300"
     },
     {
       "família": "running",
@@ -5622,22 +6094,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "on running",
-      "tamanho": "37",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/37/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "37",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/37/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
       "tamanho": "38",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/on_running/38/50"
@@ -5665,22 +6121,6 @@
       "tamanho": "38",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/on_running/38/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "38",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/38/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "38",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/38/300"
     },
     {
       "família": "running",
@@ -5718,22 +6158,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "on running",
-      "tamanho": "39",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/39/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "39",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/39/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
       "tamanho": "40",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/on_running/40/50"
@@ -5766,22 +6190,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "on running",
-      "tamanho": "40",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/40/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "40",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/40/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
       "tamanho": "41",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/on_running/41/50"
@@ -5809,22 +6217,6 @@
       "tamanho": "41",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/on_running/41/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "41",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/41/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "on running",
-      "tamanho": "41",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/on_running/41/300"
     },
     {
       "família": "running",
@@ -5862,22 +6254,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "veja",
-      "tamanho": "35",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/35/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "35",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/35/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
       "tamanho": "36",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/veja/36/50"
@@ -5905,22 +6281,6 @@
       "tamanho": "36",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/veja/36/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/36/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/36/300"
     },
     {
       "família": "running",
@@ -5958,22 +6318,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "veja",
-      "tamanho": "37",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/37/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "37",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/37/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
       "tamanho": "38",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/veja/38/50"
@@ -6001,22 +6345,6 @@
       "tamanho": "38",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/veja/38/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "38",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/38/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "38",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/38/300"
     },
     {
       "família": "running",
@@ -6054,22 +6382,6 @@
       "família": "running",
       "categoria": "sapatilhas",
       "marca": "veja",
-      "tamanho": "39",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/39/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "39",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/39/300"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
       "tamanho": "40",
       "orçamento": "50",
       "link": "https://exemplo.com/running/sapatilhas/veja/40/50"
@@ -6097,22 +6409,6 @@
       "tamanho": "40",
       "orçamento": "200",
       "link": "https://exemplo.com/running/sapatilhas/veja/40/200"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "40",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/40/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "40",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/40/300"
     },
     {
       "família": "running",
@@ -6148,27 +6444,19 @@
     },
     {
       "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "41",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/sapatilhas/veja/41/250"
-    },
-    {
-      "família": "running",
-      "categoria": "sapatilhas",
-      "marca": "veja",
-      "tamanho": "41",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/sapatilhas/veja/41/300"
+      "categoria": "roupa",
+      "marca": "adidas",
+      "tamanho": "XS",
+      "orçamento": "50",
+      "link": "https://exemplo.com/running/roupa/adidas/XS/50"
     },
     {
       "família": "running",
       "categoria": "roupa",
       "marca": "adidas",
       "tamanho": "XS",
-      "orçamento": "50",
-      "link": "https://exemplo.com/running/roupa/adidas/XS/50"
+      "orçamento": "100",
+      "link": "https://exemplo.com/running/roupa/adidas/XS/100"
     },
     {
       "família": "running",
@@ -6182,9 +6470,25 @@
       "família": "running",
       "categoria": "roupa",
       "marca": "adidas",
+      "tamanho": "S",
+      "orçamento": "100",
+      "link": "https://exemplo.com/running/roupa/adidas/S/100"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "adidas",
       "tamanho": "M",
       "orçamento": "50",
       "link": "https://exemplo.com/running/roupa/adidas/M/50"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "adidas",
+      "tamanho": "M",
+      "orçamento": "100",
+      "link": "https://exemplo.com/running/roupa/adidas/M/100"
     },
     {
       "família": "running",
@@ -6198,9 +6502,25 @@
       "família": "running",
       "categoria": "roupa",
       "marca": "adidas",
+      "tamanho": "L",
+      "orçamento": "100",
+      "link": "https://exemplo.com/running/roupa/adidas/L/100"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "adidas",
       "tamanho": "XL",
       "orçamento": "50",
       "link": "https://exemplo.com/running/roupa/adidas/XL/50"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "adidas",
+      "tamanho": "XL",
+      "orçamento": "100",
+      "link": "https://exemplo.com/running/roupa/adidas/XL/100"
     },
     {
       "família": "running",
@@ -6222,6 +6542,14 @@
       "família": "running",
       "categoria": "roupa",
       "marca": "nike",
+      "tamanho": "XS",
+      "orçamento": "150",
+      "link": "https://exemplo.com/running/roupa/nike/XS/150"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "nike",
       "tamanho": "S",
       "orçamento": "50",
       "link": "https://exemplo.com/running/roupa/nike/S/50"
@@ -6233,6 +6561,14 @@
       "tamanho": "S",
       "orçamento": "100",
       "link": "https://exemplo.com/running/roupa/nike/S/100"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "nike",
+      "tamanho": "S",
+      "orçamento": "150",
+      "link": "https://exemplo.com/running/roupa/nike/S/150"
     },
     {
       "família": "running",
@@ -6254,6 +6590,14 @@
       "família": "running",
       "categoria": "roupa",
       "marca": "nike",
+      "tamanho": "M",
+      "orçamento": "150",
+      "link": "https://exemplo.com/running/roupa/nike/M/150"
+    },
+    {
+      "família": "running",
+      "categoria": "roupa",
+      "marca": "nike",
       "tamanho": "L",
       "orçamento": "50",
       "link": "https://exemplo.com/running/roupa/nike/L/50"
@@ -6268,51 +6612,19 @@
     },
     {
       "família": "running",
+      "categoria": "roupa",
+      "marca": "nike",
+      "tamanho": "L",
+      "orçamento": "150",
+      "link": "https://exemplo.com/running/roupa/nike/L/150"
+    },
+    {
+      "família": "running",
       "categoria": "acessórios",
       "marca": "nike",
       "tamanho": "38.5",
       "orçamento": "50",
       "link": "https://exemplo.com/running/acessórios/nike/38.5/50"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38.5",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/38.5/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38.5",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/38.5/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38.5",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/38.5/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38.5",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/38.5/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38.5",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/38.5/300"
     },
     {
       "família": "running",
@@ -6326,89 +6638,9 @@
       "família": "running",
       "categoria": "acessórios",
       "marca": "nike",
-      "tamanho": "40.5\n44",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/40.5\n44/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "40.5\n44",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/40.5\n44/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "40.5\n44",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/40.5\n44/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "40.5\n44",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/40.5\n44/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "40.5\n44",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/40.5\n44/300"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
       "tamanho": "44.5\n34",
       "orçamento": "50",
       "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/50"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "44.5\n34",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "44.5\n34",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "44.5\n34",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "44.5\n34",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "44.5\n34",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/44.5\n34/300"
     },
     {
       "família": "running",
@@ -6422,89 +6654,9 @@
       "família": "running",
       "categoria": "acessórios",
       "marca": "nike",
-      "tamanho": "38\n36",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n36/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n36",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n36/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n36",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n36/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n36",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n36/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n36",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n36/300"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
       "tamanho": "38\n38",
       "orçamento": "50",
       "link": "https://exemplo.com/running/acessórios/nike/38\n38/50"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n38",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n38/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n38",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n38/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n38",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n38/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n38",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n38/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "38\n38",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/38\n38/300"
     },
     {
       "família": "running",
@@ -6518,89 +6670,9 @@
       "família": "running",
       "categoria": "acessórios",
       "marca": "nike",
-      "tamanho": "42\n41",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/42\n41/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "42\n41",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/42\n41/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "42\n41",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/42\n41/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "42\n41",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/42\n41/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "42\n41",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/42\n41/300"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
       "tamanho": "43\n42",
       "orçamento": "50",
       "link": "https://exemplo.com/running/acessórios/nike/43\n42/50"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "43\n42",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/43\n42/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "43\n42",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/43\n42/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "43\n42",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/43\n42/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "43\n42",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/43\n42/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "43\n42",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/43\n42/300"
     },
     {
       "família": "running",
@@ -6614,89 +6686,9 @@
       "família": "running",
       "categoria": "acessórios",
       "marca": "nike",
-      "tamanho": "46\n46",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/46\n46/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "46\n46",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/46\n46/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "46\n46",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/46\n46/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "46\n46",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/46\n46/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "46\n46",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/46\n46/300"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
       "tamanho": "50",
       "orçamento": "50",
       "link": "https://exemplo.com/running/acessórios/nike/50/50"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "50",
-      "orçamento": "100",
-      "link": "https://exemplo.com/running/acessórios/nike/50/100"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "50",
-      "orçamento": "150",
-      "link": "https://exemplo.com/running/acessórios/nike/50/150"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "50",
-      "orçamento": "200",
-      "link": "https://exemplo.com/running/acessórios/nike/50/200"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "50",
-      "orçamento": "250",
-      "link": "https://exemplo.com/running/acessórios/nike/50/250"
-    },
-    {
-      "família": "running",
-      "categoria": "acessórios",
-      "marca": "nike",
-      "tamanho": "50",
-      "orçamento": "300",
-      "link": "https://exemplo.com/running/acessórios/nike/50/300"
     },
     {
       "família": "natação",
@@ -7406,6 +7398,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "22",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/22/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "22",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/22/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "22",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/22/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "22",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/22/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "23",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/23/50"
@@ -7449,6 +7473,38 @@
       "tamanho": "23",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/23/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "23",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/23/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "23",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/23/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "23",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/23/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "23",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/23/500"
     },
     {
       "família": "natação",
@@ -7502,6 +7558,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "24",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/24/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "24",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/24/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "24",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/24/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "24",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/24/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "25",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/25/50"
@@ -7545,6 +7633,38 @@
       "tamanho": "25",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/25/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "25",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/25/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "25",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/25/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "25",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/25/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "25",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/25/500"
     },
     {
       "família": "natação",
@@ -7598,6 +7718,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "26",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/26/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "26",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/26/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "26",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/26/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "26",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/26/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "34",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/34/50"
@@ -7641,6 +7793,38 @@
       "tamanho": "34",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/34/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "34",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/34/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "34",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/34/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "34",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/34/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "34",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/34/500"
     },
     {
       "família": "natação",
@@ -7694,6 +7878,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "36",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/36/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "36",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/36/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "36",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/36/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "36",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/36/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "38",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/38/50"
@@ -7737,6 +7953,38 @@
       "tamanho": "38",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/38/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "38",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/38/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "38",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/38/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "38",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/38/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "38",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/38/500"
     },
     {
       "família": "natação",
@@ -7790,6 +8038,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "40",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/40/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "40",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/40/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "40",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/40/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "40",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/40/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "42",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/42/50"
@@ -7833,6 +8113,38 @@
       "tamanho": "42",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/42/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "42",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/42/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "42",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/42/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "42",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/42/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "42",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/42/500"
     },
     {
       "família": "natação",
@@ -7886,6 +8198,38 @@
       "família": "natação",
       "categoria": "roupa",
       "marca": "speedo",
+      "tamanho": "44",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/44/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "44",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/44/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "44",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/44/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "44",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/44/500"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
       "tamanho": "46",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/roupa/speedo/46/50"
@@ -7929,6 +8273,38 @@
       "tamanho": "46",
       "orçamento": "300",
       "link": "https://exemplo.com/natação/roupa/speedo/46/300"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "46",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/46/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "46",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/46/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "46",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/46/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "46",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/46/500"
     },
     {
       "família": "natação",
@@ -7980,11 +8356,51 @@
     },
     {
       "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "48",
+      "orçamento": "350",
+      "link": "https://exemplo.com/natação/roupa/speedo/48/350"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "48",
+      "orçamento": "400",
+      "link": "https://exemplo.com/natação/roupa/speedo/48/400"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "48",
+      "orçamento": "450",
+      "link": "https://exemplo.com/natação/roupa/speedo/48/450"
+    },
+    {
+      "família": "natação",
+      "categoria": "roupa",
+      "marca": "speedo",
+      "tamanho": "48",
+      "orçamento": "500",
+      "link": "https://exemplo.com/natação/roupa/speedo/48/500"
+    },
+    {
+      "família": "natação",
       "categoria": "acessórios",
       "marca": "arena",
       "tamanho": "Único",
       "orçamento": "50",
       "link": "https://exemplo.com/natação/acessórios/arena/Único/50"
+    },
+    {
+      "família": "natação",
+      "categoria": "acessórios",
+      "marca": "arena",
+      "tamanho": "Único",
+      "orçamento": "100",
+      "link": "https://exemplo.com/natação/acessórios/arena/Único/100"
     },
     {
       "família": "natação",
