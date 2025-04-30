@@ -83,8 +83,8 @@
       html += `
         <div class="product-item">
           <div class="clearfix">
-            <div class="product-item-image productMask">
-              <img src="${product.image}" alt="${product.name}" onclick="location.href='${product.url}'">
+            <div class="product-item-image productMask" onclick="location.href='${product.url}'">
+              <img src="${product.image}" alt="${product.name}">
             </div>
             <div class="product-item-desc desc">
               <p class="featuredH5 list-nav-title product-item-name name" onclick="location.href='${product.url}'">${product.name}</p>
