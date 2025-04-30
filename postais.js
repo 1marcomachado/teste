@@ -84,10 +84,10 @@
         <div class="product-item">
           <div class="clearfix">
             <div class="product-item-image productMask">
-              <img src="${product.image}" alt="${product.name}">
+              <img src="${product.image}" alt="${product.name}" onclick="location.href='${product.url}'">
             </div>
             <div class="product-item-desc desc">
-              <p class="featuredH5 list-nav-title product-item-name name">${product.name}</p>
+              <p class="featuredH5 list-nav-title product-item-name name" onclick="location.href='${product.url}'">${product.name}</p>
               <p class="product-item-ref">Ref: ${product.id}|Único</p>
               <p class="product-item-variants variants">
                 <span></span>
