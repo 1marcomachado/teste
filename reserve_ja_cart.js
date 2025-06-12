@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const script = document.currentScript;
   const shopLang = script?.getAttribute('data-shop-lang')?.toLowerCase() || 'pt';
 
-  const referenciasDesejadas = new Set(['JM1220', 'AB1234', 'JR6806', 'JQ6386']); // inclui mobile
+  const referenciasDesejadas = new Set(['JM1220']); // inclui mobile
 
   const mensagens = {
     pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 20 de junho. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
