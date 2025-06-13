@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fontWeight: 'bold',
         textTransform: 'uppercase',
         color: 'black',
-        padding: '10px'
+        padding: '10px',
+        background: '#f1fff1'
       });
       novaColuna.style.setProperty('margin-bottom', '10px', 'important');
       
