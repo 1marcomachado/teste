@@ -5,14 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // 📅 Mapeamento de datas por referência
   const datasPorReferencia = {};
 
-  // Referências com envio previsto para 16 de junho
-  [
-    'JN9944', 'JD1408', 'JD1405', 'JN9946',
-    'JN9940', 'JN9948', 'JN9947', 'JD1403'
-  ].forEach(ref => {
-    datasPorReferencia[ref] = '16 de junho';
-  });
-
   // Referências com envio previsto para 20 de junho
   [
     'JP4013', 'JP4154', 'JN8884', 'JP3991',
