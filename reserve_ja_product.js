@@ -5,16 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Mapa fixo: referência -> idioma -> imagem
   const imagemPorReferenciaELang = {
-    // 16 de junho
-    JN9944: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JD1408: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JD1405: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JN9946: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JN9940: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JN9948: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JN9947: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-    JD1403: { pt: 'misc30.jpg.svg', es: 'misc31.jpg.svg', en: 'misc32.jpg.svg' },
-
     // 20 de junho
     JP4013: { pt: 'misc29.jpg.svg', es: 'misc33.jpg.svg', en: 'misc34.jpg.svg' },
     JP4154: { pt: 'misc29.jpg.svg', es: 'misc33.jpg.svg', en: 'misc34.jpg.svg' },
