@@ -1,10 +1,8 @@
-(() => {
+window.addEventListener("load", () => {
+  // Buscar o script que contém carousel-loader.js
   const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
-  const script = scripts[scripts.length - 1];
-  if (!script) {
-    console.warn("Script com src*='carousel-loader.js' não encontrado.");
-    return;
-  }
+  const script = scripts[scripts.length - 1]; // último na ordem do DOM
+  if (!script) return;
 
   let configRaw = script.getAttribute("data-config") || "";
   configRaw = configRaw
@@ -81,9 +79,6 @@
           480: { slidesPerView: 1.25 }
         }
       });
-      console.log("Swiper inicializado com", slides.length, "slide(s).");
-    } else {
-      console.warn("Swiper não está carregado.");
     }
   });
-})();
+});
