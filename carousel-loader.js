@@ -1,8 +1,10 @@
-window.addEventListener("load", () => {
-  // Buscar o script que contém carousel-loader.js
+(() => {
   const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
-  const script = scripts[scripts.length - 1]; // último na ordem do DOM
-  if (!script) return;
+  const script = scripts[scripts.length - 1];
+  if (!script) {
+    console.warn("Script com src*='carousel-loader.js' não encontrado.");
+    return;
+  }
 
   let configRaw = script.getAttribute("data-config") || "";
   configRaw = configRaw
@@ -25,6 +27,7 @@ window.addEventListener("load", () => {
     const blocks = blockIds.map(sel => document.querySelector(sel));
     document.querySelector(hideId)?.style.setProperty("display", "none");
 
+    // Forçar carregamento de imagens lazy
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
       const img = figure.querySelector("img.rdc-vpd-lozad");
       const src = img?.getAttribute("data-src");
@@ -36,18 +39,14 @@ window.addEventListener("load", () => {
       figure.classList.remove("rdc-lazy-placeholder");
     });
 
-    const unique = new Set(), slides = [];
+    const uniqueHTML = new Set(), slides = [];
 
     blocks.forEach(b => {
       if (!b) return;
       b.querySelectorAll(".banner-type-8").forEach(cell => {
-        const img = cell.querySelector("img.primary_image");
-        const src = img?.getAttribute("src") ||
-                    img?.getAttribute("data-src") ||
-                    img?.getAttribute("data-original");
-        const cellHTML = cell.outerHTML;
-        if (!unique.has(cellHTML)) {
-          unique.add(cellHTML);
+        const cellHTML = cell.outerHTML.trim();
+        if (!uniqueHTML.has(cellHTML)) {
+          uniqueHTML.add(cellHTML);
           slides.push(cellHTML);
         }
       });
@@ -82,6 +81,9 @@ window.addEventListener("load", () => {
           480: { slidesPerView: 1.25 }
         }
       });
+      console.log("Swiper inicializado com", slides.length, "slide(s).");
+    } else {
+      console.warn("Swiper não está carregado.");
     }
   });
-});
+})();
