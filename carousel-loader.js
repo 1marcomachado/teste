@@ -1,15 +1,23 @@
 window.addEventListener("load", () => {
-  const scripts = document.querySelectorAll('script[data-carousel]');
+  const configScript = document.getElementById("carousel-configs");
+  if (!configScript) return;
 
-  scripts.forEach(script => {
-    const blockIds = (script.getAttribute("data-blocks") || "")
-      .split(",").map(id => `#${id.trim()}`);
-    const hideId = "#" + (script.getAttribute("data-hide") || "").trim();
+  let configs;
+  try {
+    configs = JSON.parse(configScript.textContent);
+  } catch (e) {
+    console.warn("Configuração JSON inválida.");
+    return;
+  }
+
+  configs.forEach(config => {
+    const blockIds = (config.blocks || []).map(id => `#${id}`);
+    const hideId = "#" + config.hide;
 
     const blocks = blockIds.map(sel => document.querySelector(sel));
     document.querySelector(hideId)?.style.setProperty("display", "none");
 
-    // Forçar carregamento de imagens lazy e placeholders
+    // Forçar carregamento lazy
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
       const img = figure.querySelector("img.rdc-vpd-lozad");
       const src = img?.getAttribute("data-src");
