@@ -1,17 +1,20 @@
 window.addEventListener("load", () => {
-  const script = document.currentScript;
+  // Buscar o script que contém carousel-loader.js
+  const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
+  const script = scripts[scripts.length - 1]; // último na ordem do DOM
+  if (!script) return;
 
   let configRaw = script.getAttribute("data-config") || "";
   configRaw = configRaw
-    .replace(/<br\s*\/?>/gi, "") // remove todas as quebras de linha HTML
-    .replace(/[\r\n]/g, "")      // remove quebras de linha normais
-    .trim();                     // remove espaços em branco extras
+    .replace(/<br\s*\/?>/gi, "")
+    .replace(/[\r\n]/g, "")
+    .trim();
 
   let configs;
   try {
     configs = JSON.parse(configRaw);
   } catch (e) {
-    console.warn("JSON inválido em data-config:", e);
+    console.warn("JSON inválido no data-config:", e);
     return;
   }
 
@@ -22,7 +25,6 @@ window.addEventListener("load", () => {
     const blocks = blockIds.map(sel => document.querySelector(sel));
     document.querySelector(hideId)?.style.setProperty("display", "none");
 
-    // Forçar carregamento lazy
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
       const img = figure.querySelector("img.rdc-vpd-lozad");
       const src = img?.getAttribute("data-src");
