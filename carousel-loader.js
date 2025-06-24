@@ -1,7 +1,6 @@
 window.addEventListener("load", () => {
-  // Buscar o script que contém carousel-loader.js
   const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
-  const script = scripts[scripts.length - 1]; // último na ordem do DOM
+  const script = scripts[scripts.length - 1];
   if (!script) return;
 
   let configRaw = script.getAttribute("data-config") || "";
@@ -37,15 +36,17 @@ window.addEventListener("load", () => {
       figure.classList.remove("rdc-lazy-placeholder");
     });
 
-    const uniqueHTML = new Set(), slides = [];
+    const uniqueSrc = new Set(), slides = [];
 
     blocks.forEach(b => {
       if (!b) return;
       b.querySelectorAll(".banner-type-8").forEach(cell => {
-        const cellHTML = cell.outerHTML.trim();
-        if (!uniqueHTML.has(cellHTML)) {
-          uniqueHTML.add(cellHTML);
-          slides.push(cellHTML);
+        const img = cell.querySelector("img.primary_image");
+        const src = img?.getAttribute("src") || img?.getAttribute("data-src") || img?.getAttribute("data-original");
+
+        if (src && !uniqueSrc.has(src)) {
+          uniqueSrc.add(src);
+          slides.push(cell.outerHTML.trim());
         }
       });
     });
