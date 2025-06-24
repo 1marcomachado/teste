@@ -1,6 +1,13 @@
 window.addEventListener("load", () => {
-  const currentScript = document.currentScript;
-  const blockIds = (currentScript.getAttribute("data-blocks") || "").split(",").map(id => `#${id.trim()}`);
+  // Encontrar o script pela URL ou outro atributo
+  const scripts = document.querySelectorAll('script[src*="carousel-loader"]');
+  const currentScript = scripts[scripts.length - 1]; // assume que é o último com esse nome
+
+  if (!currentScript) return;
+
+  const blockIds = (currentScript.getAttribute("data-blocks") || "")
+    .split(",")
+    .map(id => `#${id.trim()}`);
   const hideId = "#" + (currentScript.getAttribute("data-hide") || "").trim();
 
   const blocks = blockIds.map(sel => document.querySelector(sel));
