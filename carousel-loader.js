@@ -1,12 +1,17 @@
 window.addEventListener("load", () => {
-  const configScript = document.getElementById("carousel-configs");
-  if (!configScript) return;
+  const script = document.currentScript;
+
+  let configRaw = script.getAttribute("data-config") || "";
+  configRaw = configRaw
+    .replace(/<br\s*\/?>/gi, "") // remove todas as quebras de linha HTML
+    .replace(/[\r\n]/g, "")      // remove quebras de linha normais
+    .trim();                     // remove espaços em branco extras
 
   let configs;
   try {
-    configs = JSON.parse(configScript.textContent);
+    configs = JSON.parse(configRaw);
   } catch (e) {
-    console.warn("Configuração JSON inválida.");
+    console.warn("JSON inválido em data-config:", e);
     return;
   }
 
@@ -75,8 +80,6 @@ window.addEventListener("load", () => {
           480: { slidesPerView: 1.25 }
         }
       });
-    } else {
-      console.warn("Swiper não está carregado.");
     }
   });
 });
