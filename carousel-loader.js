@@ -1,12 +1,11 @@
 window.addEventListener("load", () => {
-  const configScript = document.getElementById("carousel-configs");
-  if (!configScript) return;
+  const script = document.currentScript;
 
   let configs;
   try {
-    configs = JSON.parse(configScript.textContent);
+    configs = JSON.parse(script.getAttribute("data-config") || "[]");
   } catch (e) {
-    console.warn("Configuração JSON inválida.");
+    console.warn("Configuração inválida em data-config:", e);
     return;
   }
 
@@ -17,7 +16,7 @@ window.addEventListener("load", () => {
     const blocks = blockIds.map(sel => document.querySelector(sel));
     document.querySelector(hideId)?.style.setProperty("display", "none");
 
-    // Forçar carregamento lazy
+    // Forçar lazy load
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
       const img = figure.querySelector("img.rdc-vpd-lozad");
       const src = img?.getAttribute("data-src");
@@ -75,8 +74,6 @@ window.addEventListener("load", () => {
           480: { slidesPerView: 1.25 }
         }
       });
-    } else {
-      console.warn("Swiper não está carregado.");
     }
   });
 });
