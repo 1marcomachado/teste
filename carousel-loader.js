@@ -86,6 +86,7 @@ window.addEventListener("load", () => {
           prevEl: swiper.querySelector(".swiper-button-prev")
         },
         breakpoints: {
+          0:   { slidesPerView: defaultSlides[0]   || defaultSlides.default },
           768: { slidesPerView: defaultSlides[768] || defaultSlides.default },
           480: { slidesPerView: defaultSlides[480] || defaultSlides.default }
         }
