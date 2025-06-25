@@ -19,10 +19,13 @@ window.addEventListener("load", () => {
 
   configs.forEach(config => {
     const blockIds = (config.blocks || []).map(id => `#${id}`);
-    const hideId = "#" + config.hide;
-
     const blocks = blockIds.map(sel => document.querySelector(sel));
-    document.querySelector(hideId)?.style.setProperty("display", "none");
+
+    // Ocultar bloco se `hide` estiver definido
+    if (config.hide) {
+      const hideId = "#" + config.hide;
+      document.querySelector(hideId)?.style.setProperty("display", "none");
+    }
 
     // Forçar carregamento de imagens lazy
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
