@@ -1,7 +1,6 @@
 window.addEventListener("load", () => {
-  // Buscar o script que contém carousel-loader.js
   const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
-  const script = scripts[scripts.length - 1]; // último na ordem do DOM
+  const script = scripts[scripts.length - 1];
   if (!script) return;
 
   let configRaw = script.getAttribute("data-config") || "";
@@ -20,10 +19,13 @@ window.addEventListener("load", () => {
 
   configs.forEach(config => {
     const blockIds = (config.blocks || []).map(id => `#${id}`);
-    const hideId = "#" + config.hide;
-
     const blocks = blockIds.map(sel => document.querySelector(sel));
-    document.querySelector(hideId)?.style.setProperty("display", "none");
+
+    // Ocultar bloco se `hide` estiver definido
+    if (config.hide) {
+      const hideId = "#" + config.hide;
+      document.querySelector(hideId)?.style.setProperty("display", "none");
+    }
 
     // Forçar carregamento de imagens lazy
     document.querySelectorAll(".rdc-lazy-placeholder").forEach(figure => {
@@ -37,15 +39,17 @@ window.addEventListener("load", () => {
       figure.classList.remove("rdc-lazy-placeholder");
     });
 
-    const uniqueHTML = new Set(), slides = [];
+    const uniqueSrc = new Set(), slides = [];
 
     blocks.forEach(b => {
       if (!b) return;
       b.querySelectorAll(".banner-type-1, .banner-type-8").forEach(cell => {
-        const cellHTML = cell.outerHTML.trim();
-        if (!uniqueHTML.has(cellHTML)) {
-          uniqueHTML.add(cellHTML);
-          slides.push(cellHTML);
+        const img = cell.querySelector("img.primary_image");
+        const src = img?.getAttribute("src") || img?.getAttribute("data-src") || img?.getAttribute("data-original");
+
+        if (src && !uniqueSrc.has(src)) {
+          uniqueSrc.add(src);
+          slides.push(cell.outerHTML.trim());
         }
       });
     });
@@ -65,18 +69,25 @@ window.addEventListener("load", () => {
     `;
     blocks[0].replaceWith(swiper);
 
+    // SlidesPerView customizável
+    const defaultSlides = config.slidesPerView || {
+      default: 1.25,
+      768: 4.25,
+      480: 1.25
+    };
+
     if (typeof Swiper !== "undefined") {
       new Swiper(swiper, {
         loop: false,
-        slidesPerView: 1.25,
         spaceBetween: 10,
+        slidesPerView: defaultSlides.default || 1.25,
         navigation: {
           nextEl: swiper.querySelector(".swiper-button-next"),
           prevEl: swiper.querySelector(".swiper-button-prev")
         },
         breakpoints: {
-          768: { slidesPerView: 4.25 },
-          480: { slidesPerView: 1.25 }
+          768: { slidesPerView: defaultSlides[768] || defaultSlides.default },
+          480: { slidesPerView: defaultSlides[480] || defaultSlides.default }
         }
       });
     }
