@@ -1,7 +1,12 @@
 window.addEventListener("load", () => {
+  console.log("[carousel-loader] Início do script");
+
   const scripts = document.querySelectorAll('script[src*="carousel-loader.js"]');
   const script = scripts[scripts.length - 1];
-  if (!script) return;
+  if (!script) {
+    console.warn("[carousel-loader] Script não encontrado.");
+    return;
+  }
 
   let configRaw = script.getAttribute("data-config") || "";
   configRaw = configRaw
@@ -12,19 +17,22 @@ window.addEventListener("load", () => {
   let configs;
   try {
     configs = JSON.parse(configRaw);
+    console.log("[carousel-loader] Config carregado:", configs);
   } catch (e) {
-    console.warn("JSON inválido no data-config:", e);
+    console.warn("[carousel-loader] JSON inválido:", e);
     return;
   }
 
-  configs.forEach(config => {
+  configs.forEach((config, index) => {
+    console.log(`[carousel-loader] Iniciando carrossel #${index + 1}`);
+
     const blockIds = (config.blocks || []).map(id => `#${id}`);
     const blocks = blockIds.map(sel => document.querySelector(sel));
 
-    // Ocultar bloco se `hide` estiver definido
     if (config.hide) {
       const hideId = "#" + config.hide;
       document.querySelector(hideId)?.style.setProperty("display", "none");
+      console.log(`[carousel-loader] Ocultado bloco ${hideId}`);
     }
 
     // Forçar carregamento de imagens lazy
@@ -35,6 +43,7 @@ window.addEventListener("load", () => {
         img.setAttribute("src", src);
         img.classList.remove("rdc-vpd-lozad");
         img.removeAttribute("data-src");
+        console.log("[carousel-loader] Forçou lazy load em imagem:", src);
       }
       figure.classList.remove("rdc-lazy-placeholder");
     });
@@ -54,6 +63,8 @@ window.addEventListener("load", () => {
       });
     });
 
+    console.log(`[carousel-loader] ${slides.length} slide(s) únicos encontrados.`);
+
     if (!slides.length || !blocks[0]) return;
 
     blocks.slice(1).forEach(b => b?.remove());
@@ -69,11 +80,11 @@ window.addEventListener("load", () => {
     `;
     blocks[0].replaceWith(swiper);
 
-    // SlidesPerView customizável
     const defaultSlides = config.slidesPerView || {
       default: 1.25,
       768: 4.25,
-      480: 1.25
+      480: 1.25,
+      0: 1.1
     };
 
     if (typeof Swiper !== "undefined") {
@@ -86,10 +97,14 @@ window.addEventListener("load", () => {
           prevEl: swiper.querySelector(".swiper-button-prev")
         },
         breakpoints: {
-          768: { slidesPerView: defaultSlides[768] || defaultSlides.default },
-          480: { slidesPerView: defaultSlides[480] || defaultSlides.default }
+          0:   { slidesPerView: defaultSlides[0]   || defaultSlides.default },
+          480: { slidesPerView: defaultSlides[480] || defaultSlides.default },
+          768: { slidesPerView: defaultSlides[768] || defaultSlides.default }
         }
       });
+      console.log(`[carousel-loader] Swiper #${index + 1} inicializado com ${slides.length} slide(s).`);
+    } else {
+      console.warn("[carousel-loader] Swiper não está disponível.");
     }
   });
 });
