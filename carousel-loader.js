@@ -41,7 +41,7 @@ window.addEventListener("load", () => {
 
     blocks.forEach(b => {
       if (!b) return;
-      b.querySelectorAll(".banner-type-8").forEach(cell => {
+      b.querySelectorAll(".banner-type-1, .banner-type-8").forEach(cell => {
         const cellHTML = cell.outerHTML.trim();
         if (!uniqueHTML.has(cellHTML)) {
           uniqueHTML.add(cellHTML);
