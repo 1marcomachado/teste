@@ -3,20 +3,20 @@
   const style = document.createElement("style");
   style.textContent = `
     /* === DESKTOP: 2º item === */
-    [attr-id-hover="1871"] .column-menu > ul > li:nth-child(2) {
+    [attr-id-hover="1871"] .column-menu > ul.sub > li:nth-child(2) {
       background-color: #38D430 !important;
       border-radius: 4px;
       margin: 0 4px;
     }
 
-    [attr-id-hover="1871"] .column-menu > ul > li:nth-child(2) > a {
+    [attr-id-hover="1871"] .column-menu > ul.sub > li:nth-child(2) > a {
       color: #000 !important;
       display: inline-block;
       padding: 5px 10px;
       transition: none !important;
     }
 
-    [attr-id-hover="1871"] .column-menu > ul > li:nth-child(2) > a:hover {
+    [attr-id-hover="1871"] .column-menu > ul.sub > li:nth-child(2) > a:hover {
       filter: brightness(0.85);
       transition: filter 0.2s ease-in-out;
     }
