@@ -1,5 +1,13 @@
   // Injetar CSS para hover escurecido no item com classe futebol-li
   const estiloHover = `
+    [attr-id-hover="1871"] .column-menu > ul > li:nth-child(2) > a {
+      background-color: #38D430 !important;
+      color: #000 !important;
+      border-radius: 4px !important;
+      margin: 0 4px !important;
+      padding: 5px 10px !important;
+      display: inline-block !important;
+    }
     .futebol-li > a:hover,
     .futebol-li.sel > a {
       background-color: #2DB82B !important;
