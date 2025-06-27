@@ -1,4 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
   // Injetar CSS para hover escurecido no item com classe futebol-li
   const estiloHover = `
     .futebol-li > a:hover,
@@ -14,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.head.appendChild(styleTag);
 
   // === DESKTOP MENU ===
-  const desktopMenu = document.querySelector('.submenu [attr-id-hover="1871"] .column-menu > ul');
+  const desktopMenu = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
   if (desktopMenu) {
     const items = desktopMenu.querySelectorAll(':scope > li');
     if (items.length >= 2) {
@@ -35,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // === MOBILE MENU ===
-  const mobileMenus = document.querySelectorAll('ul.sub-mobile');
+  const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
   if (mobileMenus.length >= 4) {
     const targetMobileUl = mobileMenus[3]; // 4º ul.sub-mobile
     const items = targetMobileUl.querySelectorAll(':scope > li');
@@ -54,4 +53,3 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-});
