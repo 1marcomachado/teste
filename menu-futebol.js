@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Função para injetar estilo CSS no <head>
+  // Injetar CSS para hover escurecido no item com classe futebol-li
   const estiloHover = `
     .futebol-li > a:hover,
     .futebol-li.sel > a {
@@ -13,15 +13,15 @@ document.addEventListener("DOMContentLoaded", function () {
   styleTag.textContent = estiloHover;
   document.head.appendChild(styleTag);
 
-  // ESTILO PARA O SEGUNDO ITEM DO MENU DESKTOP
-  const desktopMenu = document.querySelector('.submenu .column-menu > ul');
+  // === DESKTOP MENU ===
+  const desktopMenu = document.querySelector('.submenu [attr-id-hover="1871"] .column-menu > ul');
   if (desktopMenu) {
-    const desktopItems = desktopMenu.querySelectorAll(':scope > li');
-    if (desktopItems.length >= 2) {
-      const futebolDesktop = desktopItems[1]; // segundo item
+    const items = desktopMenu.querySelectorAll(':scope > li');
+    if (items.length >= 2) {
+      const futebolDesktop = items[1]; // segundo li
       futebolDesktop.classList.add('futebol-li');
-      const link = futebolDesktop.querySelector('a');
 
+      const link = futebolDesktop.querySelector('a');
       futebolDesktop.style.backgroundColor = "#38D430";
       futebolDesktop.style.borderRadius = "4px";
       futebolDesktop.style.margin = "0 4px";
@@ -34,12 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ESTILO PARA O TERCEIRO ITEM DO MENU MOBILE
-  const mobileMenu = document.querySelector('.sub-mobile.active');
-  if (mobileMenu) {
-    const mobileItems = mobileMenu.querySelectorAll(':scope > li');
-    if (mobileItems.length >= 3) {
-      const futebolMobile = mobileItems[2]; // terceiro item
+  // === MOBILE MENU ===
+  const mobileMenus = document.querySelectorAll('ul.sub-mobile');
+  if (mobileMenus.length >= 4) {
+    const targetMobileUl = mobileMenus[3]; // 4º ul.sub-mobile
+    const items = targetMobileUl.querySelectorAll(':scope > li');
+    if (items.length >= 3) {
+      const futebolMobile = items[2]; // primeiro li dentro do 4º ul
       const link = futebolMobile.querySelector('a');
 
       futebolMobile.style.backgroundColor = "#38D430";
