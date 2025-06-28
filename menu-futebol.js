@@ -1,61 +1,38 @@
 (function () {
-  // Injetar CSS
-  const css = `
-    .futebol-li > a {
+  // Injetar estilos no head o mais cedo possível
+  const styleTag = document.createElement('style');
+  styleTag.textContent = `
+    [attr-id-hover="1871"] .column-menu > ul > li.futebol-li > a {
       background-color: #38D430 !important;
       color: #000 !important;
       border-radius: 4px !important;
-      margin: 0 4px !important;
       padding: 5px 10px !important;
       display: inline-block !important;
+      margin: 0 4px !important;
     }
-    .futebol-li:hover > a,
-    .futebol-li.sel > a {
+
+    [attr-id-hover="1871"] .column-menu > ul > li.futebol-li:hover > a,
+    [attr-id-hover="1871"] .column-menu > ul > li.futebol-li.sel > a {
       background-color: #2DB82B !important;
     }
-  `;
-  const styleTag = document.createElement("style");
-  styleTag.textContent = css;
-  document.head.appendChild(styleTag);
 
-  // === DESKTOP ===
-  const desktopMenu = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
-  if (desktopMenu) {
-    const items = Array.from(desktopMenu.querySelectorAll(':scope > li'))
-      .filter(li => !li.classList.contains('sub-sub'));
-
-    const futebolLi = items.find(li => {
-      const a = li.querySelector('a');
-      return a && a.textContent.trim().toLowerCase() === "futebol";
-    });
-
-    if (futebolLi) {
-      futebolLi.classList.add('futebol-li');
+    #menu .wrapper-sub-mobile .sub-mobile:not(.sub):nth-of-type(4) > li:nth-child(3) > a {
+      background-color: #38D430 !important;
+      color: #000 !important;
+      border-radius: 4px !important;
+      padding: 5px 10px !important;
+      display: inline-block !important;
+      margin: 0 4px !important;
     }
-  }
+  `;
+  document.head.prepend(styleTag);
 
-  // === MOBILE ===
-  const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
-  if (mobileMenus.length >= 4) {
-    const targetMobileUl = mobileMenus[3];
-    const items = Array.from(targetMobileUl.querySelectorAll(':scope > li'));
-
-    const futebolLiMobile = items.find(li => {
-      const a = li.querySelector('a');
-      return a && a.textContent.trim().toLowerCase() === "futebol";
-    });
-
-    if (futebolLiMobile) {
-      futebolLiMobile.style.backgroundColor = "#38D430";
-      futebolLiMobile.style.borderRadius = "4px";
-      futebolLiMobile.style.margin = "0 4px";
-
-      const a = futebolLiMobile.querySelector('a');
-      if (a) {
-        a.style.color = "#000";
-        a.style.display = "inline-block";
-        a.style.padding = "5px 10px";
-      }
+  // Marcar o segundo li no menu principal (sem sub-sub)
+  const desktopUl = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
+  if (desktopUl) {
+    const li = desktopUl.querySelectorAll(':scope > li:not(.sub-sub)')[1]; // segundo item real
+    if (li) {
+      li.classList.add('futebol-li');
     }
   }
 })();
