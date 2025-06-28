@@ -1,5 +1,5 @@
-(function () {
-  // Injetar CSS
+requestAnimationFrame(() => {
+  // Injetar CSS imediatamente
   const css = `
     .futebol-li > a {
       background-color: #38D430 !important;
@@ -18,7 +18,7 @@
   styleTag.textContent = css;
   document.head.appendChild(styleTag);
 
-  // === DESKTOP ===
+  // DESKTOP
   const desktopMenu = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
   if (desktopMenu) {
     const items = Array.from(desktopMenu.querySelectorAll(':scope > li'))
@@ -34,7 +34,7 @@
     }
   }
 
-  // === MOBILE ===
+  // MOBILE
   const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
   if (mobileMenus.length >= 4) {
     const targetMobileUl = mobileMenus[3];
@@ -58,4 +58,4 @@
       }
     }
   }
-})();
+});
