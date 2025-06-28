@@ -1,61 +1,42 @@
 (function () {
-  // Injetar CSS
-  const css = `
-    .futebol-li > a {
-      background-color: #38D430 !important;
-      color: #000 !important;
-      border-radius: 4px !important;
-      margin: 0 4px !important;
-      padding: 5px 10px !important;
-      display: inline-block !important;
-    }
-    .futebol-li:hover > a,
-    .futebol-li.sel > a {
-      background-color: #2DB82B !important;
+  const style = document.createElement("style");
+  style.textContent = `
+    [attr-id-hover="1871"] .column-menu > ul > li.futebol-li {
+      visibility: hidden;
     }
   `;
-  const styleTag = document.createElement("style");
-  styleTag.textContent = css;
-  document.head.appendChild(styleTag);
+  document.head.appendChild(style);
 
-  // === DESKTOP ===
-  const desktopMenu = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
-  if (desktopMenu) {
-    const items = Array.from(desktopMenu.querySelectorAll(':scope > li'))
-      .filter(li => !li.classList.contains('sub-sub'));
+  requestAnimationFrame(() => {
+    const menu = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
+    if (menu) {
+      const items = menu.querySelectorAll(':scope > li');
+      if (items.length >= 2) {
+        const futebolItem = items[1];
+        const link = futebolItem.querySelector('a');
 
-    const futebolLi = items.find(li => {
-      const a = li.querySelector('a');
-      return a && a.textContent.trim().toLowerCase() === "futebol";
-    });
+        futebolItem.classList.add('futebol-li');
+        futebolItem.style.backgroundColor = "#38D430";
+        futebolItem.style.borderRadius = "4px";
+        futebolItem.style.margin = "0 4px";
+        futebolItem.style.visibility = "visible"; // Mostrar só depois de aplicar tudo
 
-    if (futebolLi) {
-      futebolLi.classList.add('futebol-li');
-    }
-  }
+        if (link) {
+          link.style.color = "#000";
+          link.style.display = "inline-block";
+          link.style.padding = "5px 10px";
+        }
 
-  // === MOBILE ===
-  const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
-  if (mobileMenus.length >= 4) {
-    const targetMobileUl = mobileMenus[3];
-    const items = Array.from(targetMobileUl.querySelectorAll(':scope > li'));
-
-    const futebolLiMobile = items.find(li => {
-      const a = li.querySelector('a');
-      return a && a.textContent.trim().toLowerCase() === "futebol";
-    });
-
-    if (futebolLiMobile) {
-      futebolLiMobile.style.backgroundColor = "#38D430";
-      futebolLiMobile.style.borderRadius = "4px";
-      futebolLiMobile.style.margin = "0 4px";
-
-      const a = futebolLiMobile.querySelector('a');
-      if (a) {
-        a.style.color = "#000";
-        a.style.display = "inline-block";
-        a.style.padding = "5px 10px";
+        // Hover / active visual
+        const hoverStyle = document.createElement("style");
+        hoverStyle.textContent = `
+          [attr-id-hover="1871"] .column-menu > ul > li.futebol-li:hover > a,
+          [attr-id-hover="1871"] .column-menu > ul > li.futebol-li.sel > a {
+            background-color: #2DB82B !important;
+          }
+        `;
+        document.head.appendChild(hoverStyle);
       }
     }
-  }
+  });
 })();
