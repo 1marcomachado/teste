@@ -46,7 +46,7 @@
     const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
     if (mobileMenus.length >= 4) {
       const targetMobileUl = mobileMenus[3]; // 4º ul.sub-mobile
-      targetMobileUl.style.display = 'none';
+      //targetMobileUl.style.display = 'none';
 
       const items = targetMobileUl.querySelectorAll(':scope > li');
       if (items.length >= 3) {
@@ -64,7 +64,7 @@
         }
       }
 
-      targetMobileUl.style.display = '';
+      //targetMobileUl.style.display = '';
     }
     }
   });
