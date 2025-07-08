@@ -136,12 +136,16 @@ window.addEventListener("load", () => {
   `;
   document.head.appendChild(style);
 
-  // Obter IDs do carrinho
-  const carrinho = Array.from(document.querySelectorAll('.rdc-shop-prd a[href*="item_"]'));
-  const ids = [...new Set(
-    carrinho.map(el => (el.href.match(/item_(\d+)\.html/) || [])[1]).filter(Boolean)
+ // Obter Referências do carrinho
+ const refs = [...new Set(
+    Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
+      .map(el => {
+        const match = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i);
+        return match ? match[1].trim() : null;
+      })
+      .filter(Boolean)
   )];
-  if (!ids.length) return;
+  if (!refs.length) return;
 
   // Buscar sugestões
   let data;
@@ -156,8 +160,8 @@ window.addEventListener("load", () => {
   if (!data || !Array.isArray(data.produtos)) return;
 
   const sugestoesSet = new Set();
-  ids.forEach(id => {
-    const produto = data.produtos.find(p => p.id === id);
+  refs.forEach(ref => {
+    const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
     if (produto?.sugestoes) {
       produto.sugestoes.forEach(s => sugestoesSet.add(s));
     }
