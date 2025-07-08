@@ -43,28 +43,26 @@
       // Exibe o menu após aplicar estilo
       desktopMenu.style.display = '';
     // === MOBILE ===
-    const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
+      const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
     if (mobileMenus.length >= 4) {
-      const targetMobileUl = mobileMenus[3]; // 4º ul.sub-mobile
-      targetMobileUl.style.display = 'none';
-
+      const targetMobileUl = mobileMenus[3];
       const items = targetMobileUl.querySelectorAll(':scope > li');
       if (items.length >= 3) {
-        const futebol = items[2]; // terceiro li = “Futebol”
+        const futebol = items[2];
         const link = futebol.querySelector('a');
 
-        futebol.style.backgroundColor = "#38D430";
-        futebol.style.borderRadius = "4px";
-        futebol.style.margin = "0 4px";
-
-        if (link) {
-          link.style.color = "#000";
-          link.style.display = "inline-block";
-          link.style.padding = "5px 10px";
+        if (!futebol.dataset.styled) {
+          futebol.style.backgroundColor = "#38D430";
+          futebol.style.borderRadius = "4px";
+          futebol.style.margin = "0 4px";
+          if (link) {
+            link.style.color = "#000";
+            link.style.display = "inline-block";
+            link.style.padding = "5px 10px";
+          }
+          futebol.dataset.styled = "1"; // Marcar como já estilizado
         }
       }
-
-      targetMobileUl.style.display = '';
     }
     }
   });
