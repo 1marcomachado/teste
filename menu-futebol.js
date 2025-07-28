@@ -42,12 +42,12 @@
           const link = segundo.querySelector('a');
 
           segundo.classList.add('outro-li');
-          segundo.style.backgroundColor = "#0047AB";
+          segundo.style.backgroundColor = "#ECECEC";
           segundo.style.borderRadius = "4px";
           segundo.style.margin = "0 4px";
 
           if (link) {
-            link.style.color = "#fff";
+            link.style.color = "#333";
             link.style.display = "inline-block";
             link.style.padding = "5px 10px";
           }
@@ -86,11 +86,11 @@
     mobileMenus.forEach((ul, index) => {
       const items = ul.querySelectorAll(':scope > li');
       if (items.length >= 2) {
-        const secondItem = items[1];
+        const secondItem = items[2];
         const link = secondItem.querySelector('a');
 
-        // Ignora o índice 3 (desporto)
-        if (index !== 3 && !secondItem.dataset.styled) {
+        // Ignora o índice 4 (desporto)
+        if (index !== 4 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#ECECEC";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
@@ -103,8 +103,8 @@
           secondItem.dataset.styled = "1";
         }
 
-        // Aplica verde ao índice 3 (Desporto)
-        if (index === 3 && !secondItem.dataset.styled) {
+        // Aplica verde ao índice 4 (Desporto)
+        if (index === 4 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#38D430";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
