@@ -90,7 +90,7 @@
         const link = secondItem.querySelector('a');
 
         // Ignora o índice 4 (desporto)
-        if (index !== 4 && !secondItem.dataset.styled) {
+        if (index !== 3 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#ECECEC";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
@@ -104,7 +104,7 @@
         }
 
         // Aplica verde ao índice 4 (Desporto)
-        if (index === 4 && !secondItem.dataset.styled) {
+        if (index === 3 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#38D430";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
