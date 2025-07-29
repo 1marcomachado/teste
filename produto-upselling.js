@@ -143,7 +143,6 @@
           const elem = data.$elem.currentTarget || data.$elem.target;
 
           if (!isTamanhoSelecionado()) {
-            alert("⚠️ Por favor, selecione um tamanho antes de continuar.");
             return;
           }
 
