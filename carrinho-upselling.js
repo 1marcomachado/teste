@@ -136,8 +136,8 @@ window.addEventListener("load", () => {
   `;
   document.head.appendChild(style);
 
- // Obter Referências do carrinho
- const refs = [...new Set(
+  // Obter Referências do carrinho
+  const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => {
         const match = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i);
@@ -239,7 +239,17 @@ window.addEventListener("load", () => {
 
   swiperContainer.appendChild(swiperWrapper);
   wrapper.appendChild(swiperContainer);
-  target.parentNode.insertBefore(wrapper, target.nextSibling);
+
+  // Inserção condicional: mobile ou desktop
+  const isMobile = window.innerWidth < 768;
+  const mobileTarget = document.querySelector('.wrapper-shoppingbag-product-list.container');
+
+  if (isMobile && mobileTarget) {
+    wrapper.classList.add('container'); // Adiciona a classe container apenas em mobile
+    mobileTarget.parentNode.insertBefore(wrapper, mobileTarget.nextSibling);
+  } else {
+    target.parentNode.insertBefore(wrapper, target.nextSibling);
+  }
 
   // Inicializar Swiper
   new Swiper('.upselling-carousel .swiper', {
