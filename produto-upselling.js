@@ -81,6 +81,7 @@ function waitForAngularInjector() {
           <article class="product added-product-horizontal grid-item" data-row="1">
             <div class="image">
               <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
+              <br><a href="/checkout/v1/?id=1" class="go-to-cart-button">CARRINHO</a>
             </div>
             <div class="desc">
               <div class="wrapper-top clearfix">
@@ -182,9 +183,9 @@ function waitForAngularInjector() {
           }
         }
         .upselling-panel .carousel-title {
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 20px;
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 12px;
         }
         .upselling-panel .upselling-grid {
           display: grid;
@@ -278,6 +279,24 @@ function waitForAngularInjector() {
           border: none;
           border-top: 1px solid #ccc;
           margin: 16px 0;
+        }
+
+        .upselling-panel .go-to-cart-button {
+          display: inline-block;
+          margin-top: 8px;
+          padding: 6px 12px;
+          background-color: #333;
+          color: white;
+          font-size: 13px;
+          font-weight: 600;
+          text-align: center;
+          border-radius: 4px;
+          text-decoration: none;
+          transition: background-color 0.2s ease;
+        }
+
+        .upselling-panel .go-to-cart-button:hover {
+          background-color: #333;
         }
       `;
       document.head.appendChild(style);
