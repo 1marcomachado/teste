@@ -1,44 +1,20 @@
+// == UPSALE NO CHECKOUT - VERSÃO COM LAYOUT IGUAL AO POPUP ==
+
 window.addEventListener("load", () => {
 (async () => {
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
 
-  const target = document.querySelector('.rdc-shop-cupons-area');
+  const target = document.querySelector('.explore-gift-overlay');
   if (!target) return;
 
-  // Carregar Swiper CSS
-  const css = document.createElement('link');
-  css.rel = 'stylesheet';
-  css.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-  document.head.appendChild(css);
-
-  // Carregar Swiper JS
-  await new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-
-  // Ajustar colunas se necessário
-  const sp = document.querySelector('#sp-7456');
-  if (sp) {
-    const row = sp.closest('.row');
-    if (row) {
-      const cols = row.querySelectorAll('.col-sm-6');
-      if (cols.length === 2) {
-        cols[0].classList.replace('col-sm-6', 'col-sm-7');
-        cols[1].classList.replace('col-sm-6', 'col-sm-5');
-      }
-    }
-  }
-
-  // CSS customizado
   const style = document.createElement('style');
   style.textContent = `
     .upselling-carousel {
-      margin: 0 0;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
     }
     .upselling-carousel .carousel-header {
       display: flex;
@@ -47,96 +23,46 @@ window.addEventListener("load", () => {
       margin-bottom: 16px;
     }
     .upselling-carousel .carousel-title {
-      font-size: 24px;
-      font-weight: 900;
-      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 600;
       margin: 0;
       color: #333;
+      text-transform: uppercase;
     }
-    .upselling-carousel .arrow-group {
-      display: flex;
-      gap: 8px;
-    }
-    .upselling-carousel .arrow {
-      background: #eee;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-    .upselling-carousel .arrow:hover {
-      background: #666;
-      color: #fff;
-    }
-    .swiper {
-      padding-top: 8px;
-    }
-    .swiper-slide {
-      height: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .upselling-carousel article.product {
-      width: 100%;
+    .upselling-carousel .upselling-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
     .upselling-carousel article.product .image img {
       width: 100%;
-      display: block;
+      height: auto;
     }
-    .upselling-carousel article.product .desc {
-      margin: 13px auto 26px;
-    }
-    .upselling-carousel .wrapper-top {
-      padding: 0 10px 10px;
-      border-bottom: 1px solid #e6e6e6;
-    }
-    .upselling-carousel .brand {
-      float: left;
-      font-family: 'Metrocity-Medium', Arial, sans-serif;
+    .upselling-carousel article.product .brand {
       font-size: 12px;
       color: #000;
+      margin-bottom: 4px;
     }
-    .upselling-carousel .available-colors {
-      float: right;
-      font-size: 11px;
-      color: #555;
-    }
-    .upselling-carousel .wrapper-bottom {
-      padding: 14px 10px 0;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 100px;
-    }
-    .upselling-carousel .name {
+    .upselling-carousel article.product .name {
       font-size: 13px;
-      line-height: 18px;
+      font-weight: bold;
+      margin: 6px 0 4px;
+      line-height: 1.2em;
+      min-height: 3.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .upselling-carousel article.product .price .current {
+      font-size: 14px;
       color: #000;
-      margin-bottom: unset;
-      flex-grow: 0;
-    }
-    .upselling-carousel .price .current {
-      margin-top: 8px;
-      text-align: left;
-      font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
-      font-weight: normal;
-      color: black;
-    }
-    .arrow.swiper-button-prev-custom,
-    .arrow.swiper-button-next-custom {
-      cursor: pointer;
+      margin-top: 4px;
     }
   `;
   document.head.appendChild(style);
 
-  // Obter Referências do carrinho
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => {
@@ -147,7 +73,6 @@ window.addEventListener("load", () => {
   )];
   if (!refs.length) return;
 
-  // Buscar sugestões
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -156,7 +81,6 @@ window.addEventListener("load", () => {
     console.error('Erro ao carregar sugestões de upselling:', e);
     return;
   }
-
   if (!data || !Array.isArray(data.produtos)) return;
 
   const sugestoesSet = new Set();
@@ -167,49 +91,30 @@ window.addEventListener("load", () => {
     }
   });
 
-  const sugestoes = data.produtos.filter(p => sugestoesSet.has(p.id));
+  const shuffle = arr => arr.sort(() => Math.random() - 0.5);
+  const sugestoes = shuffle(data.produtos.filter(p => sugestoesSet.has(p.id))).slice(0, 16);
   if (!sugestoes.length) return;
 
-  // Construir carrossel
   const wrapper = document.createElement('div');
-  wrapper.className = 'upselling-carousel';
+  wrapper.className = 'upselling-carousel container';
 
   const header = document.createElement('div');
   header.className = 'carousel-header';
 
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.className = 'carousel-title';
   title.textContent = 'FREQUENTEMENTE COMPRADOS EM CONJUNTO';
 
-  const arrows = document.createElement('div');
-  arrows.className = 'arrow-group';
-
-  const btnPrev = document.createElement('div');
-  btnPrev.className = 'arrow swiper-button-prev-custom';
-  btnPrev.innerHTML = '&#10094;';
-  btnPrev.setAttribute('aria-label', 'Anterior');
-
-  const btnNext = document.createElement('div');
-  btnNext.className = 'arrow swiper-button-next-custom';
-  btnNext.innerHTML = '&#10095;';
-  btnNext.setAttribute('aria-label', 'Próximo');
-
-  arrows.appendChild(btnPrev);
-  arrows.appendChild(btnNext);
   header.appendChild(title);
-  header.appendChild(arrows);
   wrapper.appendChild(header);
 
-  const swiperContainer = document.createElement('div');
-  swiperContainer.className = 'swiper';
-
-  const swiperWrapper = document.createElement('div');
-  swiperWrapper.className = 'swiper-wrapper';
+  const grid = document.createElement('div');
+  grid.className = 'upselling-grid';
 
   sugestoes.forEach(s => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.innerHTML = `
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.innerHTML = `
       <article class="product" data-row="1">
         <div class="image">
           <a href="/item_${s.id}.html">
@@ -234,36 +139,19 @@ window.addEventListener("load", () => {
         </div>
       </article>
     `;
-    swiperWrapper.appendChild(slide);
+    grid.appendChild(item);
   });
 
-  swiperContainer.appendChild(swiperWrapper);
-  wrapper.appendChild(swiperContainer);
+  wrapper.appendChild(grid);
 
-  // Inserção condicional: mobile ou desktop
   const isMobile = window.innerWidth < 768;
-  const mobileTarget = document.querySelector('.wrapper-shoppingbag-product-list.container');
+  const mobileTarget = document.querySelector('#rdc-shop-order-resume-mobile');
 
   if (isMobile && mobileTarget) {
-    wrapper.classList.add('container'); // Adiciona a classe container apenas em mobile
+    wrapper.classList.add('container');
     mobileTarget.parentNode.insertBefore(wrapper, mobileTarget.nextSibling);
   } else {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
-
-  // Inicializar Swiper
-  new Swiper('.upselling-carousel .swiper', {
-    slidesPerView: 3.5,
-    spaceBetween: 24,
-    navigation: {
-      nextEl: '.upselling-carousel .swiper-button-next-custom',
-      prevEl: '.upselling-carousel .swiper-button-prev-custom'
-    },
-    breakpoints: {
-      1024: { slidesPerView: 3.5 },
-      768: { slidesPerView: 2.5 },
-      0: { slidesPerView: 2.5 }
-    }
-  });
 })();
 });
