@@ -41,7 +41,7 @@ function waitForAngularInjector() {
 
         const title = document.createElement('h3');
         title.className = 'carousel-title';
-        title.textContent = 'FREQUENTEMENTE COMPRADOS EM CONJUNTO';
+        title.textContent = 'Talvez te interesse';
 
         header.appendChild(title);
         wrapper.appendChild(header);
@@ -81,6 +81,7 @@ function waitForAngularInjector() {
           <article class="product added-product-horizontal grid-item" data-row="1">
             <div class="image">
               <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
+              <br><a href="/checkout/v1/?id=1" class="btn-cart">CARRINHO</a>
             </div>
             <div class="desc">
               <div class="wrapper-top clearfix">
@@ -182,9 +183,9 @@ function waitForAngularInjector() {
           }
         }
         .upselling-panel .carousel-title {
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 20px;
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 12px;
         }
         .upselling-panel .upselling-grid {
           display: grid;
@@ -237,7 +238,7 @@ function waitForAngularInjector() {
         }
         @media (max-width: 480px) {
           .upselling-panel .added-product-horizontal .image {
-            max-width: 100px;
+            max-width: 120px;
           }
         }
         .upselling-panel .added-product-horizontal .image img {
