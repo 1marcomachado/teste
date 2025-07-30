@@ -1,96 +1,54 @@
 window.addEventListener("load", () => {
 (async () => {
+
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
 
-  const target = document.querySelector('.rdc-shop-cupons-area');
+  const target = document.querySelector('.explore-gift-overlay');
   if (!target) return;
 
-  // Carregar Swiper CSS
-  const css = document.createElement('link');
-  css.rel = 'stylesheet';
-  css.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-  document.head.appendChild(css);
-
-  // Carregar Swiper JS
-  await new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-
-  // Ajustar colunas se necessário
-  const sp = document.querySelector('#sp-7456');
-  if (sp) {
-    const row = sp.closest('.row');
-    if (row) {
-      const cols = row.querySelectorAll('.col-sm-6');
-      if (cols.length === 2) {
-        cols[0].classList.replace('col-sm-6', 'col-sm-7');
-        cols[1].classList.replace('col-sm-6', 'col-sm-5');
-      }
-    }
-  }
-
-  // CSS customizado
   const style = document.createElement('style');
   style.textContent = `
     .upselling-carousel {
-      margin: 0 0;
+      padding: 0 15px;
+      margin: 0 auto;
     }
+    @media (max-width: 768px) {
+      .upselling-carousel .container{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+    .upselling-carousel a:hover {
+      text-decoration:none;
+    }
+
     .upselling-carousel .carousel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     .upselling-carousel .carousel-title {
-      font-size: 24px;
-      font-weight: 900;
-      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 600;
       margin: 0;
-      color: #333;
+      color: #000;
     }
-    .upselling-carousel .arrow-group {
-      display: flex;
-      gap: 8px;
+    .upselling-carousel .upselling-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
-    .upselling-carousel .arrow {
-      background: #eee;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
+    @media (min-width: 768px) {
+      .upselling-carousel .upselling-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
-    .upselling-carousel .arrow:hover {
-      background: #666;
-      color: #fff;
-    }
-    .swiper {
-      padding-top: 8px;
-    }
-    .swiper-slide {
+    .upselling-carousel .product .image img {
+      width: 100%;
       height: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .upselling-carousel article.product {
-      width: 100%;
-    }
-    .upselling-carousel article.product .image img {
-      width: 100%;
       display: block;
     }
-    .upselling-carousel article.product .desc {
-      margin: 13px auto 26px;
+    .upselling-carousel .product .desc {
+      margin-top: 12px;
     }
     .upselling-carousel .wrapper-top {
       padding: 0 10px 10px;
@@ -98,9 +56,9 @@ window.addEventListener("load", () => {
     }
     .upselling-carousel .brand {
       float: left;
-      font-family: 'Metrocity-Medium', Arial, sans-serif;
       font-size: 12px;
       color: #000;
+      font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
     }
     .upselling-carousel .available-colors {
       float: right;
@@ -110,33 +68,35 @@ window.addEventListener("load", () => {
     .upselling-carousel .wrapper-bottom {
       padding: 14px 10px 0;
       text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 100px;
     }
     .upselling-carousel .name {
       font-size: 13px;
-      line-height: 18px;
-      color: #000;
-      margin-bottom: unset;
-      flex-grow: 0;
+      font-weight: bold;
+      margin: 6px 0 4px;
+      line-height: 1.2em;
+      min-height: 3.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      color: #333;
+      font-family: 'Metrocity-Book', Arial, Helvetica, 'Segoe UI', sans-serif;
+    }
+    .upselling-carousel article.product:hover .desc .name {
+        text-decoration: underline;
     }
     .upselling-carousel .price .current {
-      margin-top: 8px;
+      font-size: 14px;
+      color: #000;
+      margin-top: 4px;
       text-align: left;
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
       font-weight: normal;
-      color: black;
-    }
-    .arrow.swiper-button-prev-custom,
-    .arrow.swiper-button-next-custom {
-      cursor: pointer;
     }
   `;
   document.head.appendChild(style);
 
-  // Obter Referências do carrinho
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => {
@@ -147,7 +107,6 @@ window.addEventListener("load", () => {
   )];
   if (!refs.length) return;
 
-  // Buscar sugestões
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -156,7 +115,6 @@ window.addEventListener("load", () => {
     console.error('Erro ao carregar sugestões de upselling:', e);
     return;
   }
-
   if (!data || !Array.isArray(data.produtos)) return;
 
   const sugestoesSet = new Set();
@@ -167,49 +125,32 @@ window.addEventListener("load", () => {
     }
   });
 
-  const sugestoes = data.produtos.filter(p => sugestoesSet.has(p.id));
+  let sugestoes = data.produtos.filter(p => sugestoesSet.has(p.id));
+  sugestoes = sugestoes.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
+  sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
+
   if (!sugestoes.length) return;
 
-  // Construir carrossel
   const wrapper = document.createElement('div');
-  wrapper.className = 'upselling-carousel';
+  wrapper.className = 'upselling-carousel container';
 
   const header = document.createElement('div');
   header.className = 'carousel-header';
 
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.className = 'carousel-title';
-  title.textContent = 'FREQUENTEMENTE COMPRADOS EM CONJUNTO';
+  title.textContent = 'Talvez te interesse';
 
-  const arrows = document.createElement('div');
-  arrows.className = 'arrow-group';
-
-  const btnPrev = document.createElement('div');
-  btnPrev.className = 'arrow swiper-button-prev-custom';
-  btnPrev.innerHTML = '&#10094;';
-  btnPrev.setAttribute('aria-label', 'Anterior');
-
-  const btnNext = document.createElement('div');
-  btnNext.className = 'arrow swiper-button-next-custom';
-  btnNext.innerHTML = '&#10095;';
-  btnNext.setAttribute('aria-label', 'Próximo');
-
-  arrows.appendChild(btnPrev);
-  arrows.appendChild(btnNext);
   header.appendChild(title);
-  header.appendChild(arrows);
   wrapper.appendChild(header);
 
-  const swiperContainer = document.createElement('div');
-  swiperContainer.className = 'swiper';
-
-  const swiperWrapper = document.createElement('div');
-  swiperWrapper.className = 'swiper-wrapper';
+  const grid = document.createElement('div');
+  grid.className = 'upselling-grid';
 
   sugestoes.forEach(s => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.innerHTML = `
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.innerHTML = `
       <article class="product" data-row="1">
         <div class="image">
           <a href="/item_${s.id}.html">
@@ -234,36 +175,18 @@ window.addEventListener("load", () => {
         </div>
       </article>
     `;
-    swiperWrapper.appendChild(slide);
+    grid.appendChild(item);
   });
 
-  swiperContainer.appendChild(swiperWrapper);
-  wrapper.appendChild(swiperContainer);
+  wrapper.appendChild(grid);
 
-  // Inserção condicional: mobile ou desktop
   const isMobile = window.innerWidth < 768;
-  const mobileTarget = document.querySelector('.wrapper-shoppingbag-product-list.container');
+  const mobileTarget = document.querySelector('#rdc-shop-order-resume-mobile');
 
   if (isMobile && mobileTarget) {
-    wrapper.classList.add('container'); // Adiciona a classe container apenas em mobile
     mobileTarget.parentNode.insertBefore(wrapper, mobileTarget.nextSibling);
   } else {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
-
-  // Inicializar Swiper
-  new Swiper('.upselling-carousel .swiper', {
-    slidesPerView: 3.5,
-    spaceBetween: 24,
-    navigation: {
-      nextEl: '.upselling-carousel .swiper-button-next-custom',
-      prevEl: '.upselling-carousel .swiper-button-prev-custom'
-    },
-    breakpoints: {
-      1024: { slidesPerView: 3.5 },
-      768: { slidesPerView: 2.5 },
-      0: { slidesPerView: 2.5 }
-    }
-  });
 })();
 });
