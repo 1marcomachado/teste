@@ -2,7 +2,7 @@
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
 
-function waitForAngularInjector() {
+  function waitForAngularInjector() {
   const appElement = document.querySelector('[ng-app]') || document.body;
 
   if (window.angular && angular.element(appElement).injector()) {
@@ -59,6 +59,23 @@ function waitForAngularInjector() {
           panel.classList.add('open');
         }, 10);
 
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile && !window.Swiper) {
+          await new Promise((resolve, reject) => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+            document.head.appendChild(link);
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+        }
+
         let data;
         try {
           const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -101,7 +118,7 @@ function waitForAngularInjector() {
 
         sugestoes.forEach(s => {
           const slide = document.createElement('div');
-          slide.className = 'grid-item';
+          slide.className = isMobile ? 'swiper-slide' : 'grid-item';
           slide.innerHTML = `
             <article class="product" data-row="1">
               <div class="image">
@@ -129,13 +146,39 @@ function waitForAngularInjector() {
           `;
           gridContainer.appendChild(slide);
         });
+
+        if (isMobile) {
+          gridContainer.classList.add('swiper');
+          const swiperWrapper = document.createElement('div');
+          swiperWrapper.className = 'swiper-wrapper';
+          swiperWrapper.innerHTML = gridContainer.innerHTML;
+          gridContainer.innerHTML = '';
+          gridContainer.appendChild(swiperWrapper);
+
+          new Swiper(gridContainer, {
+            slidesPerView: 1.5,
+            spaceBetween: 16,
+            autoHeight: true,
+            breakpoints: {
+              480: { slidesPerView: 1.5 },
+              640: { slidesPerView: 1.5 },
+              768: { slidesPerView: 3 }
+            }
+          });
+        }
       }
 
       $rootScope.$on('addCartFunc', async function (e, data) {
         const elem = data.$elem.currentTarget || data.$elem.target;
-        if (!isTamanhoSelecionado()) return;
+
+        if (!isTamanhoSelecionado()) {
+          return;
+        }
+
         const referencia = extractReferencia(elem);
-        if (referencia) abrirPainelComCarrossel(referencia);
+        if (referencia) {
+          abrirPainelComCarrossel(referencia);
+        }
       });
 
       const style = document.createElement('style');
@@ -182,14 +225,21 @@ function waitForAngularInjector() {
           }
         }
         .upselling-panel .carousel-title {
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 20px;
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 12px;
         }
-        .upselling-panel .upselling-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
+        .upselling-panel .upselling-grid.swiper { overflow: hidden; }
+        .upselling-panel .grid-item, .upselling-panel .swiper-slide {
+          box-sizing: border-box;
+          padding: 10px;
+        }
+        @media (min-width: 768px) {
+          .upselling-panel .upselling-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+          }
         }
         .upselling-panel .product .image img {
           width: 100%;
@@ -217,6 +267,7 @@ function waitForAngularInjector() {
           color: #000;
           margin-top: 4px;
         }
+
         .upselling-panel .added-product-notice {
           margin-bottom: 24px;
         }
@@ -288,4 +339,5 @@ function waitForAngularInjector() {
 }
 
 waitForAngularInjector();
+
 })();
