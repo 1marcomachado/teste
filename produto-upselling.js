@@ -182,9 +182,9 @@ function waitForAngularInjector() {
           }
         }
         .upselling-panel .carousel-title {
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 20px;
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 12px;
         }
         .upselling-panel .upselling-grid {
           display: grid;
