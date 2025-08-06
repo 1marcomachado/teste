@@ -97,7 +97,7 @@ window.addEventListener("load", () => {
       position: absolute;
       bottom: 8px;
       left: 8px;
-      background-color: #000;
+      background-color: #bcbcbc;
       color: #fff;
       font-size: 12px;
       padding: 3px 6px;
