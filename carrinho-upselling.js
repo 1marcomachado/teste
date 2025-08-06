@@ -114,14 +114,13 @@ window.addEventListener("load", () => {
     .upselling-carousel .sizes-list {
       display: none;
       position: absolute;
-      top: 6rem;
-      inset: 0 0 0 0;
+      inset: 6rem 0 0 0;
       background-color: rgba(255, 255, 255, 0.9);
       z-index: 999;
       padding: 0 20px;
       box-sizing: border-box;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: flex-start;
       gap: 12px;
       border: 1px solid #000;
