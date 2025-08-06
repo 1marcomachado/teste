@@ -124,7 +124,7 @@ window.addEventListener("load", () => {
       align-items: flex-start;
       gap: 12px;
       border: 1px solid #000;
-      max-height: 75%;
+      max-height: calc(100% - 6rem);
       overflow-y: auto;
       scrollbar-width: thin; /* Firefox */
     }
