@@ -114,8 +114,8 @@ window.addEventListener("load", () => {
     .upselling-carousel .sizes-list {
       display: none;
       position: absolute;
-      inset: 0;
-      background-color: rgba(255, 255, 255);
+      inset: 6rem 0 0 0;
+      background-color: rgba(255, 255, 255, 0.9);
       z-index: 999;
       padding: 0 20px;
       box-sizing: border-box;
@@ -124,7 +124,7 @@ window.addEventListener("load", () => {
       align-items: flex-start;
       gap: 12px;
       border: 1px solid #000;
-      max-height: 100%;
+      max-height: 75%;
       overflow-y: auto;
       scrollbar-width: thin; /* Firefox */
     }
