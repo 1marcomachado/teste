@@ -287,13 +287,13 @@ window.addEventListener("load", () => {
             notificacao.style.top = '0';
             notificacao.style.left = '0';
             notificacao.style.width = '100%';
-            notificacao.style.height = '30px';
+            notificacao.style.padding = '6px 8px'; // padding em vez de altura fixa
             notificacao.style.display = 'flex';
             notificacao.style.alignItems = 'center';
             notificacao.style.justifyContent = 'center';
             notificacao.style.backgroundColor = corFundo;
             notificacao.style.color = '#fff';
-            notificacao.style.fontSize = '12px';
+            notificacao.style.fontSize = '3vw'; // responsivo (ajustável)
             notificacao.style.fontWeight = 'bold';
             notificacao.style.zIndex = '1000';
             notificacao.style.opacity = '0';
@@ -301,6 +301,7 @@ window.addEventListener("load", () => {
             notificacao.style.pointerEvents = 'none';
             notificacao.style.fontFamily = "'Metrocity-Medium', Arial, sans-serif";
             notificacao.style.textAlign = 'center';
+            notificacao.style.boxSizing = 'border-box';
         
             imageContainer.appendChild(notificacao);
         
