@@ -1,6 +1,5 @@
 window.addEventListener("load", () => {
 (async () => {
-
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
 
@@ -22,7 +21,6 @@ window.addEventListener("load", () => {
     .upselling-carousel a:hover {
       text-decoration:none;
     }
-
     .upselling-carousel .carousel-header {
       margin-bottom: 12px;
     }
@@ -84,7 +82,7 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Book', Arial, Helvetica, 'Segoe UI', sans-serif;
     }
     .upselling-carousel article.product:hover .desc .name {
-        text-decoration: underline;
+      text-decoration: underline;
     }
     .upselling-carousel .price .current {
       font-size: 14px;
@@ -93,6 +91,62 @@ window.addEventListener("load", () => {
       text-align: left;
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
       font-weight: normal;
+    }
+
+    .upselling-carousel .size-popup-button {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background-color: #000;
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .upselling-carousel .image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upselling-carousel .sizes-list {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255);
+      z-index: 999;
+      padding: 0 20px;
+      box-sizing: border-box;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid #000;
+      max-height: 100%;
+      overflow-y: auto;
+      scrollbar-width: thin; /* Firefox */
+    }
+
+    .upselling-carousel .sizes-list div {
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 100%;
+    }
+
+    .upselling-carousel .sizes-list div:hover {
+      background-color: #f5f5f5;
+    }
+
+    .upselling-carousel .sizes-list .out-of-stock {
+      opacity: 0.5;
+      text-decoration: line-through;
+      pointer-events: none;
+      background-color: #eee;
+      border-color: #ddd;
     }
   `;
   document.head.appendChild(style);
@@ -125,8 +179,8 @@ window.addEventListener("load", () => {
     }
   });
 
-  let sugestoes = data.produtos.filter(p => sugestoesSet.has(p.id));
-  sugestoes = sugestoes.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
+  let sugestoes = data.produtos.filter(p => sugestoesSet.has(p.mpn));
+  sugestoes = sugestoes.filter((v, i, a) => a.findIndex(t => t.mpn === v.mpn) === i);
   sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
 
   if (!sugestoes.length) return;
@@ -150,6 +204,12 @@ window.addEventListener("load", () => {
   sugestoes.forEach(s => {
     const item = document.createElement('div');
     item.className = 'grid-item';
+
+    const sizesList = Array.isArray(s.variantes) && s.variantes.length
+      ? `<div class="sizes-list">${s.variantes.map(v => `
+        <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>`).join('')}</div>`
+      : '';
+
     item.innerHTML = `
       <article class="product" data-row="1">
         <div class="image">
@@ -158,6 +218,8 @@ window.addEventListener("load", () => {
               <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
             </figure>
           </a>
+          <div class="size-popup-button">+</div>
+          ${sizesList}
         </div>
         <div class="desc">
           <a href="/item_${s.id}.html">
@@ -175,6 +237,7 @@ window.addEventListener("load", () => {
         </div>
       </article>
     `;
+
     grid.appendChild(item);
   });
 
@@ -188,5 +251,37 @@ window.addEventListener("load", () => {
   } else {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
+
+  // Lógica de popup
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.sizes-list').forEach(p => p.style.display = 'none');
+
+    if (e.target.classList.contains('size-popup-button')) {
+      const sizes = e.target.parentElement.querySelector('.sizes-list');
+      if (sizes) sizes.style.display = 'flex';
+      e.stopPropagation();
+    }
+
+    if (e.target.closest('.sizes-list')) {
+      e.stopPropagation();
+    }
+  });
+
+  // Lógica para adicionar ao carrinho
+  document.addEventListener('click', function (e) {
+    const sizeOption = e.target.closest('.sizes-list div:not(.out-of-stock)');
+    if (sizeOption) {
+      const productId = sizeOption.getAttribute('data-id');
+      fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
+        .then(res => res.json())
+        .then(json => {
+          if (json?.status === "true") {
+            window.location.reload();
+          } else {
+            alert("Erro ao adicionar ao carrinho");
+          }
+        });
+    }
+  });
 })();
 });
