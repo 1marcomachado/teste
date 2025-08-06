@@ -275,12 +275,47 @@ window.addEventListener("load", () => {
       fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
         .then(res => res.json())
         .then(json => {
-          if (json?.status === "true") {
-            window.location.reload();
-          } else {
-            alert("Erro ao adicionar ao carrinho");
-          }
-        });
+        const tamanho = e.target.textContent;
+      
+        const mostrarNotificacao = (mensagem, corFundo = '#000') => {
+          const notificacao = document.createElement('div');
+          notificacao.textContent = mensagem;
+          notificacao.style.position = 'fixed';
+          notificacao.style.top = '20px';
+          notificacao.style.left = '50%';
+          notificacao.style.transform = 'translateX(-50%)';
+          notificacao.style.backgroundColor = corFundo;
+          notificacao.style.color = '#fff';
+          notificacao.style.padding = '12px 20px';
+          notificacao.style.borderRadius = '4px';
+          notificacao.style.zIndex = '9999';
+          notificacao.style.fontWeight = 'bold';
+          notificacao.style.fontSize = '14px';
+          notificacao.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+          notificacao.style.opacity = '0';
+          notificacao.style.transition = 'opacity 0.3s ease';
+      
+          document.body.appendChild(notificacao);
+      
+          requestAnimationFrame(() => {
+            notificacao.style.opacity = '1';
+          });
+      
+          setTimeout(() => {
+            notificacao.style.opacity = '0';
+            setTimeout(() => {
+              notificacao.remove();
+              if (corFundo === '#000') window.location.reload();
+            }, 300);
+          }, 1200);
+        };
+      
+        if (json?.status === "true") {
+          mostrarNotificacao(`TAMANHO ${tamanho} ADICIONADO AO CARRINHO`);
+        } else {
+          mostrarNotificacao(`ERRO AO ADICIONAR TAMANHO ${tamanho}`, '#D00000');
+        }
+      });
     }
   });
 })();
