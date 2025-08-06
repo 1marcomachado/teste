@@ -274,52 +274,55 @@ window.addEventListener("load", () => {
       const productId = sizeOption.getAttribute('data-id');
       fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
         .then(res => res.json())
-.then(json => {
-  const tamanho = e.target.textContent;
-  const imageContainer = e.target.closest('.image');
-
-  const mostrarNotificacaoNaImagem = (mensagem, corFundo = '#000') => {
-    if (!imageContainer) return;
-
-    const notificacao = document.createElement('div');
-    notificacao.textContent = mensagem;
-    notificacao.style.position = 'absolute';
-    notificacao.style.top = '0';
-    notificacao.style.left = '0';
-    notificacao.style.width = '100%';
-    notificacao.style.height = '100%';
-    notificacao.style.display = 'flex';
-    notificacao.style.justifyContent = 'center';
-    notificacao.style.alignItems = 'center';
-    notificacao.style.backgroundColor = corFundo;
-    notificacao.style.color = '#fff';
-    notificacao.style.fontSize = '14px';
-    notificacao.style.fontWeight = 'bold';
-    notificacao.style.zIndex = '1000';
-    notificacao.style.opacity = '0';
-    notificacao.style.transition = 'opacity 0.3s ease';
-
-    imageContainer.appendChild(notificacao);
-
-    requestAnimationFrame(() => {
-      notificacao.style.opacity = '1';
-    });
-
-    setTimeout(() => {
-      notificacao.style.opacity = '0';
-      setTimeout(() => {
-        notificacao.remove();
-        if (corFundo === '#000') window.location.reload();
-      }, 300);
-    }, 1200);
-  };
-
-  if (json?.status === "true") {
-    mostrarNotificacaoNaImagem(`TAMANHO ${tamanho} ADICIONADO AO CARRINHO`);
-  } else {
-    mostrarNotificacaoNaImagem(`ERRO AO ADICIONAR`, '#D00000');
-  }
-});
+        .then(json => {
+          const tamanho = e.target.textContent;
+          const imageContainer = e.target.closest('.image');
+        
+          const mostrarNotificacaoNaImagem = (mensagem, corFundo = '#000') => {
+            if (!imageContainer) return;
+        
+            const notificacao = document.createElement('div');
+            notificacao.textContent = mensagem;
+            notificacao.style.position = 'absolute';
+            notificacao.style.top = '0';
+            notificacao.style.left = '0';
+            notificacao.style.width = '100%';
+            notificacao.style.height = '30px';
+            notificacao.style.display = 'flex';
+            notificacao.style.alignItems = 'center';
+            notificacao.style.justifyContent = 'center';
+            notificacao.style.backgroundColor = corFundo;
+            notificacao.style.color = '#fff';
+            notificacao.style.fontSize = '12px';
+            notificacao.style.fontWeight = 'bold';
+            notificacao.style.zIndex = '1000';
+            notificacao.style.opacity = '0';
+            notificacao.style.transition = 'opacity 0.3s ease';
+            notificacao.style.pointerEvents = 'none';
+            notificacao.style.fontFamily = "'Metrocity-Medium', Arial, sans-serif";
+            notificacao.style.textAlign = 'center';
+        
+            imageContainer.appendChild(notificacao);
+        
+            requestAnimationFrame(() => {
+              notificacao.style.opacity = '1';
+            });
+        
+            setTimeout(() => {
+              notificacao.style.opacity = '0';
+              setTimeout(() => {
+                notificacao.remove();
+                if (corFundo === '#000') window.location.reload();
+              }, 300);
+            }, 1200);
+          };
+        
+          if (json?.status === "true") {
+            mostrarNotificacaoNaImagem(`TAMANHO ${tamanho} ADICIONADO AO CARRINHO`);
+          } else {
+            mostrarNotificacaoNaImagem(`ERRO AO ADICIONAR TAMANHO ${tamanho}`, '#D00000');
+          }
+        });
     }
   });
 })();
