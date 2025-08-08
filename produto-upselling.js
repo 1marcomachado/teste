@@ -81,7 +81,7 @@ function waitForAngularInjector() {
           <article class="product added-product-horizontal grid-item" data-row="1">
             <div class="image">
               <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
-              <br><a href="/checkout/v1/?id=1" class="btn-cart">CARRINHO</a>
+              <br><a href="/checkout/v1/?id=1" class="btn-cart">VER CARRINHO</a>
             </div>
             <div class="desc">
               <div class="wrapper-top clearfix">
