@@ -51,7 +51,7 @@ window.addEventListener("load", () => {
         bottom: 0;            /* cola ao fundo da imagem */
         left: 0;
         right: 0;
-        background: rgba(255,255,255,0.95);
+        background: rgba(255,255,255);
         z-index: 999;
         padding: 10px 12px;
         box-sizing: border-box;
@@ -69,7 +69,7 @@ window.addEventListener("load", () => {
       font-size: 14px;
       cursor: pointer;
       transition: background .2s ease;
-      min-width: 140px;
+      min-width: 100%;
     }
     .upselling-carousel .sizes-list div:hover { background-color: #f5f5f5; }
     .upselling-carousel .sizes-list .out-of-stock {
