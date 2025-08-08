@@ -71,7 +71,7 @@ function waitForAngularInjector() {
         const produto = data.produtos.find(p => p.mpn === referencia || p.reference === referencia);
         if (!produto?.sugestoes?.length) return;
 
-        const sugestoes = data.produtos.filter(p => produto.sugestoes.includes(p.id));
+        const sugestoes = data.produtos.filter(p => produto.sugestoes.includes(p.mpn));
         if (!sugestoes.length) return;
 
         const addedNotice = document.createElement('div');
