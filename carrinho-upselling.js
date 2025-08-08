@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
     .upselling-carousel .image { position: relative; overflow: hidden; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
-      font-size: 12px; padding: 3px 6px; border-radius: 3px; cursor: pointer; z-index: 10;
+      font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
     /* ===== DESKTOP: overlay DENTRO da imagem, ANCORA EM BAIXO e cresce para CIMA ===== */
