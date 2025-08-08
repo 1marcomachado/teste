@@ -36,31 +36,31 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
-    .upselling-carousel .image { position: relative; overflow: visible; }
+    /* Área da imagem com overlay interno */
+    .upselling-carousel .image { position: relative; overflow: hidden; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; border-radius: 3px; cursor: pointer; z-index: 10;
     }
 
-    /* Desktop: dropdown abaixo da imagem */
+    /* ===== DESKTOP: overlay DENTRO da imagem, ANCORA EM BAIXO e cresce para CIMA ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        top: calc(100% + 6px);
+        bottom: 0;            /* cola ao fundo da imagem */
         left: 0;
-        background: #fff;
+        right: 0;
+        background: rgba(255,255,255,0.95);
         z-index: 999;
         padding: 10px 12px;
         box-sizing: border-box;
-        flex-direction: column;
+        flex-direction: column-reverse;   /* ordem invertida: começa em baixo */
         align-items: flex-start;
         gap: 10px;
-        max-height: 240px;
-        overflow-y: auto;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+        max-height: 75%;      /* altura máxima relativa à imagem */
+        overflow-y: auto;     /* scroll interno para cima */
+        border: 1px solid #000;
         scrollbar-width: thin;
       }
     }
@@ -77,15 +77,15 @@ window.addEventListener("load", () => {
       background: #eee; border-color: #ddd;
     }
 
-    /* Mobile: bottom sheet */
+    /* ===== MOBILE: bottom sheet (metade do ecrã) ===== */
     @media (max-width: 767.98px) {
-      .upselling-carousel .sizes-list { display: none !important; }
+      .upselling-carousel .sizes-list { display: none !important; } /* não usamos o overlay na imagem */
       .upselling-size-backdrop {
         position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
       }
       .upselling-size-modal {
         position: fixed; z-index: 9999; display: none;
-        left: 0; right: 0; bottom: 0; top: auto; transform: none;
+        left: 0; right: 0; bottom: 0; top: auto;
         width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
         border-radius: 12px 12px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.2);
       }
@@ -102,7 +102,7 @@ window.addEventListener("load", () => {
       .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
     }
 
-    /* Toast no topo */
+    /* ===== TOAST (topo, fundo preto, sem emoji) ===== */
     .upselling-toast {
       position: fixed;
       z-index: 10000;
@@ -114,25 +114,17 @@ window.addEventListener("load", () => {
       font-size: 14px;
       text-align: center;
       border-radius: 6px;
-      background: transparent;
-      color: #111;
-      border: 1px solid #ddd;
-      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+      background: #111;
+      color: #fff;
+      border: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.2);
     }
-    .upselling-toast.success {
-      background: transparent;
-      color: #111;
-      border-color: #ddd;
-    }
-    .upselling-toast.error {
-      background: #ffe6e6;
-      color: #b00020;
-      border-color: #ff9a9a;
-    }
+    .upselling-toast.success { background: #111; color: #fff; }
+    .upselling-toast.error   { background: #111; color: #fff; }
   `;
   document.head.appendChild(style);
 
-  // Mobile modal
+  // ===== MOBILE MODAL (criado sempre; só aparece em mobile) =====
   const modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'upselling-size-backdrop';
   const modal = document.createElement('div');
@@ -165,19 +157,19 @@ window.addEventListener("load", () => {
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
 
-  // Toast
+  // ===== TOAST =====
   const toast = document.createElement('div');
   toast.className = 'upselling-toast';
   document.body.appendChild(toast);
   function showToast(msg, type='success', ms=2200){
     toast.className = `upselling-toast ${type}`;
-    toast.textContent = msg;
+    toast.textContent = msg;         // sem emoji
     toast.style.display = 'block';
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
   }
 
-  // Buscar refs
+  // ===== REFS =====
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
@@ -185,7 +177,7 @@ window.addEventListener("load", () => {
   )];
   if (!refs.length) return;
 
-  // Fetch JSON
+  // ===== FETCH JSON =====
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -193,7 +185,7 @@ window.addEventListener("load", () => {
   } catch (e) { console.error('Erro ao carregar sugestões de upselling:', e); return; }
   if (!data || !Array.isArray(data.produtos)) return;
 
-  // Sugestões
+  // ===== SUGESTÕES =====
   const sugestoesSet = new Set();
   refs.forEach(ref => {
     const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
@@ -205,7 +197,7 @@ window.addEventListener("load", () => {
   sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
   if (!sugestoes.length) return;
 
-  // Render
+  // ===== RENDER =====
   const wrapper = document.createElement('div');
   wrapper.className = 'upselling-carousel container';
   const header = document.createElement('div');
@@ -258,6 +250,7 @@ window.addEventListener("load", () => {
   });
 
   wrapper.appendChild(grid);
+
   const isMobile = window.innerWidth < 768;
   const mobileTarget = document.querySelector('#rdc-shop-order-resume-mobile');
   if (isMobile && mobileTarget) {
@@ -266,24 +259,33 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // Clicks
+  // ===== CLICKS =====
+  // Desktop: abrir overlay dentro da imagem (ancorado em baixo) e fechar ao clicar fora
   document.addEventListener('click', function (e) {
-    if (window.innerWidth < 768) return;
+    if (window.innerWidth < 768) return; // só desktop
     document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
+
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
-      if (sizes) { sizes.style.display = 'flex'; sizes.scrollTop = 0; }
+      if (sizes) {
+        sizes.style.display = 'flex';
+        // como a lista é column-reverse, rola para o fundo para começar em baixo
+        sizes.scrollTop = sizes.scrollHeight;
+      }
       e.stopPropagation();
     }
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
+  // Mobile: abrir modal half-screen
   document.addEventListener('click', function (e) {
-    if (window.innerWidth >= 768) return;
+    if (window.innerWidth >= 768) return; // só mobile
     const btn = e.target.closest('.size-popup-button');
     if (!btn) return;
+
     const product = btn.closest('article.product');
     if (!product) return;
+
     const sizesListEl = product.querySelector('.sizes-list');
     let variantes = [];
     if (sizesListEl) {
@@ -297,6 +299,7 @@ window.addEventListener("load", () => {
     openSizeModal(prodTitle, variantes);
   });
 
+  // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
       ? e.target.closest('.sizes-list div:not(.out-of-stock)')
@@ -306,6 +309,7 @@ window.addEventListener("load", () => {
       : null;
     const opt = desktopOpt || mobileOpt;
     if (!opt) return;
+
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
 
@@ -315,7 +319,7 @@ window.addEventListener("load", () => {
         const ok = (json?.status === true || json?.status === "true");
         if (ok) {
           if (window.innerWidth < 768) closeSizeModal();
-          showToast('Adicionado ao carrinho ✅', 'success');
+          showToast('Adicionado ao carrinho', 'success');
           setTimeout(() => window.location.reload(), 900);
         } else {
           if (window.innerWidth < 768) closeSizeModal();
