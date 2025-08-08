@@ -87,7 +87,7 @@ window.addEventListener("load", () => {
         position: fixed; z-index: 9999; display: none;
         left: 0; right: 0; bottom: 0; top: auto;
         width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
-        border-radius: 12px 12px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+        box-shadow: 0 -10px 30px rgba(0,0,0,.2);
       }
       .upselling-size-modal-header {
         padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #eee;
@@ -146,8 +146,7 @@ window.addEventListener("load", () => {
         ${v.size}
       </div>
     `).join('');
-    modal.querySelector('.upselling-size-modal-header span').textContent =
-      title ? `Seleciona o tamanho — ${title}` : 'Seleciona o tamanho';
+    modal.querySelector('.upselling-size-modal-header span').textContent = 'Seleciona o tamanho';
     modalBackdrop.style.display = 'block';
     modal.style.display = 'block';
     body.scrollTop = 0;
