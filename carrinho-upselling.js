@@ -277,26 +277,36 @@ window.addEventListener("load", () => {
   });
 
   // Mobile: abrir modal half-screen
-  document.addEventListener('click', function (e) {
-    if (window.innerWidth >= 768) return; // só mobile
-    const btn = e.target.closest('.size-popup-button, .image');
-    if (!btn) return;
+document.addEventListener('click', function (e) {
+  if (window.innerWidth >= 768) return; // só mobile
 
-    const product = btn.closest('article.product');
-    if (!product) return;
+  // Agora a imagem TAMBÉM conta como trigger
+  const trigger = e.target.closest('.size-popup-button, .image, .image a');
+  if (!trigger) return;
 
-    const sizesListEl = product.querySelector('.sizes-list');
-    let variantes = [];
-    if (sizesListEl) {
-      variantes = Array.from(sizesListEl.querySelectorAll('div')).map(div => ({
-        id: div.getAttribute('data-id'),
-        size: div.textContent.trim(),
-        availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
-      }));
-    }
-    const prodTitle = product.querySelector('.name')?.textContent.trim() || '';
-    openSizeModal(prodTitle, variantes);
-  });
+  // Se o clique veio de um <a> dentro da imagem, impede a navegação
+  const linkDentroDaImagem = e.target.closest('.image a');
+  if (linkDentroDaImagem) {
+    e.preventDefault();           // impede ir para a página do produto
+    e.stopPropagation();
+  }
+
+  const product = trigger.closest('article.product');
+  if (!product) return;
+
+  // Recolhe as variantes a partir do HTML já renderizado
+  const sizesListEl = product.querySelector('.sizes-list');
+  let variantes = [];
+  if (sizesListEl) {
+    variantes = Array.from(sizesListEl.querySelectorAll('div')).map(div => ({
+      id: div.getAttribute('data-id'),
+      size: div.textContent.trim(),
+      availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
+    }));
+  }
+  const prodTitle = product.querySelector('.name')?.textContent.trim() || '';
+  openSizeModal(prodTitle, variantes);
+}, { passive: false });
 
   // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
