@@ -6,39 +6,22 @@ window.addEventListener("load", () => {
   const target = document.querySelector('.explore-gift-overlay');
   if (!target) return;
 
-  // ====== STYLES ======
+  // ========== STYLES ==========
   const style = document.createElement('style');
   style.textContent = `
-    .upselling-carousel {
-      padding: 0 15px;
-      margin: 0 auto;
-    }
+    .upselling-carousel { padding: 0 15px; margin: 0 auto; }
     @media (max-width: 768px) {
-      .container.upselling-carousel {
-        padding-left: 0px;
-        padding-right: 0px;
-      }
+      .container.upselling-carousel { padding-left: 0; padding-right: 0; }
     }
     .upselling-carousel a:hover { text-decoration:none; }
     .upselling-carousel .carousel-header { margin-bottom: 12px; }
-    .upselling-carousel .carousel-title {
-      font-size: 16px; font-weight: 600; margin: 0; color: #000;
-    }
-    .upselling-carousel .upselling-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-    }
-    @media (min-width: 768px) {
-      .upselling-carousel .upselling-grid { grid-template-columns: repeat(4, 1fr); }
-    }
+    .upselling-carousel .carousel-title { font-size: 16px; font-weight: 600; margin: 0; color: #000; }
+    .upselling-carousel .upselling-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (min-width: 768px){ .upselling-carousel .upselling-grid { grid-template-columns: repeat(4, 1fr); } }
     .upselling-carousel .product .image img { width: 100%; height: auto; display: block; }
     .upselling-carousel .product .desc { margin-top: 12px; }
-    .upselling-carousel .wrapper-top {
-      padding: 0 10px 10px; border-bottom: 1px solid #e6e6e6;
-    }
-    .upselling-carousel .brand {
-      float: left; font-size: 12px; color: #000;
-      font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
-    }
+    .upselling-carousel .wrapper-top { padding: 0 10px 10px; border-bottom: 1px solid #e6e6e6; }
+    .upselling-carousel .brand { float: left; font-size: 12px; color: #000; font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; }
     .upselling-carousel .available-colors { float: right; font-size: 11px; color: #555; }
     .upselling-carousel .wrapper-bottom { padding: 14px 10px 0; text-align: left; }
     .upselling-carousel .name {
@@ -53,57 +36,79 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
-    .upselling-carousel .size-popup-button {
-      position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc;
-      color: #fff; font-size: 12px; padding: 3px 6px; border-radius: 3px;
-      cursor: pointer; z-index: 10;
-    }
     .upselling-carousel .image { position: relative; overflow: hidden; }
-
-    /* A lista original deixa de ser usada como popup sobre a imagem */
-    .upselling-carousel .sizes-list { display: none !important; }
-
-    /* -------- Modal global (desktop centrado) -------- */
-    .upselling-size-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
-    }
-    .upselling-size-modal {
-      position: fixed; z-index: 9999; display: none;
-      left: 50%; top: 50%; transform: translate(-50%, -50%);
-      width: min(420px, 92vw); max-height: 70vh; background: #fff;
-      border: 1px solid #000; border-radius: 10px; overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-    }
-    .upselling-size-modal-header {
-      padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #eee;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .upselling-size-modal-close { cursor: pointer; font-size: 20px; line-height: 1; }
-    .upselling-size-modal-body { padding: 12px 16px 16px; max-height: 60vh; overflow-y: auto; }
-    .upselling-size-modal-body .size-option {
-      padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease;
-      border-radius: 6px;
-    }
-    .upselling-size-modal-body .size-option:hover { background: #f5f5f5; }
-    .upselling-size-modal-body .out-of-stock {
-      opacity: .5; text-decoration: line-through; pointer-events: none;
+    .upselling-carousel .size-popup-button {
+      position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
+      font-size: 12px; padding: 3px 6px; border-radius: 3px; cursor: pointer; z-index: 10;
     }
 
-    /* -------- Mobile: bottom-sheet ~50% do ecrã -------- */
-    @media (max-width: 768px) {
-      .upselling-size-modal {
-        left: 0; right: 0; bottom: 0; top: auto; transform: none;
-        width: 100vw; max-height: 50vh; border-radius: 12px 12px 0 0;
+    /* ---------- DESKTOP: popup sobre a imagem ---------- */
+    @media (min-width: 768px) {
+      .upselling-carousel .sizes-list {
+        display: none;
+        position: absolute;
+        top: 0; left: 0; right: 0; /* ocupa a imagem, mas sem cortar topo */
+        background-color: rgba(255,255,255,0.95);
+        z-index: 999;
+        padding: 10px 20px 12px;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        max-height: 75%;
+        overflow-y: auto;
+        border: 1px solid #000;
+        scrollbar-width: thin;
       }
-      .upselling-size-modal-body { max-height: calc(50vh - 52px); }
     }
+    .upselling-carousel .sizes-list div {
+      padding: 8px 14px; font-size: 14px; cursor: pointer; transition: all .2s ease; min-width: 100%;
+    }
+    .upselling-carousel .sizes-list div:hover { background-color: #f5f5f5; }
+    .upselling-carousel .sizes-list .out-of-stock {
+      opacity: .5; text-decoration: line-through; pointer-events: none; background-color: #eee; border-color: #ddd;
+    }
+
+    /* ---------- MOBILE: bottom-sheet 50vh ---------- */
+    @media (max-width: 767.98px) {
+      .upselling-carousel .sizes-list { display: none !important; } /* não usamos o overlay */
+      .upselling-size-backdrop {
+        position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
+      }
+      .upselling-size-modal {
+        position: fixed; z-index: 9999; display: none;
+        left: 0; right: 0; bottom: 0; top: auto; transform: none;
+        width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
+        border-radius: 12px 12px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+      }
+      .upselling-size-modal-header {
+        padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #eee;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .upselling-size-modal-close { cursor: pointer; font-size: 20px; line-height: 1; }
+      .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
+      .upselling-size-modal-body .size-option {
+        padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px;
+      }
+      .upselling-size-modal-body .size-option:hover { background: #f5f5f5; }
+      .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
+    }
+
+    /* ---------- TOAST ---------- */
+    .upselling-toast {
+      position: fixed; z-index: 10000; right: 16px; bottom: 16px;
+      background: #111; color: #fff; padding: 10px 14px; border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2); font-size: 14px; display: none;
+    }
+    .upselling-toast.success { background: #2e7d32; }
+    .upselling-toast.error { background: #c62828; }
+    @media (max-width: 768px){ .upselling-toast { left: 50%; right: auto; transform: translateX(-50%); } }
   `;
   document.head.appendChild(style);
 
-  // ====== MODAL GLOBAL (uma vez) ======
+  // ========== MOBILE MODAL (criado sempre; só aparece em mobile) ==========
   const modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'upselling-size-backdrop';
-
   const modal = document.createElement('div');
   modal.className = 'upselling-size-modal';
   modal.innerHTML = `
@@ -125,31 +130,39 @@ window.addEventListener("load", () => {
     `).join('');
     modal.querySelector('.upselling-size-modal-header span').textContent =
       title ? `Seleciona o tamanho — ${title}` : 'Seleciona o tamanho';
-
     modalBackdrop.style.display = 'block';
     modal.style.display = 'block';
-    body.scrollTop = 0; // começa no topo
+    body.scrollTop = 0;
   }
-  function closeSizeModal() {
-    modal.style.display = 'none';
-    modalBackdrop.style.display = 'none';
-  }
+  function closeSizeModal(){ modal.style.display = 'none'; modalBackdrop.style.display = 'none'; }
   modalBackdrop.addEventListener('click', closeSizeModal);
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSizeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
 
-  // ====== BUSCAR REFS DA PÁGINA ======
+  // ========== TOAST ==========
+  const toast = document.createElement('div');
+  toast.className = 'upselling-toast';
+  toast.setAttribute('role','status');
+  toast.setAttribute('aria-live','polite');
+  document.body.appendChild(toast);
+
+  function showToast(msg, type='success', ms=2200){
+    toast.className = `upselling-toast ${type}`;
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
+  }
+
+  // ========== REFS ==========
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
-      .map(el => {
-        const match = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i);
-        return match ? match[1].trim() : null;
-      })
+      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
       .filter(Boolean)
   )];
   if (!refs.length) return;
 
-  // ====== FETCH JSON ======
+  // ========== FETCH JSON ==========
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -160,7 +173,7 @@ window.addEventListener("load", () => {
   }
   if (!data || !Array.isArray(data.produtos)) return;
 
-  // ====== CALCULAR SUGESTÕES ======
+  // ========== SUGESTÕES ==========
   const sugestoesSet = new Set();
   refs.forEach(ref => {
     const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
@@ -172,7 +185,7 @@ window.addEventListener("load", () => {
   sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
   if (!sugestoes.length) return;
 
-  // ====== RENDER CARROSSEL ======
+  // ========== RENDER ==========
   const wrapper = document.createElement('div');
   wrapper.className = 'upselling-carousel container';
 
@@ -191,7 +204,6 @@ window.addEventListener("load", () => {
     const item = document.createElement('div');
     item.className = 'grid-item';
 
-    // Guardamos as variantes no DOM (ocultas) para ler quando abrir o modal
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">${s.variantes.map(v => `
         <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>`).join('')}</div>`
@@ -237,8 +249,24 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // ====== ABRIR MODAL AO CLICAR NO "+" ======
+  // ========== CLICKS ==========
+  // DESKTOP: abrir/fechar overlay na imagem
   document.addEventListener('click', function (e) {
+    if (window.innerWidth < 768) return; // só desktop
+    // Fecha todas
+    document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
+
+    if (e.target.classList.contains('size-popup-button')) {
+      const sizes = e.target.parentElement.querySelector('.sizes-list');
+      if (sizes) { sizes.style.display = 'flex'; sizes.scrollTop = 0; }
+      e.stopPropagation();
+    }
+    if (e.target.closest('.sizes-list')) e.stopPropagation();
+  });
+
+  // MOBILE: abrir modal half-screen
+  document.addEventListener('click', function (e) {
+    if (window.innerWidth >= 768) return; // só mobile
     const btn = e.target.closest('.size-popup-button');
     if (!btn) return;
 
@@ -258,9 +286,18 @@ window.addEventListener("load", () => {
     openSizeModal(prodTitle, variantes);
   });
 
-  // ====== ADICIONAR AO CARRINHO A PARTIR DO MODAL ======
+  // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
-    const opt = e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)');
+    // Desktop: clique numa opção dentro do overlay
+    const desktopOpt = (window.innerWidth >= 768)
+      ? e.target.closest('.sizes-list div:not(.out-of-stock)')
+      : null;
+    // Mobile: clique numa opção dentro do modal
+    const mobileOpt = (window.innerWidth < 768)
+      ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
+      : null;
+
+    const opt = desktopOpt || mobileOpt;
     if (!opt) return;
 
     const productId = opt.getAttribute('data-id');
@@ -269,17 +306,20 @@ window.addEventListener("load", () => {
     fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
       .then(res => res.json())
       .then(json => {
-        if (json?.status === "true") {
-          closeSizeModal();
-          window.location.reload();
+        const ok = (json?.status === true || json?.status === "true");
+        if (ok) {
+          if (window.innerWidth < 768) closeSizeModal();
+          showToast('Adicionado ao carrinho ✅', 'success');
+          // Atualiza o resumo do carrinho depois de um pequeno delay
+          setTimeout(() => window.location.reload(), 900);
         } else {
-          closeSizeModal();
-          alert("Erro ao adicionar ao carrinho");
+          if (window.innerWidth < 768) closeSizeModal();
+          showToast('Erro ao adicionar ao carrinho', 'error', 2800);
         }
       })
       .catch(() => {
-        closeSizeModal();
-        alert("Erro ao adicionar ao carrinho");
+        if (window.innerWidth < 768) closeSizeModal();
+        showToast('Erro ao adicionar ao carrinho', 'error', 2800);
       });
   });
 })();
