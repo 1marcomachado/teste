@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
   const target = document.querySelector('.explore-gift-overlay');
   if (!target) return;
 
-  // ========== STYLES ==========
+  // ===== CSS =====
   const style = document.createElement('style');
   style.textContent = `
     .upselling-carousel { padding: 0 15px; margin: 0 auto; }
@@ -36,42 +36,50 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
-    .upselling-carousel .image { position: relative; overflow: hidden; }
+    .upselling-carousel .image { position: relative; overflow: visible; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; border-radius: 3px; cursor: pointer; z-index: 10;
     }
 
-    /* ---------- DESKTOP: popup sobre a imagem ---------- */
+    /* Desktop: dropdown abaixo da imagem */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        top: 0; left: 0; right: 0; /* ocupa a imagem, mas sem cortar topo */
-        background-color: rgba(255,255,255,0.95);
+        top: calc(100% + 6px);
+        left: 0;
+        background: #fff;
         z-index: 999;
-        padding: 10px 20px 12px;
+        padding: 10px 12px;
         box-sizing: border-box;
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
-        max-height: 75%;
+        gap: 10px;
+        max-height: 240px;
         overflow-y: auto;
-        border: 1px solid #000;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
         scrollbar-width: thin;
       }
     }
     .upselling-carousel .sizes-list div {
-      padding: 8px 14px; font-size: 14px; cursor: pointer; transition: all .2s ease; min-width: 100%;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background .2s ease;
+      min-width: 140px;
     }
     .upselling-carousel .sizes-list div:hover { background-color: #f5f5f5; }
     .upselling-carousel .sizes-list .out-of-stock {
-      opacity: .5; text-decoration: line-through; pointer-events: none; background-color: #eee; border-color: #ddd;
+      opacity: .5; text-decoration: line-through; pointer-events: none;
+      background: #eee; border-color: #ddd;
     }
 
-    /* ---------- MOBILE: bottom-sheet 50vh ---------- */
+    /* Mobile: bottom sheet */
     @media (max-width: 767.98px) {
-      .upselling-carousel .sizes-list { display: none !important; } /* não usamos o overlay */
+      .upselling-carousel .sizes-list { display: none !important; }
       .upselling-size-backdrop {
         position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
       }
@@ -94,19 +102,37 @@ window.addEventListener("load", () => {
       .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
     }
 
-    /* ---------- TOAST ---------- */
+    /* Toast no topo */
     .upselling-toast {
-      position: fixed; z-index: 10000; right: 16px; bottom: 16px;
-      background: #111; color: #fff; padding: 10px 14px; border-radius: 6px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.2); font-size: 14px; display: none;
+      position: fixed;
+      z-index: 10000;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      text-align: center;
+      border-radius: 6px;
+      background: transparent;
+      color: #111;
+      border: 1px solid #ddd;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
     }
-    .upselling-toast.success { background: #2e7d32; }
-    .upselling-toast.error { background: #c62828; }
-    @media (max-width: 768px){ .upselling-toast { left: 50%; right: auto; transform: translateX(-50%); } }
+    .upselling-toast.success {
+      background: transparent;
+      color: #111;
+      border-color: #ddd;
+    }
+    .upselling-toast.error {
+      background: #ffe6e6;
+      color: #b00020;
+      border-color: #ff9a9a;
+    }
   `;
   document.head.appendChild(style);
 
-  // ========== MOBILE MODAL (criado sempre; só aparece em mobile) ==========
+  // Mobile modal
   const modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'upselling-size-backdrop';
   const modal = document.createElement('div');
@@ -139,13 +165,10 @@ window.addEventListener("load", () => {
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
 
-  // ========== TOAST ==========
+  // Toast
   const toast = document.createElement('div');
   toast.className = 'upselling-toast';
-  toast.setAttribute('role','status');
-  toast.setAttribute('aria-live','polite');
   document.body.appendChild(toast);
-
   function showToast(msg, type='success', ms=2200){
     toast.className = `upselling-toast ${type}`;
     toast.textContent = msg;
@@ -154,7 +177,7 @@ window.addEventListener("load", () => {
     showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
   }
 
-  // ========== REFS ==========
+  // Buscar refs
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
@@ -162,18 +185,15 @@ window.addEventListener("load", () => {
   )];
   if (!refs.length) return;
 
-  // ========== FETCH JSON ==========
+  // Fetch JSON
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
     data = await res.json();
-  } catch (e) {
-    console.error('Erro ao carregar sugestões de upselling:', e);
-    return;
-  }
+  } catch (e) { console.error('Erro ao carregar sugestões de upselling:', e); return; }
   if (!data || !Array.isArray(data.produtos)) return;
 
-  // ========== SUGESTÕES ==========
+  // Sugestões
   const sugestoesSet = new Set();
   refs.forEach(ref => {
     const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
@@ -185,10 +205,9 @@ window.addEventListener("load", () => {
   sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
   if (!sugestoes.length) return;
 
-  // ========== RENDER ==========
+  // Render
   const wrapper = document.createElement('div');
   wrapper.className = 'upselling-carousel container';
-
   const header = document.createElement('div');
   header.className = 'carousel-header';
   const title = document.createElement('h3');
@@ -203,14 +222,13 @@ window.addEventListener("load", () => {
   sugestoes.forEach(s => {
     const item = document.createElement('div');
     item.className = 'grid-item';
-
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">${s.variantes.map(v => `
         <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>`).join('')}</div>`
       : '';
 
     item.innerHTML = `
-      <article class="product" data-row="1">
+      <article class="product">
         <div class="image">
           <a href="/item_${s.id}.html">
             <figure style="margin:0">
@@ -240,7 +258,6 @@ window.addEventListener("load", () => {
   });
 
   wrapper.appendChild(grid);
-
   const isMobile = window.innerWidth < 768;
   const mobileTarget = document.querySelector('#rdc-shop-order-resume-mobile');
   if (isMobile && mobileTarget) {
@@ -249,13 +266,10 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // ========== CLICKS ==========
-  // DESKTOP: abrir/fechar overlay na imagem
+  // Clicks
   document.addEventListener('click', function (e) {
-    if (window.innerWidth < 768) return; // só desktop
-    // Fecha todas
+    if (window.innerWidth < 768) return;
     document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
-
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
       if (sizes) { sizes.style.display = 'flex'; sizes.scrollTop = 0; }
@@ -264,15 +278,12 @@ window.addEventListener("load", () => {
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
-  // MOBILE: abrir modal half-screen
   document.addEventListener('click', function (e) {
-    if (window.innerWidth >= 768) return; // só mobile
+    if (window.innerWidth >= 768) return;
     const btn = e.target.closest('.size-popup-button');
     if (!btn) return;
-
     const product = btn.closest('article.product');
     if (!product) return;
-
     const sizesListEl = product.querySelector('.sizes-list');
     let variantes = [];
     if (sizesListEl) {
@@ -286,20 +297,15 @@ window.addEventListener("load", () => {
     openSizeModal(prodTitle, variantes);
   });
 
-  // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
-    // Desktop: clique numa opção dentro do overlay
     const desktopOpt = (window.innerWidth >= 768)
       ? e.target.closest('.sizes-list div:not(.out-of-stock)')
       : null;
-    // Mobile: clique numa opção dentro do modal
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
       : null;
-
     const opt = desktopOpt || mobileOpt;
     if (!opt) return;
-
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
 
@@ -310,7 +316,6 @@ window.addEventListener("load", () => {
         if (ok) {
           if (window.innerWidth < 768) closeSizeModal();
           showToast('Adicionado ao carrinho ✅', 'success');
-          // Atualiza o resumo do carrinho depois de um pequeno delay
           setTimeout(() => window.location.reload(), 900);
         } else {
           if (window.innerWidth < 768) closeSizeModal();
