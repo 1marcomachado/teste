@@ -279,7 +279,7 @@ window.addEventListener("load", () => {
   // Mobile: abrir modal half-screen
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return; // só mobile
-    const btn = e.target.closest('.size-popup-button');
+    const btn = e.target.closest('.size-popup-button, .image');
     if (!btn) return;
 
     const product = btn.closest('article.product');
