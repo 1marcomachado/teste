@@ -43,23 +43,23 @@ window.addEventListener("load", () => {
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: overlay DENTRO da imagem, ANCORA EM BAIXO e cresce para CIMA ===== */
+    /* ===== DESKTOP: overlay DENTRO da imagem ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        bottom: 0;            /* cola ao fundo da imagem */
+        bottom: 0;
         left: 0;
         right: 0;
         background: rgba(255,255,255);
         z-index: 999;
-        padding: 10px 12px;
+        padding: 0;
         box-sizing: border-box;
-        flex-direction: column-reverse;   /* ordem invertida: começa em baixo */
+        flex-direction: column; /* <-- ordem normal */
         align-items: flex-start;
         gap: 10px;
-        max-height: 75%;      /* altura máxima relativa à imagem */
-        overflow-y: auto;     /* scroll interno para cima */
+        max-height: 75%;
+        overflow-y: auto;
         border: 1px solid #000;
         scrollbar-width: thin;
       }
@@ -77,9 +77,23 @@ window.addEventListener("load", () => {
       background: #eee; border-color: #ddd;
     }
 
-    /* ===== MOBILE: bottom sheet (metade do ecrã) ===== */
+    /* Cabeçalho fixo no topo da lista */
+    .upselling-carousel .sizes-list-header {
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+      width: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      pointer-events: none; /* não clicável */
+      cursor: default;
+    }
+
+    /* ===== MOBILE ===== */
     @media (max-width: 767.98px) {
-      .upselling-carousel .sizes-list { display: none !important; } /* não usamos o overlay na imagem */
+      .upselling-carousel .sizes-list { display: none !important; }
       .upselling-size-backdrop {
         position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
       }
@@ -102,7 +116,7 @@ window.addEventListener("load", () => {
       .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
     }
 
-    /* ===== TOAST (topo, fundo preto, sem emoji) ===== */
+    /* ===== TOAST ===== */
     .upselling-toast {
       position: fixed;
       z-index: 10000;
@@ -124,7 +138,7 @@ window.addEventListener("load", () => {
   `;
   document.head.appendChild(style);
 
-  // ===== MOBILE MODAL (criado sempre; só aparece em mobile) =====
+  // ===== MOBILE MODAL =====
   const modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'upselling-size-backdrop';
   const modal = document.createElement('div');
@@ -162,7 +176,7 @@ window.addEventListener("load", () => {
   document.body.appendChild(toast);
   function showToast(msg, type='success', ms=2200){
     toast.className = `upselling-toast ${type}`;
-    toast.textContent = msg;         // sem emoji
+    toast.textContent = msg;
     toast.style.display = 'block';
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
@@ -214,8 +228,12 @@ window.addEventListener("load", () => {
     const item = document.createElement('div');
     item.className = 'grid-item';
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
-      ? `<div class="sizes-list">${s.variantes.map(v => `
-        <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>`).join('')}</div>`
+      ? `<div class="sizes-list">
+           <div class="sizes-list-header">Seleciona o teu tamanho</div>
+           ${s.variantes.map(v => `
+             <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
+           `).join('')}
+         </div>`
       : '';
 
     item.innerHTML = `
@@ -259,59 +277,52 @@ window.addEventListener("load", () => {
   }
 
   // ===== CLICKS =====
-  // Desktop: abrir overlay dentro da imagem (ancorado em baixo) e fechar ao clicar fora
   document.addEventListener('click', function (e) {
-    if (window.innerWidth < 768) return; // só desktop
+    if (window.innerWidth < 768) return;
     document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
 
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
       if (sizes) {
         sizes.style.display = 'flex';
-        // como a lista é column-reverse, rola para o fundo para começar em baixo
-        sizes.scrollTop = sizes.scrollHeight;
+        sizes.scrollTop = 0; // agora rola para o topo
       }
       e.stopPropagation();
     }
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
-  // Mobile: abrir modal half-screen
-document.addEventListener('click', function (e) {
-  if (window.innerWidth >= 768) return; // só mobile
+  document.addEventListener('click', function (e) {
+    if (window.innerWidth >= 768) return;
 
-  // Agora a imagem TAMBÉM conta como trigger
-  const trigger = e.target.closest('.size-popup-button, .image, .image a');
-  if (!trigger) return;
+    const trigger = e.target.closest('.size-popup-button, .image, .image a');
+    if (!trigger) return;
 
-  // Se o clique veio de um <a> dentro da imagem, impede a navegação
-  const linkDentroDaImagem = e.target.closest('.image a');
-  if (linkDentroDaImagem) {
-    e.preventDefault();           // impede ir para a página do produto
-    e.stopPropagation();
-  }
+    const linkDentroDaImagem = e.target.closest('.image a');
+    if (linkDentroDaImagem) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
-  const product = trigger.closest('article.product');
-  if (!product) return;
+    const product = trigger.closest('article.product');
+    if (!product) return;
 
-  // Recolhe as variantes a partir do HTML já renderizado
-  const sizesListEl = product.querySelector('.sizes-list');
-  let variantes = [];
-  if (sizesListEl) {
-    variantes = Array.from(sizesListEl.querySelectorAll('div')).map(div => ({
-      id: div.getAttribute('data-id'),
-      size: div.textContent.trim(),
-      availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
-    }));
-  }
-  const prodTitle = product.querySelector('.name')?.textContent.trim() || '';
-  openSizeModal(prodTitle, variantes);
-}, { passive: false });
+    const sizesListEl = product.querySelector('.sizes-list');
+    let variantes = [];
+    if (sizesListEl) {
+      variantes = Array.from(sizesListEl.querySelectorAll('div')).map(div => ({
+        id: div.getAttribute('data-id'),
+        size: div.textContent.trim(),
+        availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
+      }));
+    }
+    const prodTitle = product.querySelector('.name')?.textContent.trim() || '';
+    openSizeModal(prodTitle, variantes);
+  }, { passive: false });
 
-  // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div:not(.out-of-stock)')
+      ? e.target.closest('.sizes-list div:not(.out-of-stock):not(.sizes-list-header)')
       : null;
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
