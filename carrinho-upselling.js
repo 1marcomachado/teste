@@ -62,6 +62,7 @@ window.addEventListener("load", () => {
         overflow-y: auto;
         border: 1px solid #000;
         scrollbar-width: thin;
+        text-align: center;
       }
     }
     .upselling-carousel .sizes-list div {
