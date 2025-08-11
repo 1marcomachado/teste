@@ -13,7 +13,7 @@
     const menuDesporto = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
     if (menuDesporto) {
       const items = menuDesporto.querySelectorAll(':scope > li');
-      if (items.length >= 2) {
+      if (items.length >= 3) {
         const futebol = items[1];
         const link = futebol.querySelector('a');
 
@@ -37,7 +37,7 @@
       const ul = document.querySelector(`[attr-id-hover="${id}"] .column-menu > ul`);
       if (ul) {
         const items = ul.querySelectorAll(':scope > li');
-        if (items.length >= 2) {
+        if (items.length >= 3) {
           const segundo = items[1];
           const link = segundo.querySelector('a');
 
@@ -90,7 +90,7 @@
         const link = secondItem.querySelector('a');
 
         // Ignora o índice 4 (desporto)
-        if (index !== 3 && !secondItem.dataset.styled) {
+        if (index !== 4 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#ECECEC";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
@@ -104,7 +104,7 @@
         }
 
         // Aplica verde ao índice 4 (Desporto)
-        if (index === 3 && !secondItem.dataset.styled) {
+        if (index === 4 && !secondItem.dataset.styled) {
           secondItem.style.backgroundColor = "#38D430";
           secondItem.style.borderRadius = "4px";
           secondItem.style.margin = "0 4px";
