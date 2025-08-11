@@ -13,8 +13,8 @@
     const menuDesporto = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
     if (menuDesporto) {
       const items = menuDesporto.querySelectorAll(':scope > li');
-      if (items.length >= 3) {
-        const futebol = items[1];
+      if (items.length >= 2) {
+        const futebol = items[2];
         const link = futebol.querySelector('a');
 
         futebol.classList.add('futebol-li');
@@ -37,8 +37,8 @@
       const ul = document.querySelector(`[attr-id-hover="${id}"] .column-menu > ul`);
       if (ul) {
         const items = ul.querySelectorAll(':scope > li');
-        if (items.length >= 3) {
-          const segundo = items[1];
+        if (items.length >= 2) {
+          const segundo = items[2];
           const link = segundo.querySelector('a');
 
           segundo.classList.add('outro-li');
@@ -85,8 +85,8 @@
     const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
     mobileMenus.forEach((ul, index) => {
       const items = ul.querySelectorAll(':scope > li');
-      if (items.length >= 2) {
-        const secondItem = items[2];
+      if (items.length >= 3) {
+        const secondItem = items[3];
         const link = secondItem.querySelector('a');
 
         // Ignora o índice 4 (desporto)
