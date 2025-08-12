@@ -10,11 +10,11 @@
   const sku = (rawSku.split("|")[0]||"").trim();
   if (!sku) return;
 
-  // Conta view SEMPRE (mesmo sem mostrar badge)
-  fetch(WORKER + "/view", {
+  // Conta view SEMPRE (mesmo sem mostrar badge)  <<< ALTERADO
+  fetch(WORKER + "/increment", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({ sku })
+    body: JSON.stringify({ sku, type: "view" })
   }).catch(()=>{});
 
   if (!SHOW_BADGE) return; // não renderiza badge se não tiver ?mostrar_up
@@ -86,7 +86,7 @@
         color:#444; transition:color .2s ease;
         font-size:14px; line-height:1; width:22px; height:22px; display:flex; align-items:center; justify-content:center;
       }
-      .sp-close:hover{ color:#000; } /* hover muda só a cor do X */
+      .sp-close:hover{ color:#000; }
       @media(max-width:768px){
         .sp-badge{ left:50%; top:${OFFSET_TOP_PCT_MOBILE}%; transform:translate(-50%,-${OFFSET_TOP_PCT_MOBILE}%); max-width:90% }
       }
@@ -101,7 +101,6 @@
     return count>=40?'🔥':count>=15?'👀':'✨'; // views
   }
 
-  // ====== RENDER ======
   function render(kind,count,hours){
     document.querySelectorAll('.sp-badge').forEach(n=>n.remove());
     const badge=document.createElement('div'); badge.className='sp-badge';
@@ -109,7 +108,6 @@
     const text = kind==='purchase' ? T.buy(count,hours,NF.format)
                : kind==='cart'     ? T.cart(count,hours,NF.format)
                : T.now(count,NF.format);
-
     badge.innerHTML = `
       <div class="sp-header">
         <div class="sp-title-wrap">
@@ -125,7 +123,6 @@
     if (AUTO_CLOSE_MS>0) setTimeout(()=>badge.remove(), AUTO_CLOSE_MS);
   }
 
-  // Reancorar se o slick trocar de slide
   const slider = $('.product-holder .column-images .slick-slider') || $('.column-images .slick-slider');
   if (slider){
     slider.addEventListener('afterChange', ()=>{
@@ -135,12 +132,12 @@
     });
   }
 
-  // ====== BUSCAR STATS E MOSTRAR ======
+  // ====== BUSCAR STATS E MOSTRAR  <<< ALTERADO
   const rnd=(a,b)=>Math.floor(a+Math.random()*(b-a+1));
-  fetch(WORKER + "/stats?sku=" + encodeURIComponent(sku), { cache:"no-store" })
+  fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>{
-      const v=+d.viewsLast6h||0, p=+d.purchasesLast48h||0; // c opcional quando houver endpoint de cart
+      const v=+d.views||0, p=+d.purchases||0; // d.carts existe se quiseres usar
       for (const k of ORDER){
         if (k==='purchase' && p>0){ render('purchase', p, 48); return; }
         if (k==='view' && v>0){ render('view', v, 6); return; }
