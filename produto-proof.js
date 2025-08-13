@@ -74,7 +74,7 @@
         transform:translate(-50%,-${OFFSET_TOP_PCT}%);
         background:rgba(255,255,255,0.92); color:#111; border:none; border-radius:8px;
         box-shadow:0 4px 12px rgba(0,0,0,.25);
-        padding:12px 16px; font-family:inherit; max-width:min(360px,90%); z-index:10000;
+        padding:12px 16px; font-family:inherit; max-width:min(360px,90%); min-width:min(360px,90%); z-index:10000;
       }
       .sp-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:4px}
       .sp-title-wrap{display:flex; align-items:center; gap:8px}
@@ -96,9 +96,9 @@
 
   // ====== EMOJI DINÂMICO ======
   function pickEmoji(kind,count){
-    if(kind==='purchase') return count>=10?'🏆':count>=3?'✅':'🛍️';
-    if(kind==='cart')     return count>=10?'🧨':count>=3?'🧺':'➕';
-    return count>=40?'🔥':count>=15?'👀':'✨'; // views
+    if(kind==='purchase') return count>=10?'🔥':count>=3?'👀':'👀';
+    if(kind==='cart')     return count>=10?'🔥':count>=3?'👀':'👀';
+    return count>=40?'🔥':count>=15?'👀':'👀'; // views
   }
 
   function render(kind,count,hours){
