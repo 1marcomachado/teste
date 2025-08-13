@@ -137,10 +137,10 @@
   fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>{
-      const v=+d.views||0, p=+d.purchases||0 c=+d.carts||0;; // d.carts existe se quiseres usar
+      const v=+d.views||0, p=+d.purchases||0, c=+d.carts||0; // d.carts existe se quiseres usar
       for (const k of ORDER){
         if (k==='purchase' && p>0){ render('purchase', p, 48); return; }
-        if (k === 'cart' && c > 0) { render('cart', c, 12); return; }
+        if (k=== 'cart'&& c > 0) { render('cart', c, 12); return; }
         if (k==='view' && v>0){ render('view', v, 6); return; }
       }
       render('view', rnd(18,55), 6); // fallback demo
