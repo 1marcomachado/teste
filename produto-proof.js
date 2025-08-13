@@ -23,7 +23,7 @@
   const AUTO_CLOSE_MS = 8000;          // 0 = não fechar
   const OFFSET_TOP_PCT = 22;           // desktop: altura da badge (% da imagem)
   const OFFSET_TOP_PCT_MOBILE = 50;    // mobile: centro vertical
-  const ORDER = ['view','purchase','cart'];
+  const ORDER = ['purchase','cart','view'];
 
   // ====== I18N (PT/EN/ES) ======
   function lang(){
