@@ -125,6 +125,7 @@ window.addEventListener("load", () => {
         cursor: pointer;
         font-size: 20px;
         line-height: 1;
+        width: unset !important;
       }
       .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
       .upselling-size-modal-body .size-option {
