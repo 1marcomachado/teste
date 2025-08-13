@@ -132,18 +132,24 @@
     });
   }
 
-  // ====== BUSCAR STATS E MOSTRAR  <<< ALTERADO
-  const rnd=(a,b)=>Math.floor(a+Math.random()*(b-a+1));
-  fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
-    .then(r=>r.ok?r.json():Promise.reject())
-    .then(d=>{
-      const v=+d.views||0, p=+d.purchases||0, c=+d.carts||0; // d.carts existe se quiseres usar
-      for (const k of ORDER){
-        if (k==='purchase' && p>0){ render('purchase', p, 48); return; }
-        if (k=== 'cart'&& c > 0) { render('cart', c, 12); return; }
-        if (k==='view' && v>0){ render('view', v, 6); return; }
-      }
-      render('view', rnd(18,55), 6); // fallback demo
-    })
-    .catch(()=>render('view', rnd(18,55), 6));
+// ====== BUSCAR STATS E MOSTRAR
+const rnd = (a,b) => Math.floor(a + Math.random() * (b - a + 1));
+
+fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(d => {
+    // d pode vir como { [sku]: {...} } ou já plano
+    const item = (d && (d[sku] || d)) || {};
+    const v = +item.views || 0;
+    const p = +item.purchases || 0;
+    const c = +item.carts || 0;
+
+    for (const k of ORDER) {
+      if (k === 'purchase' && p > 0) { render('purchase', p, 48); return; }
+      if (k === 'cart'     && c > 0) { render('cart',     c, 12); return; }
+      if (k === 'view'     && v > 0) { render('view',     v,  6); return; }
+    }
+    render('view', rnd(18,55), 6); // fallback demo
+  })
+  .catch(() => render('view', rnd(18,55), 6));
 })();
