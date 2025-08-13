@@ -105,10 +105,27 @@ window.addEventListener("load", () => {
         box-shadow: 0 -10px 30px rgba(0,0,0,.2);
       }
       .upselling-size-modal-header {
-        padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #eee;
-        display: flex; justify-content: space-between; align-items: center;
+        position: relative;
+        padding: 12px 16px;
+        font-weight: 600;
+        border-bottom: 1px solid #eee;
+        text-align: center;
       }
-      .upselling-size-modal-close { cursor: pointer; font-size: 20px; line-height: 1; }
+      
+      .upselling-size-modal-header span {
+        display: inline-block;
+        width: 100%;
+      }
+      
+      .upselling-size-modal-close {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+      }
       .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
       .upselling-size-modal-body .size-option {
         padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px; text-align: center;
