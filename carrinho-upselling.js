@@ -62,6 +62,7 @@ window.addEventListener("load", () => {
         overflow-y: auto;
         border: 1px solid #000;
         scrollbar-width: thin;
+        text-align: center;
       }
     }
     .upselling-carousel .sizes-list div {
@@ -110,7 +111,7 @@ window.addEventListener("load", () => {
       .upselling-size-modal-close { cursor: pointer; font-size: 20px; line-height: 1; }
       .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
       .upselling-size-modal-body .size-option {
-        padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px;
+        padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px; text-align: center;
       }
       .upselling-size-modal-body .size-option:hover { background: #f5f5f5; }
       .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
@@ -160,7 +161,7 @@ window.addEventListener("load", () => {
         ${v.size}
       </div>
     `).join('');
-    modal.querySelector('.upselling-size-modal-header span').textContent = 'Seleciona o tamanho';
+    //modal.querySelector('.upselling-size-modal-header span').textContent = 'Seleciona o tamanho';
     modalBackdrop.style.display = 'block';
     modal.style.display = 'block';
     body.scrollTop = 0;
@@ -310,7 +311,7 @@ window.addEventListener("load", () => {
     const sizesListEl = product.querySelector('.sizes-list');
     let variantes = [];
     if (sizesListEl) {
-      variantes = Array.from(sizesListEl.querySelectorAll('div')).map(div => ({
+      variantes = Array.from(sizesListEl.querySelectorAll('div[data-id]')).map(div => ({
         id: div.getAttribute('data-id'),
         size: div.textContent.trim(),
         availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
