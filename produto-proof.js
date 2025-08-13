@@ -88,7 +88,7 @@
       }
       .sp-close:hover{ color:#000; }
       @media(max-width:768px){
-        .sp-badge{ left:50%; top:${OFFSET_TOP_PCT_MOBILE}%; transform:translate(-50%,-${OFFSET_TOP_PCT_MOBILE}%); max-width:90% }
+        .sp-badge{ left:50%; top:${OFFSET_TOP_PCT_MOBILE}%; transform:translate(-50%,-${OFFSET_TOP_PCT_MOBILE}%); max-width:90%; min-width: 310px; }
       }
     `;
     document.head.appendChild(st);
