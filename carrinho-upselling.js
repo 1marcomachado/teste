@@ -60,7 +60,7 @@ window.addEventListener("load", () => {
         gap: 10px;
         max-height: 75%;
         overflow-y: auto;
-        border: 1px solid #000;
+        border: 0.5px solid #000;
         scrollbar-width: thin;
         text-align: center;
       }
@@ -81,7 +81,7 @@ window.addEventListener("load", () => {
     /* Cabeçalho fixo no topo da lista */
     .upselling-carousel .sizes-list-header {
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 400;
       color: #000;
       padding: 6px 12px;
       border-bottom: 1px solid #ddd;
