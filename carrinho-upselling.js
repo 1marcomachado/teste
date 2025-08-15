@@ -36,75 +36,75 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
-    /* Área da imagem com overlay interno */
+    /* Botão e área da imagem */
     .upselling-carousel .image { position: relative; overflow: hidden; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: overlay DENTRO da imagem (com transição) ===== */
+    /* ===== DESKTOP: dropdown dentro da imagem (ancorado em baixo) ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
-        display: none;               /* controlado via JS */
+        display: none;                /* controlado por JS */
         position: absolute;
         bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(255,255,255,1);
+        left: 0; right: 0;
+        background: #fff;
         z-index: 999;
+        border: 0.5px solid #000;     /* hairline estável */
         padding: 0;
         box-sizing: border-box;
-        flex-direction: column;      /* ordem normal, header em cima */
+        max-height: 75%;
+        overflow: hidden;             /* anima só o interior */
+        text-align: center;
+      }
+
+      /* Cabeçalho sticky (visível em desktop) */
+      .upselling-carousel .sizes-list-header {
+        position: sticky; top: 0; z-index: 1;
+        font-size: 13px; font-weight: 400; color: #000;
+        padding: 6px 12px; border-bottom: 1px solid #ddd;
+        width: 100%; box-sizing: border-box; background: #fff;
+        cursor: default;
+      }
+
+      /* Conteúdo interno com animação */
+      .upselling-carousel .sizes-list .sizes-inner {
+        display: flex;
+        flex-direction: column;       /* ordem normal (header fica em cima) */
         align-items: flex-start;
         gap: 10px;
-        max-height: 75%;
+        max-height: 75vh;             /* segurança */
         overflow-y: auto;
-        border: 0.5px solid #000;
-        scrollbar-width: thin;
-        text-align: center;
+        padding: 0 0 10px 0;
 
-        /* animação (estado escondido) */
+        /* estado escondido */
         opacity: 0;
         transform: translateY(10px);
         transition: opacity .22s ease, transform .22s ease;
         will-change: opacity, transform;
       }
-      .upselling-carousel .sizes-list.show {
-        /* estado visível */
+      .upselling-carousel .sizes-list.show .sizes-inner {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    .upselling-carousel .sizes-list div {
+    .upselling-carousel .sizes-list div[data-id] {
       padding: 8px 12px;
       font-size: 14px;
       cursor: pointer;
       transition: background .2s ease;
       min-width: 100%;
     }
-    .upselling-carousel .sizes-list div:hover { background-color: #f5f5f5; }
+    .upselling-carousel .sizes-list div[data-id]:hover { background-color: #f5f5f5; }
     .upselling-carousel .sizes-list .out-of-stock {
       opacity: .5; text-decoration: line-through; pointer-events: none;
       background: #eee; border-color: #ddd;
     }
 
-    /* Cabeçalho fixo no topo da lista */
-    .upselling-carousel .sizes-list-header {
-      font-size: 13px;
-      font-weight: 400;
-      color: #000;
-      padding: 6px 12px;
-      border-bottom: 1px solid #ddd;
-      width: 100%;
-      box-sizing: border-box;
-      background: #fff;
-      pointer-events: none;
-      cursor: default;
-    }
-
-    /* ===== MOBILE (com transição) ===== */
+    /* ===== MOBILE: bottom sheet com transição e header centrado ===== */
     @media (max-width: 767.98px) {
       .upselling-carousel .sizes-list { display: none !important; }
 
@@ -112,42 +112,51 @@ window.addEventListener("load", () => {
         position: fixed; inset: 0;
         background: rgba(0,0,0,.35);
         z-index: 9998;
-        display: block;          /* mantém no fluxo, mas invisível até .show */
-        opacity: 0;
-        pointer-events: none;
+        display: block;               /* controlado por opacity/pointer-events */
+        opacity: 0; pointer-events: none;
         transition: opacity .25s ease;
       }
-      .upselling-size-backdrop.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
+      .upselling-size-backdrop.show { opacity: 1; pointer-events: auto; }
 
       .upselling-size-modal {
         position: fixed; z-index: 9999;
         left: 0; right: 0; bottom: -60vh; top: auto;
-        width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
+        width: 100vw; max-height: 50vh;
+        background: #fff; border: 1px solid #000;
         box-shadow: 0 -10px 30px rgba(0,0,0,.2);
-        opacity: 0;
-        transition: bottom .28s ease, opacity .28s ease;
+        opacity: 0; transition: bottom .28s ease, opacity .28s ease;
+        box-sizing: border-box;
       }
-      .upselling-size-modal.show {
-        bottom: 0;
-        opacity: 1;
-      }
+      .upselling-size-modal.show { bottom: 0; opacity: 1; }
 
+      /* Header com Grid: título centrado e X à direita */
       .upselling-size-modal-header {
-        position: relative;
-        padding: 12px 16px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 12px 8px;
         font-weight: 600;
         border-bottom: 1px solid #eee;
+      }
+      .upselling-size-modal-header > span:first-child {
+        grid-column: 2;
+        justify-self: center;
         text-align: center;
+        width: auto;
       }
-      .upselling-size-modal-header span { display: inline-block; width: 100%; }
       .upselling-size-modal-close {
-        position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-        cursor: pointer; font-size: 20px; line-height: 1;
+        grid-column: 3;
+        justify-self: end;
+        width: 36px; height: 36px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 20px; line-height: 1; user-select: none;
       }
-      .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
+
+      .upselling-size-modal-body {
+        padding: 12px 16px 16px;
+        max-height: calc(50vh - 52px);
+        overflow-y: auto;
+      }
       .upselling-size-modal-body .size-option {
         padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px; text-align: center;
       }
@@ -157,19 +166,10 @@ window.addEventListener("load", () => {
 
     /* ===== TOAST ===== */
     .upselling-toast {
-      position: fixed;
-      z-index: 10000;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-      padding: 10px 16px;
-      font-size: 14px;
-      text-align: center;
-      border-radius: 6px;
-      background: #111;
-      color: #fff;
-      border: none;
+      position: fixed; z-index: 10000;
+      top: 20px; left: 50%; transform: translateX(-50%);
+      display: none; padding: 10px 16px; font-size: 14px; text-align: center;
+      border-radius: 6px; background: #111; color: #fff; border: none;
       box-shadow: 0 6px 18px rgba(0,0,0,.2);
     }
     .upselling-toast.success { background: #111; color: #fff; }
@@ -199,7 +199,6 @@ window.addEventListener("load", () => {
         ${v.size}
       </div>
     `).join('');
-    // Mostra com transição
     modalBackdrop.classList.add('show');
     modal.classList.add('show');
     body.scrollTop = 0;
@@ -227,7 +226,7 @@ window.addEventListener("load", () => {
   // ===== REFS =====
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
-      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
+      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\\-]+)(?=\\|)?/i); return m ? m[1].trim() : null; })
       .filter(Boolean)
   )];
   if (!refs.length) return;
@@ -272,9 +271,11 @@ window.addEventListener("load", () => {
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">
            <div class="sizes-list-header">Seleciona o teu tamanho</div>
-           ${s.variantes.map(v => `
-             <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
-           `).join('')}
+           <div class="sizes-inner">
+             ${s.variantes.map(v => `
+               <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
+             `).join('')}
+           </div>
          </div>`
       : '';
 
@@ -318,18 +319,28 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // ===== Helpers de animação desktop =====
+  // ===== Helpers (desktop): abrir de BAIXO para CIMA =====
   function openDesktopSizes(sizes){
-    // mostrar e, num frame, adicionar classe de fade/slide
-    sizes.style.display = 'flex';
-    sizes.scrollTop = 0; // começa no topo (tens header)
-    requestAnimationFrame(() => sizes.classList.add('show'));
+    sizes.style.display = 'block';                 // mostra a caixa (borda estável)
+    const inner = sizes.querySelector('.sizes-inner');
+    if (inner) {
+      // força reflow antes de animar
+      void inner.offsetWidth;
+      sizes.classList.add('show');
+
+      // abrir com a lista no FUNDO (próximo do botão +)
+      inner.scrollTop = inner.scrollHeight;
+    }
   }
   function closeDesktopSizes(sizes){
+    const inner = sizes.querySelector('.sizes-inner');
     sizes.classList.remove('show');
-    // espera o fim da transição para esconder
-    const onEnd = () => { sizes.style.display = 'none'; sizes.removeEventListener('transitionend', onEnd); };
-    sizes.addEventListener('transitionend', onEnd);
+    if (inner) {
+      const onEnd = () => { sizes.style.display = 'none'; inner.removeEventListener('transitionend', onEnd); };
+      inner.addEventListener('transitionend', onEnd);
+    } else {
+      sizes.style.display = 'none';
+    }
   }
   function closeAllDesktopLists(){
     document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => {
@@ -338,10 +349,9 @@ window.addEventListener("load", () => {
   }
 
   // ===== CLICKS =====
-  // Desktop: abrir/fechar com transição
+  // Desktop: abrir/fechar dropdown
   document.addEventListener('click', function (e) {
     if (window.innerWidth < 768) return;
-    // fecha todas
     closeAllDesktopLists();
 
     if (e.target.classList.contains('size-popup-button')) {
@@ -352,7 +362,7 @@ window.addEventListener("load", () => {
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
-  // Mobile: abrir modal half-screen (com transição)
+  // Mobile: abrir modal (gera opções a partir da lista desktop, mas ignora header)
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return;
 
@@ -374,14 +384,13 @@ window.addEventListener("load", () => {
         availability: div.classList.contains('out-of-stock') ? 'out' : 'in stock'
       }));
     }
-    const prodTitle = product.querySelector('.name')?.textContent.trim() || '';
-    openSizeModal(prodTitle, variantes);
+    openSizeModal('', variantes);
   }, { passive: false });
 
-  // Adicionar ao carrinho (desktop overlay e mobile modal)
+  // Adicionar ao carrinho (desktop e mobile)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock):not(.sizes-list-header)')
+      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
       : null;
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
