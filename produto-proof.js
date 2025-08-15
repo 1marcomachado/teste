@@ -5,12 +5,10 @@
   const SHOW_BADGE = urlParams.has('mostrar_up'); // só mostra se ?mostrar_up
   const $ = (s,c=document)=>c.querySelector(s);
 
-  // SKU da PDP
   const rawSku = $('meta[itemprop="sku"]')?.content || "";
   const sku = (rawSku.split("|")[0]||"").trim();
   if (!sku) return;
 
-  // Conta view SEMPRE (mesmo sem mostrar badge)  <<< ALTERADO
   fetch(WORKER + "/increment", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
@@ -21,7 +19,7 @@
 
   // ====== CONFIG VISUAL ======
   const AUTO_CLOSE_MS = 8000;          // 0 = não fechar
-  const OFFSET_TOP_PCT = 22;           // desktop: altura da badge (% da imagem)
+  const OFFSET_TOP_PCT = 45;           // desktop: altura da badge (% da imagem)
   const OFFSET_TOP_PCT_MOBILE = 50;    // mobile: centro vertical
   const ORDER = ['purchase','cart','view'];
 
@@ -138,18 +136,17 @@ const rnd = (a,b) => Math.floor(a + Math.random() * (b - a + 1));
 fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
   .then(r => r.ok ? r.json() : Promise.reject())
   .then(d => {
-    // d pode vir como { [sku]: {...} } ou já plano
     const item = (d && (d[sku] || d)) || {};
     const v = +item.views || 0;
     const p = +item.purchases || 0;
     const c = +item.carts || 0;
 
     for (const k of ORDER) {
-      if (k === 'purchase' && p > 0) { render('purchase', p, 48); return; }
-      if (k === 'cart'     && c > 0) { render('cart',     c, 12); return; }
-      if (k === 'view'     && v > 0) { render('view',     v,  6); return; }
+      if (k === 'purchase' && p > 3) { render('purchase', p, 48); return; }
+      if (k === 'cart'     && c > 3) { render('cart',     c, 12); return; }
+      if (k === 'view'     && v > 10) { render('view',    v,  6); return; }
     }
-    render('view', rnd(18,55), 6); // fallback demo
+    render('view', rnd(18,55), 6);
   })
   .catch(() => render('view', rnd(18,55), 6));
 })();
