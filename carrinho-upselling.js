@@ -345,7 +345,7 @@ window.addEventListener("load", () => {
     if (!opt) return;
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
-    fetch(\`https://www.bzronline.com/api/api.php/addToBasket/5/0/\${productId}/1/0\`)
+    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/\${productId}/1/0`)
       .then(res => res.json())
       .then(json => {
         const ok = (json?.status === true || json?.status === "true");
