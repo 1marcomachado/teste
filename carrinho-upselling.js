@@ -46,12 +46,13 @@ window.addEventListener("load", () => {
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: lista de tamanhos ===== */
+    /* ===== DESKTOP: lista de tamanhos (abre de cima para baixo) ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        bottom: 0; left: 0; right: 0;
+        top: 0; /* abre de cima */
+        left: 0; right: 0;
         background: #fff;
         z-index: 999;
         border: 0.5px solid #000;
@@ -61,7 +62,7 @@ window.addEventListener("load", () => {
         align-items: flex-start;
         gap: 10px;
         max-height: 75%;
-        overflow-y: auto; /* só aparece se precisar */
+        overflow-y: auto; /* scroll só quando necessário */
         scrollbar-width: thin;
         scrollbar-color: #999 transparent;
         text-align: center;
@@ -69,6 +70,22 @@ window.addEventListener("load", () => {
       .upselling-carousel .sizes-list::-webkit-scrollbar { width: 6px; }
       .upselling-carousel .sizes-list::-webkit-scrollbar-track { background: transparent; }
       .upselling-carousel .sizes-list::-webkit-scrollbar-thumb { background-color: #999; border-radius: 3px; }
+    }
+
+    .upselling-carousel .sizes-list-header {
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+      width: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      pointer-events: none;
+      cursor: default;
+      position: sticky; /* fica sempre visível */
+      top: 0;
+      z-index: 1;
     }
 
     .upselling-carousel .sizes-list div {
@@ -82,18 +99,6 @@ window.addEventListener("load", () => {
     .upselling-carousel .sizes-list .out-of-stock {
       opacity: .5; text-decoration: line-through; pointer-events: none;
       background: #eee; border-color: #ddd;
-    }
-    .upselling-carousel .sizes-list-header {
-      font-size: 13px;
-      font-weight: 400;
-      color: #000;
-      padding: 6px 12px;
-      border-bottom: 1px solid #ddd;
-      width: 100%;
-      box-sizing: border-box;
-      background: #fff;
-      pointer-events: none;
-      cursor: default;
     }
 
     /* ===== MOBILE ===== */
@@ -203,7 +208,7 @@ window.addEventListener("load", () => {
   // ===== REFS =====
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
-      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\\-]+)(?=\\|)?/i); return m ? m[1].trim() : null; })
+      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
       .filter(Boolean)
   )];
   if (!refs.length) return;
@@ -295,33 +300,36 @@ window.addEventListener("load", () => {
   }
 
   // ===== CLICK HANDLERS =====
+  // Desktop: abre no topo (título sempre visível)
   document.addEventListener('click', function (e) {
     if (window.innerWidth < 768) return;
+
+    // fecha outros
     document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
 
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
       if (sizes) {
         sizes.style.display = 'flex';
-        if (sizes.scrollHeight > sizes.clientHeight) {
-          sizes.scrollTop = sizes.scrollHeight;
-        } else {
-          sizes.scrollTop = 0;
-        }
+        sizes.scrollTop = 0; // começa sempre no topo (header visível)
       }
       e.stopPropagation();
     }
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
+  // Mobile: abre modal half-screen
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return;
     const trigger = e.target.closest('.size-popup-button, .image, .image a');
     if (!trigger) return;
+
     const linkDentroDaImagem = e.target.closest('.image a');
     if (linkDentroDaImagem) { e.preventDefault(); e.stopPropagation(); }
+
     const product = trigger.closest('article.product');
     if (!product) return;
+
     const sizesListEl = product.querySelector('.sizes-list');
     let variantes = [];
     if (sizesListEl) {
@@ -334,18 +342,21 @@ window.addEventListener("load", () => {
     openSizeModal('', variantes);
   }, { passive: false });
 
+  // Adicionar ao carrinho (desktop e mobile)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div:not(.out-of-stock):not(.sizes-list-header)')
+      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
       : null;
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
       : null;
     const opt = desktopOpt || mobileOpt;
     if (!opt) return;
+
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
-    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/\${productId}/1/0`)
+
+    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
       .then(res => res.json())
       .then(json => {
         const ok = (json?.status === true || json?.status === "true");
