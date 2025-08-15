@@ -43,19 +43,19 @@ window.addEventListener("load", () => {
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: overlay DENTRO da imagem ===== */
+    /* ===== DESKTOP: overlay DENTRO da imagem (com transição) ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
-        display: none;
+        display: none;               /* controlado via JS */
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        background: rgba(255,255,255);
+        background: rgba(255,255,255,1);
         z-index: 999;
         padding: 0;
         box-sizing: border-box;
-        flex-direction: column; /* <-- ordem normal */
+        flex-direction: column;      /* ordem normal, header em cima */
         align-items: flex-start;
         gap: 10px;
         max-height: 75%;
@@ -63,8 +63,20 @@ window.addEventListener("load", () => {
         border: 0.5px solid #000;
         scrollbar-width: thin;
         text-align: center;
+
+        /* animação (estado escondido) */
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity .22s ease, transform .22s ease;
+        will-change: opacity, transform;
+      }
+      .upselling-carousel .sizes-list.show {
+        /* estado visível */
+        opacity: 1;
+        transform: translateY(0);
       }
     }
+
     .upselling-carousel .sizes-list div {
       padding: 8px 12px;
       font-size: 14px;
@@ -88,22 +100,41 @@ window.addEventListener("load", () => {
       width: 100%;
       box-sizing: border-box;
       background: #fff;
-      pointer-events: none; /* não clicável */
+      pointer-events: none;
       cursor: default;
     }
 
-    /* ===== MOBILE ===== */
+    /* ===== MOBILE (com transição) ===== */
     @media (max-width: 767.98px) {
       .upselling-carousel .sizes-list { display: none !important; }
+
       .upselling-size-backdrop {
-        position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,.35);
+        z-index: 9998;
+        display: block;          /* mantém no fluxo, mas invisível até .show */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .25s ease;
       }
+      .upselling-size-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
       .upselling-size-modal {
-        position: fixed; z-index: 9999; display: none;
-        left: 0; right: 0; bottom: 0; top: auto;
+        position: fixed; z-index: 9999;
+        left: 0; right: 0; bottom: -60vh; top: auto;
         width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
         box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+        opacity: 0;
+        transition: bottom .28s ease, opacity .28s ease;
       }
+      .upselling-size-modal.show {
+        bottom: 0;
+        opacity: 1;
+      }
+
       .upselling-size-modal-header {
         position: relative;
         padding: 12px 16px;
@@ -111,21 +142,10 @@ window.addEventListener("load", () => {
         border-bottom: 1px solid #eee;
         text-align: center;
       }
-      
-      .upselling-size-modal-header span {
-        display: inline-block;
-        width: 100%;
-      }
-      
+      .upselling-size-modal-header span { display: inline-block; width: 100%; }
       .upselling-size-modal-close {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        font-size: 20px;
-        line-height: 1;
-        width: unset !important;
+        position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+        cursor: pointer; font-size: 20px; line-height: 1;
       }
       .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
       .upselling-size-modal-body .size-option {
@@ -179,12 +199,15 @@ window.addEventListener("load", () => {
         ${v.size}
       </div>
     `).join('');
-    //modal.querySelector('.upselling-size-modal-header span').textContent = 'Seleciona o tamanho';
-    modalBackdrop.style.display = 'block';
-    modal.style.display = 'block';
+    // Mostra com transição
+    modalBackdrop.classList.add('show');
+    modal.classList.add('show');
     body.scrollTop = 0;
   }
-  function closeSizeModal(){ modal.style.display = 'none'; modalBackdrop.style.display = 'none'; }
+  function closeSizeModal(){
+    modalBackdrop.classList.remove('show');
+    modal.classList.remove('show');
+  }
   modalBackdrop.addEventListener('click', closeSizeModal);
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
@@ -295,22 +318,41 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
+  // ===== Helpers de animação desktop =====
+  function openDesktopSizes(sizes){
+    // mostrar e, num frame, adicionar classe de fade/slide
+    sizes.style.display = 'flex';
+    sizes.scrollTop = 0; // começa no topo (tens header)
+    requestAnimationFrame(() => sizes.classList.add('show'));
+  }
+  function closeDesktopSizes(sizes){
+    sizes.classList.remove('show');
+    // espera o fim da transição para esconder
+    const onEnd = () => { sizes.style.display = 'none'; sizes.removeEventListener('transitionend', onEnd); };
+    sizes.addEventListener('transitionend', onEnd);
+  }
+  function closeAllDesktopLists(){
+    document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => {
+      if (getComputedStyle(p).display !== 'none') closeDesktopSizes(p);
+    });
+  }
+
   // ===== CLICKS =====
+  // Desktop: abrir/fechar com transição
   document.addEventListener('click', function (e) {
     if (window.innerWidth < 768) return;
-    document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
+    // fecha todas
+    closeAllDesktopLists();
 
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
-      if (sizes) {
-        sizes.style.display = 'flex';
-        sizes.scrollTop = 0; // agora rola para o topo
-      }
+      if (sizes) openDesktopSizes(sizes);
       e.stopPropagation();
     }
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
+  // Mobile: abrir modal half-screen (com transição)
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return;
 
@@ -318,10 +360,7 @@ window.addEventListener("load", () => {
     if (!trigger) return;
 
     const linkDentroDaImagem = e.target.closest('.image a');
-    if (linkDentroDaImagem) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+    if (linkDentroDaImagem) { e.preventDefault(); e.stopPropagation(); }
 
     const product = trigger.closest('article.product');
     if (!product) return;
@@ -339,9 +378,10 @@ window.addEventListener("load", () => {
     openSizeModal(prodTitle, variantes);
   }, { passive: false });
 
+  // Adicionar ao carrinho (desktop overlay e mobile modal)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div:not(.out-of-stock):not(.sizes-list-header)')
+      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock):not(.sizes-list-header)')
       : null;
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
