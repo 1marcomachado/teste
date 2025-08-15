@@ -15,7 +15,10 @@ window.addEventListener("load", () => {
     }
     .upselling-carousel a:hover { text-decoration:none; }
     .upselling-carousel .carousel-header { margin-bottom: 12px; }
-    .upselling-carousel .carousel-title { font-size: 16px; font-weight: 600; margin: 0; color: #000; }
+    .upselling-carousel .carousel-title { font-size: 16px; font-weight: 600; margin: 0; color: #000; text-align:left; }
+    @media (max-width: 768px) {
+      .upselling-carousel .carousel-title { text-align:center; }
+    }
     .upselling-carousel .upselling-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     @media (min-width: 768px){ .upselling-carousel .upselling-grid { grid-template-columns: repeat(4, 1fr); } }
     .upselling-carousel .product .image img { width: 100%; height: auto; display: block; }
@@ -36,131 +39,91 @@ window.addEventListener("load", () => {
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
-    /* Botão e área da imagem */
+    /* Área da imagem com overlay interno */
     .upselling-carousel .image { position: relative; overflow: hidden; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: dropdown dentro da imagem (ancorado em baixo) ===== */
+    /* ===== DESKTOP: lista de tamanhos ===== */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        bottom: 0;
-        left: 0; right: 0;
+        bottom: 0; left: 0; right: 0;
         background: #fff;
         z-index: 999;
-        border: 0.5px solid #000;    /* hairline estável */
+        border: 0.5px solid #000;
         padding: 0;
         box-sizing: border-box;
-
-        /* altura e SCROLL no container com barra fina (sem setas) */
-        max-height: min(60vh, 420px);
-        overflow-y: auto;
-
-        text-align: center;
-
-        /* Firefox */
-        scrollbar-width: thin;
-        scrollbar-color: #999 transparent;
-      }
-      /* Chrome, Edge, Safari */
-      .upselling-carousel .sizes-list::-webkit-scrollbar { width: 6px; }
-      .upselling-carousel .sizes-list::-webkit-scrollbar-track { background: transparent; }
-      .upselling-carousel .sizes-list::-webkit-scrollbar-thumb {
-        background-color: #999; border-radius: 3px;
-      }
-
-      /* Cabeçalho */
-      .upselling-carousel .sizes-list-header {
-        font-size: 13px; font-weight: 400; color: #000;
-        padding: 6px 12px; border-bottom: 1px solid #ddd;
-        width: 100%; box-sizing: border-box; background: #fff;
-        cursor: default;
-      }
-
-      /* Conteúdo interno com animação (a borda não mexe) */
-      .upselling-carousel .sizes-list .sizes-inner {
-        display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-        padding: 0 0 10px 0;
-
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity .22s ease, transform .22s ease;
-        will-change: opacity, transform;
+        max-height: min(60vh, 420px);
+        overflow-y: auto; /* só aparece se precisar */
+        scrollbar-width: thin;
+        scrollbar-color: #999 transparent;
+        text-align: center;
       }
-      .upselling-carousel .sizes-list.show .sizes-inner {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      .upselling-carousel .sizes-list::-webkit-scrollbar { width: 6px; }
+      .upselling-carousel .sizes-list::-webkit-scrollbar-track { background: transparent; }
+      .upselling-carousel .sizes-list::-webkit-scrollbar-thumb { background-color: #999; border-radius: 3px; }
     }
 
-    .upselling-carousel .sizes-list div[data-id] {
+    .upselling-carousel .sizes-list div {
       padding: 8px 12px;
       font-size: 14px;
       cursor: pointer;
       transition: background .2s ease;
       min-width: 100%;
     }
-    .upselling-carousel .sizes-list div[data-id]:hover { background-color: #f5f5f5; }
+    .upselling-carousel .sizes-list div:hover { background-color: #f5f5f5; }
     .upselling-carousel .sizes-list .out-of-stock {
       opacity: .5; text-decoration: line-through; pointer-events: none;
       background: #eee; border-color: #ddd;
     }
+    .upselling-carousel .sizes-list-header {
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      padding: 6px 12px;
+      border-bottom: 1px solid #ddd;
+      width: 100%;
+      box-sizing: border-box;
+      background: #fff;
+      pointer-events: none;
+      cursor: default;
+    }
 
-    /* ===== MOBILE: bottom sheet com transição e header centrado ===== */
+    /* ===== MOBILE ===== */
     @media (max-width: 767.98px) {
       .upselling-carousel .sizes-list { display: none !important; }
-
       .upselling-size-backdrop {
-        position: fixed; inset: 0;
-        background: rgba(0,0,0,.35);
-        z-index: 9998;
-        display: block;
-        opacity: 0; pointer-events: none;
-        transition: opacity .25s ease;
+        position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998; display: none;
       }
-      .upselling-size-backdrop.show { opacity: 1; pointer-events: auto; }
-
       .upselling-size-modal {
-        position: fixed; z-index: 9999;
-        left: 0; right: 0; bottom: -60vh; top: auto;
-        width: 100vw; max-height: 50vh;
-        background: #fff; border: 1px solid #000;
+        position: fixed; z-index: 9999; display: none;
+        left: 0; right: 0; bottom: 0;
+        width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
         box-shadow: 0 -10px 30px rgba(0,0,0,.2);
-        opacity: 0; transition: bottom .28s ease, opacity .28s ease;
-        box-sizing: border-box;
       }
-      .upselling-size-modal.show { bottom: 0; opacity: 1; }
-
-      /* Header com Grid: título centrado e X à direita */
       .upselling-size-modal-header {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        padding: 12px 8px;
+        position: relative;
+        padding: 12px 16px;
         font-weight: 600;
         border-bottom: 1px solid #eee;
-      }
-      .upselling-size-modal-header > span:first-child {
-        grid-column: 2;
-        justify-self: center;
         text-align: center;
-        width: auto;
       }
       .upselling-size-modal-close {
-        grid-column: 3;
-        justify-self: end;
-        width: 36px; height: 36px;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; font-size: 20px; line-height: 1; user-select: none;
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
       }
-
       .upselling-size-modal-body {
         padding: 12px 16px 16px;
         max-height: calc(50vh - 52px);
@@ -175,14 +138,23 @@ window.addEventListener("load", () => {
 
     /* ===== TOAST ===== */
     .upselling-toast {
-      position: fixed; z-index: 10000;
-      top: 20px; left: 50%; transform: translateX(-50%);
-      display: none; padding: 10px 16px; font-size: 14px; text-align: center;
-      border-radius: 6px; background: #111; color: #fff; border: none;
+      position: fixed;
+      z-index: 10000;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      text-align: center;
+      border-radius: 6px;
+      background: #111;
+      color: #fff;
+      border: none;
       box-shadow: 0 6px 18px rgba(0,0,0,.2);
     }
-    .upselling-toast.success { background: #111; color: #fff; }
-    .upselling-toast.error   { background: #111; color: #fff; }
+    .upselling-toast.success { background: #111; }
+    .upselling-toast.error   { background: red; }
   `;
   document.head.appendChild(style);
 
@@ -208,17 +180,13 @@ window.addEventListener("load", () => {
         ${v.size}
       </div>
     `).join('');
-    modalBackdrop.classList.add('show');
-    modal.classList.add('show');
+    modalBackdrop.style.display = 'block';
+    modal.style.display = 'block';
     body.scrollTop = 0;
   }
-  function closeSizeModal(){
-    modalBackdrop.classList.remove('show');
-    modal.classList.remove('show');
-  }
+  function closeSizeModal(){ modal.style.display = 'none'; modalBackdrop.style.display = 'none'; }
   modalBackdrop.addEventListener('click', closeSizeModal);
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
 
   // ===== TOAST =====
   const toast = document.createElement('div');
@@ -235,7 +203,7 @@ window.addEventListener("load", () => {
   // ===== REFS =====
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
-      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
+      .map(el => { const m = el.textContent.match(/#?([A-Z0-9\\-]+)(?=\\|)?/i); return m ? m[1].trim() : null; })
       .filter(Boolean)
   )];
   if (!refs.length) return;
@@ -251,7 +219,7 @@ window.addEventListener("load", () => {
   // ===== SUGESTÕES =====
   const sugestoesSet = new Set();
   refs.forEach(ref => {
-    const produto = data.produtos.find(p => p.mpn === ref ou p.reference === ref);
+    const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
     if (produto?.sugestoes) produto.sugestoes.forEach(s => sugestoesSet.add(s));
   });
 
@@ -280,11 +248,9 @@ window.addEventListener("load", () => {
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">
            <div class="sizes-list-header">Seleciona o teu tamanho</div>
-           <div class="sizes-inner">
-             ${s.variantes.map(v => `
-               <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
-             `).join('')}
-           </div>
+           ${s.variantes.map(v => `
+             <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
+           `).join('')}
          </div>`
       : '';
 
@@ -328,60 +294,34 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // ===== Helpers (desktop): abrir de BAIXO para CIMA =====
-  function openDesktopSizes(sizes){
-    sizes.style.display = 'block';                 // mostra a caixa (borda estável)
-    const inner = sizes.querySelector('.sizes-inner');
-    if (inner) {
-      void inner.offsetWidth;                      // reflow para a transição
-      sizes.classList.add('show');
-    }
-    // abrir já no FUNDO (junto ao botão +)
-    sizes.scrollTop = sizes.scrollHeight;
-  }
-  function closeDesktopSizes(sizes){
-    const inner = sizes.querySelector('.sizes-inner');
-    sizes.classList.remove('show');
-    if (inner) {
-      const onEnd = () => { sizes.style.display = 'none'; inner.removeEventListener('transitionend', onEnd); };
-      inner.addEventListener('transitionend', onEnd);
-    } else {
-      sizes.style.display = 'none';
-    }
-  }
-  function closeAllDesktopLists(){
-    document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => {
-      if (getComputedStyle(p).display !== 'none') closeDesktopSizes(p);
-    });
-  }
-
-  // ===== CLICKS =====
-  // Desktop: abrir/fechar dropdown
+  // ===== CLICK HANDLERS =====
   document.addEventListener('click', function (e) {
     if (window.innerWidth < 768) return;
-    closeAllDesktopLists();
+    document.querySelectorAll('.upselling-carousel .sizes-list').forEach(p => p.style.display = 'none');
 
     if (e.target.classList.contains('size-popup-button')) {
       const sizes = e.target.parentElement.querySelector('.sizes-list');
-      if (sizes) openDesktopSizes(sizes);
+      if (sizes) {
+        sizes.style.display = 'flex';
+        if (sizes.scrollHeight > sizes.clientHeight) {
+          sizes.scrollTop = sizes.scrollHeight;
+        } else {
+          sizes.scrollTop = 0;
+        }
+      }
       e.stopPropagation();
     }
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
-  // Mobile: abrir modal (gera opções a partir da lista desktop, mas ignora header)
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return;
-
     const trigger = e.target.closest('.size-popup-button, .image, .image a');
     if (!trigger) return;
-
     const linkDentroDaImagem = e.target.closest('.image a');
     if (linkDentroDaImagem) { e.preventDefault(); e.stopPropagation(); }
-
     const product = trigger.closest('article.product');
     if (!product) return;
-
     const sizesListEl = product.querySelector('.sizes-list');
     let variantes = [];
     if (sizesListEl) {
@@ -394,20 +334,17 @@ window.addEventListener("load", () => {
     openSizeModal('', variantes);
   }, { passive: false });
 
-  // Adicionar ao carrinho (desktop e mobile)
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
+      ? e.target.closest('.sizes-list div:not(.out-of-stock):not(.sizes-list-header)')
       : null;
     const mobileOpt = (window.innerWidth < 768)
       ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
       : null;
     const opt = desktopOpt || mobileOpt;
     if (!opt) return;
-
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
-
     fetch(\`https://www.bzronline.com/api/api.php/addToBasket/5/0/\${productId}/1/0\`)
       .then(res => res.json())
       .then(json => {
