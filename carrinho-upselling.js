@@ -6,14 +6,12 @@ window.addEventListener("load", () => {
   const target = document.querySelector('.explore-gift-overlay');
   if (!target) return;
 
-  // ===== CSS =====
+  /* ========== CSS ========== */
   const style = document.createElement('style');
   style.textContent = `
     .upselling-carousel { padding: 0 15px; margin: 0 auto; }
-    @media (max-width: 768px) {
-      .container.upselling-carousel { padding-left: 0; padding-right: 0; }
-    }
-    .upselling-carousel a:hover { text-decoration:none; }
+    @media (max-width: 768px) { .container.upselling-carousel { padding-left: 0; padding-right: 0; } }
+    .upselling-carousel a:hover { text-decoration: none; }
     .upselling-carousel .carousel-header { margin-bottom: 12px; }
     .upselling-carousel .carousel-title { font-size: 16px; font-weight: 600; margin: 0; color: #000; }
     .upselling-carousel .upselling-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -21,172 +19,108 @@ window.addEventListener("load", () => {
     .upselling-carousel .product .image img { width: 100%; height: auto; display: block; }
     .upselling-carousel .product .desc { margin-top: 12px; }
     .upselling-carousel .wrapper-top { padding: 0 10px 10px; border-bottom: 1px solid #e6e6e6; }
-    .upselling-carousel .brand { float: left; font-size: 12px; color: #000; font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; }
+    .upselling-carousel .brand { float: left; font-size: 12px; color: #000; font-family: Arial, Helvetica, sans-serif; }
     .upselling-carousel .available-colors { float: right; font-size: 11px; color: #555; }
     .upselling-carousel .wrapper-bottom { padding: 14px 10px 0; text-align: left; }
     .upselling-carousel .name {
       font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
       min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-      color: #333; font-family: 'Metrocity-Book', Arial, Helvetica, 'Segoe UI', sans-serif;
+      color: #333; font-family: Arial, Helvetica, sans-serif;
     }
     .upselling-carousel article.product:hover .desc .name { text-decoration: underline; }
-    .upselling-carousel .price .current {
-      font-size: 14px; color: #000; margin-top: 4px; text-align: left;
-      font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
-    }
+    .upselling-carousel .price .current { font-size: 14px; color: #000; margin-top: 4px; text-align: left; font-weight: normal; }
 
-    /* Botão e área da imagem */
     .upselling-carousel .image { position: relative; overflow: hidden; }
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
     }
 
-    /* ===== DESKTOP: dropdown dentro da imagem (ancorado em baixo) ===== */
+    /* DESKTOP: dropdown dentro da imagem (ancorado em baixo) */
     @media (min-width: 768px) {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        bottom: 0;
-        left: 0; right: 0;
-        background: #fff;
-        z-index: 999;
-        border: 0.5px solid #000;    /* hairline estável */
-        padding: 0;
-        box-sizing: border-box;
-
-        /* altura e SCROLL no container com barra fina (sem setas) */
+        bottom: 0; left: 0; right: 0;
+        background: #fff; z-index: 999;
+        border: 0.5px solid #000; padding: 0; box-sizing: border-box;
         max-height: min(60vh, 420px);
-        overflow-y: auto;
+        overflow-y: auto; text-align: center;
 
-        text-align: center;
-
-        /* Firefox */
-        scrollbar-width: thin;
-        scrollbar-color: #999 transparent;
+        /* Firefox: barra fina sem setas */
+        scrollbar-width: thin; scrollbar-color: #999 transparent;
       }
-      /* Chrome, Edge, Safari */
+      /* Chrome/Edge/Safari: barra fina sem setas */
       .upselling-carousel .sizes-list::-webkit-scrollbar { width: 6px; }
       .upselling-carousel .sizes-list::-webkit-scrollbar-track { background: transparent; }
-      .upselling-carousel .sizes-list::-webkit-scrollbar-thumb {
-        background-color: #999; border-radius: 3px;
-      }
+      .upselling-carousel .sizes-list::-webkit-scrollbar-thumb { background-color: #999; border-radius: 3px; }
 
-      /* Cabeçalho */
       .upselling-carousel .sizes-list-header {
         font-size: 13px; font-weight: 400; color: #000;
         padding: 6px 12px; border-bottom: 1px solid #ddd;
-        width: 100%; box-sizing: border-box; background: #fff;
-        cursor: default;
+        width: 100%; box-sizing: border-box; background: #fff; cursor: default;
       }
 
-      /* Conteúdo interno com animação (a borda não mexe) */
+      /* animação só no interior */
       .upselling-carousel .sizes-list .sizes-inner {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 0 0 10px 0;
-
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity .22s ease, transform .22s ease;
-        will-change: opacity, transform;
+        display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 0 10px 0;
+        opacity: 0; transform: translateY(10px); transition: opacity .22s ease, transform .22s ease; will-change: opacity, transform;
       }
-      .upselling-carousel .sizes-list.show .sizes-inner {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      .upselling-carousel .sizes-list.show .sizes-inner { opacity: 1; transform: translateY(0); }
     }
 
     .upselling-carousel .sizes-list div[data-id] {
-      padding: 8px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background .2s ease;
-      min-width: 100%;
+      padding: 8px 12px; font-size: 14px; cursor: pointer; transition: background .2s ease; min-width: 100%;
     }
     .upselling-carousel .sizes-list div[data-id]:hover { background-color: #f5f5f5; }
-    .upselling-carousel .sizes-list .out-of-stock {
-      opacity: .5; text-decoration: line-through; pointer-events: none;
-      background: #eee; border-color: #ddd;
-    }
+    .upselling-carousel .sizes-list .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; background: #eee; border-color: #ddd; }
 
-    /* ===== MOBILE: bottom sheet com transição e header centrado ===== */
+    /* MOBILE: bottom sheet com transição e header centrado */
     @media (max-width: 767.98px) {
       .upselling-carousel .sizes-list { display: none !important; }
 
       .upselling-size-backdrop {
-        position: fixed; inset: 0;
-        background: rgba(0,0,0,.35);
-        z-index: 9998;
-        display: block;
-        opacity: 0; pointer-events: none;
-        transition: opacity .25s ease;
+        position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 9998;
+        display: block; opacity: 0; pointer-events: none; transition: opacity .25s ease;
       }
       .upselling-size-backdrop.show { opacity: 1; pointer-events: auto; }
 
       .upselling-size-modal {
-        position: fixed; z-index: 9999;
-        left: 0; right: 0; bottom: -60vh; top: auto;
-        width: 100vw; max-height: 50vh;
-        background: #fff; border: 1px solid #000;
-        box-shadow: 0 -10px 30px rgba(0,0,0,.2);
-        opacity: 0; transition: bottom .28s ease, opacity .28s ease;
-        box-sizing: border-box;
+        position: fixed; z-index: 9999; left: 0; right: 0; bottom: -60vh; top: auto;
+        width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000; box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+        opacity: 0; transition: bottom .28s ease, opacity .28s ease; box-sizing: border-box;
       }
       .upselling-size-modal.show { bottom: 0; opacity: 1; }
 
-      /* Header com Grid: título centrado e X à direita */
       .upselling-size-modal-header {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        padding: 12px 8px;
-        font-weight: 600;
-        border-bottom: 1px solid #eee;
+        display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+        padding: 12px 8px; font-weight: 600; border-bottom: 1px solid #eee;
       }
-      .upselling-size-modal-header > span:first-child {
-        grid-column: 2;
-        justify-self: center;
-        text-align: center;
-        width: auto;
-      }
+      .upselling-size-modal-header > span:first-child { grid-column: 2; justify-self: center; text-align: center; width: auto; }
       .upselling-size-modal-close {
-        grid-column: 3;
-        justify-self: end;
-        width: 36px; height: 36px;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; font-size: 20px; line-height: 1; user-select: none;
+        grid-column: 3; justify-self: end; width: 36px; height: 36px;
+        display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; line-height: 1; user-select: none;
       }
 
-      .upselling-size-modal-body {
-        padding: 12px 16px 16px;
-        max-height: calc(50vh - 52px);
-        overflow-y: auto;
-      }
-      .upselling-size-modal-body .size-option {
-        padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px; text-align: center;
-      }
+      .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
+      .upselling-size-modal-body .size-option { padding: 10px 14px; font-size: 15px; cursor: pointer; transition: background .2s ease; border-radius: 6px; text-align: center; }
       .upselling-size-modal-body .size-option:hover { background: #f5f5f5; }
       .upselling-size-modal-body .out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
     }
 
-    /* ===== TOAST ===== */
+    /* TOAST */
     .upselling-toast {
-      position: fixed; z-index: 10000;
-      top: 20px; left: 50%; transform: translateX(-50%);
+      position: fixed; z-index: 10000; top: 20px; left: 50%; transform: translateX(-50%);
       display: none; padding: 10px 16px; font-size: 14px; text-align: center;
-      border-radius: 6px; background: #111; color: #fff; border: none;
-      box-shadow: 0 6px 18px rgba(0,0,0,.2);
+      border-radius: 6px; background: #111; color: #fff; border: none; box-shadow: 0 6px 18px rgba(0,0,0,.2);
     }
     .upselling-toast.success { background: #111; color: #fff; }
     .upselling-toast.error   { background: #111; color: #fff; }
   `;
   document.head.appendChild(style);
 
-  // ===== MOBILE MODAL =====
+  /* ========== MOBILE MODAL ========== */
   const modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'upselling-size-backdrop';
   const modal = document.createElement('div');
@@ -212,15 +146,12 @@ window.addEventListener("load", () => {
     modal.classList.add('show');
     body.scrollTop = 0;
   }
-  function closeSizeModal(){
-    modalBackdrop.classList.remove('show');
-    modal.classList.remove('show');
-  }
+  function closeSizeModal(){ modalBackdrop.classList.remove('show'); modal.classList.remove('show'); }
   modalBackdrop.addEventListener('click', closeSizeModal);
   modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
 
-  // ===== TOAST =====
+  /* ========== TOAST ========== */
   const toast = document.createElement('div');
   toast.className = 'upselling-toast';
   document.body.appendChild(toast);
@@ -232,7 +163,7 @@ window.addEventListener("load", () => {
     showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
   }
 
-  // ===== REFS =====
+  /* ========== REFS ========== */
   const refs = [...new Set(
     Array.from(document.querySelectorAll('.rdc-shop-prd-reference-value'))
       .map(el => { const m = el.textContent.match(/#?([A-Z0-9\-]+)(?=\|)?/i); return m ? m[1].trim() : null; })
@@ -240,7 +171,7 @@ window.addEventListener("load", () => {
   )];
   if (!refs.length) return;
 
-  // ===== FETCH JSON =====
+  /* ========== FETCH JSON ========== */
   let data;
   try {
     const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
@@ -248,11 +179,11 @@ window.addEventListener("load", () => {
   } catch (e) { console.error('Erro ao carregar sugestões de upselling:', e); return; }
   if (!data || !Array.isArray(data.produtos)) return;
 
-  // ===== SUGESTÕES =====
+  /* ========== SUGESTÕES ========== */
   const sugestoesSet = new Set();
   refs.forEach(ref => {
-    const produto = data.produtos.find(p => p.mpn === ref ou p.reference === ref);
-    if (produto?.sugestoes) produto.sugestoes.forEach(s => sugestoesSet.add(s));
+    const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
+    if (produto && Array.isArray(produto.sugestoes)) produto.sugestoes.forEach(s => sugestoesSet.add(s));
   });
 
   let sugestoes = data.produtos.filter(p => sugestoesSet.has(p.mpn));
@@ -260,15 +191,15 @@ window.addEventListener("load", () => {
   sugestoes = sugestoes.sort(() => Math.random() - 0.5).slice(0, 16);
   if (!sugestoes.length) return;
 
-  // ===== RENDER =====
+  /* ========== RENDER ========== */
   const wrapper = document.createElement('div');
   wrapper.className = 'upselling-carousel container';
   const header = document.createElement('div');
   header.className = 'carousel-header';
-  const title = document.createElement('h3');
-  title.className = 'carousel-title';
-  title.textContent = 'Talvez te interesse';
-  header.appendChild(title);
+  const h3 = document.createElement('h3');
+  h3.className = 'carousel-title';
+  h3.textContent = 'Talvez te interesse';
+  header.appendChild(h3);
   wrapper.appendChild(header);
 
   const grid = document.createElement('div');
@@ -277,6 +208,7 @@ window.addEventListener("load", () => {
   sugestoes.forEach(s => {
     const item = document.createElement('div');
     item.className = 'grid-item';
+
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">
            <div class="sizes-list-header">Seleciona o teu tamanho</div>
@@ -292,9 +224,7 @@ window.addEventListener("load", () => {
       <article class="product">
         <div class="image">
           <a href="/item_${s.id}.html">
-            <figure style="margin:0">
-              <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
-            </figure>
+            <figure style="margin:0"><img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy"></figure>
           </a>
           <div class="size-popup-button">+</div>
           ${sizesList}
@@ -307,9 +237,7 @@ window.addEventListener("load", () => {
             </div>
             <div class="wrapper-bottom">
               <p class="name">${s.title}</p>
-              <div class="price clearfix">
-                <p class="current">${(s.price || '').replace('.', ',')} €</p>
-              </div>
+              <div class="price clearfix"><p class="current">${(s.price || '').replace('.', ',')} €</p></div>
             </div>
           </a>
         </div>
@@ -328,16 +256,12 @@ window.addEventListener("load", () => {
     target.parentNode.insertBefore(wrapper, target.nextSibling);
   }
 
-  // ===== Helpers (desktop): abrir de BAIXO para CIMA =====
+  /* ========== Helpers (desktop): abrir de BAIXO para CIMA ========== */
   function openDesktopSizes(sizes){
-    sizes.style.display = 'block';                 // mostra a caixa (borda estável)
+    sizes.style.display = 'block';
     const inner = sizes.querySelector('.sizes-inner');
-    if (inner) {
-      void inner.offsetWidth;                      // reflow para a transição
-      sizes.classList.add('show');
-    }
-    // abrir já no FUNDO (junto ao botão +)
-    sizes.scrollTop = sizes.scrollHeight;
+    if (inner) { void inner.offsetWidth; sizes.classList.add('show'); }
+    sizes.scrollTop = sizes.scrollHeight; // abre já no fundo (junto ao +)
   }
   function closeDesktopSizes(sizes){
     const inner = sizes.querySelector('.sizes-inner');
@@ -355,7 +279,7 @@ window.addEventListener("load", () => {
     });
   }
 
-  // ===== CLICKS =====
+  /* ========== CLICKS ========== */
   // Desktop: abrir/fechar dropdown
   document.addEventListener('click', function (e) {
     if (window.innerWidth < 768) return;
@@ -369,15 +293,15 @@ window.addEventListener("load", () => {
     if (e.target.closest('.sizes-list')) e.stopPropagation();
   });
 
-  // Mobile: abrir modal (gera opções a partir da lista desktop, mas ignora header)
+  // Mobile: abrir modal (gera opções a partir da lista desktop, ignora header)
   document.addEventListener('click', function (e) {
     if (window.innerWidth >= 768) return;
 
     const trigger = e.target.closest('.size-popup-button, .image, .image a');
     if (!trigger) return;
 
-    const linkDentroDaImagem = e.target.closest('.image a');
-    if (linkDentroDaImagem) { e.preventDefault(); e.stopPropagation(); }
+    const link = e.target.closest('.image a');
+    if (link) { e.preventDefault(); e.stopPropagation(); }
 
     const product = trigger.closest('article.product');
     if (!product) return;
@@ -394,7 +318,7 @@ window.addEventListener("load", () => {
     openSizeModal('', variantes);
   }, { passive: false });
 
-  // Adicionar ao carrinho (desktop e mobile)
+  // Adicionar ao carrinho
   document.addEventListener('click', function (e) {
     const desktopOpt = (window.innerWidth >= 768)
       ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
@@ -408,10 +332,10 @@ window.addEventListener("load", () => {
     const productId = opt.getAttribute('data-id');
     if (!productId) return;
 
-    fetch(\`https://www.bzronline.com/api/api.php/addToBasket/5/0/\${productId}/1/0\`)
+    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
       .then(res => res.json())
       .then(json => {
-        const ok = (json?.status === true || json?.status === "true");
+        const ok = (json && (json.status === true || json.status === "true"));
         if (ok) {
           if (window.innerWidth < 768) closeSizeModal();
           showToast('Adicionado ao carrinho', 'success');
