@@ -60,7 +60,7 @@ window.addEventListener("load", () => {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-        max-height: min(60vh, 420px);
+        max-height: 75%;
         overflow-y: auto; /* só aparece se precisar */
         scrollbar-width: thin;
         scrollbar-color: #999 transparent;
