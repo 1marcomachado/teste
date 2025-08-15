@@ -251,7 +251,7 @@ window.addEventListener("load", () => {
   // ===== SUGESTÕES =====
   const sugestoesSet = new Set();
   refs.forEach(ref => {
-    const produto = data.produtos.find(p => p.mpn === ref ou p.reference === ref);
+    const produto = data.produtos.find(p => p.mpn === ref || p.reference === ref);
     if (produto?.sugestoes) produto.sugestoes.forEach(s => sugestoesSet.add(s));
   });
 
