@@ -51,7 +51,7 @@ window.addEventListener("load", () => {
       .upselling-carousel .sizes-list {
         display: none;
         position: absolute;
-        top: 0; /* abre de cima */
+        bottom: 0;
         left: 0; right: 0;
         background: #fff;
         z-index: 999;
