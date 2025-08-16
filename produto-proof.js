@@ -1,8 +1,6 @@
 (function(){
-  // ====== CONTAR SEMPRE ======
   const WORKER = "https://bzrstats.peboys.workers.dev";
   const urlParams = new URLSearchParams(location.search);
-  const SHOW_BADGE = urlParams.has('mostrar_up'); // só mostra se ?mostrar_up
   const $ = (s,c=document)=>c.querySelector(s);
 
   const rawSku = $('meta[itemprop="sku"]')?.content || "";
@@ -13,17 +11,13 @@
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body: JSON.stringify({ sku, type: "view" })
-  }).catch(()=>{});
+  }).catch(()=>{ /* ignora */ });
 
-  if (!SHOW_BADGE) return; // não renderiza badge se não tiver ?mostrar_up
-
-  // ====== CONFIG VISUAL ======
   const AUTO_CLOSE_MS = 8000;          // 0 = não fechar
   const OFFSET_TOP_PCT = 45;           // desktop: altura da badge (% da imagem)
   const OFFSET_TOP_PCT_MOBILE = 50;    // mobile: centro vertical
   const ORDER = ['purchase','cart','view'];
 
-  // ====== I18N (PT/EN/ES) ======
   function lang(){
     const x=(document.documentElement.lang||navigator.language||'en').toLowerCase();
     if (x.startsWith('pt')) return 'pt';
@@ -46,7 +40,6 @@
       cart:(n,h,f)=>`${f(n)} ${n===1?'persona añadió':'personas añadieron'} al carrito en las últimas ${h}h.`}
   }[L];
 
-  // ====== ENCONTRAR ÂNCORA (imagem grande) ======
   function findAnchor(){
     const col = $('.product-holder .column-images') || $('.column-images');
     if (col){
@@ -63,7 +56,6 @@
   let anchor = findAnchor();
   if (getComputedStyle(anchor).position==='static') anchor.style.position='relative';
 
-  // ====== CSS ======
   if (!$('#sp-style')){
     const st=document.createElement('style'); st.id='sp-style';
     st.textContent = `
@@ -92,7 +84,6 @@
     document.head.appendChild(st);
   }
 
-  // ====== EMOJI DINÂMICO ======
   function pickEmoji(kind,count){
     if(kind==='purchase') return count>=10?'🔥':count>=3?'👀':'👀';
     if(kind==='cart')     return count>=10?'🔥':count>=3?'👀':'👀';
@@ -130,23 +121,20 @@
     });
   }
 
-// ====== BUSCAR STATS E MOSTRAR
-const rnd = (a,b) => Math.floor(a + Math.random() * (b - a + 1));
+  fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      const item = (d && (d[sku] || d)) || {};
+      const v = Number(item.views) || 0;
+      const p = Number(item.purchases) || 0;
+      const c = Number(item.carts) || 0;
 
-fetch(WORKER + "/get?sku=" + encodeURIComponent(sku), { cache:"no-store" })
-  .then(r => r.ok ? r.json() : Promise.reject())
-  .then(d => {
-    const item = (d && (d[sku] || d)) || {};
-    const v = +item.views || 0;
-    const p = +item.purchases || 0;
-    const c = +item.carts || 0;
-
-    for (const k of ORDER) {
-      if (k === 'purchase' && p > 3) { render('purchase', p, 48); return; }
-      if (k === 'cart'     && c > 3) { render('cart',     c, 12); return; }
-      if (k === 'view'     && v > 10) { render('view',    v,  6); return; }
-    }
-    render('view', rnd(18,55), 6);
-  })
-  .catch(() => render('view', rnd(18,55), 6));
+      // Só renderiza se houver números suficientes.
+      for (const k of ORDER) {
+        if (k === 'purchase' && p > 3) { render('purchase', p, 48); return; }
+        if (k === 'cart'     && c > 3) { render('cart',     c, 12); return; }
+        if (k === 'view'     && v > 10){ render('view',     v,  6); return; }
+      }
+    })
+    .catch(()=>{});
 })();
