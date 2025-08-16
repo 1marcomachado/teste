@@ -1,6 +1,6 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('mostrar_carrossel') !== '0') return;
+  if (params.get('mostrar_carrossel') !== '1') return;
 
   function waitForAngularInjector() {
     const appElement = document.querySelector('[ng-app]') || document.body;
@@ -347,7 +347,7 @@
             right: 10px;
             width: 36px; height: 36px;
             border: none; background: transparent; color: #000;
-            font-size: 26px; line-height: 1; cursor: pointer;
+            font-size: 26px; line-height: 1; cursor: pointer; padding: 0px; margin: 10px 0px;
           }
           .upselling-panel-close:focus{ outline: 2px solid #000; outline-offset: 2px; }
 
@@ -478,11 +478,7 @@
             }
             .size-option-modal:hover { background: #f5f5f5; }
             .size-option-modal.out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
-          }
-
-          /* === Botão VER CARRINHO apenas com padding, e só no painel === */
-          .upselling-panel .btn-cart {
-            padding: 8px 10px;
+            .upselling-panel .btn-cart { padding: 8px 10px; }
           }
         `;
         document.head.appendChild(style);
