@@ -1,6 +1,7 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('mostrar_carrinho') !== '1') return; // 👉 só ativa se tiver mostrar_carrinho=1
+  const isMobile = window.innerWidth <= 768; // 👈 só até 768px
+  if (params.get('mostrar_carrinho') !== '1' || !isMobile) return;
 
   const originalBtn = document.querySelector('#btt_addcart');
   if (!originalBtn) return;
@@ -58,7 +59,7 @@
     // Mostrar/esconder botão fixo
     fixedBtn.style.display = shouldShowFixed ? 'block' : 'none';
 
-    // Regras do chat:
+    // Regras do chat
     if (chatWidget) {
       if (shouldShowFixed || footerActive) {
         chatWidget.classList.add('chat-hidden');
