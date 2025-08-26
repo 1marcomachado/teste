@@ -430,7 +430,7 @@
           .upselling-panel .product .name {
             font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
             min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; padding-bottom: 0px !important;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; padding-bottom: 0px !important; padding-right: 0px !important;
           }
           .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 4px; }
 
