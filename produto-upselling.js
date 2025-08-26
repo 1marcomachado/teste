@@ -426,7 +426,7 @@
           .upselling-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
           .upselling-panel .product .image img { width: 100%; height: auto; display: block; }
           .upselling-panel .wrapper-top {display: flex;  justify-content: space-between; align-items: center;}
-          .upselling-panel .product .brand { font-size: 12px; color: #000; margin: 0; }
+          .upselling-panel .product .brand { font-size: 12px; color: #000; margin: 0; width: 100%; }
           .upselling-panel .product .name {
             font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
             min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
@@ -439,7 +439,7 @@
           .added-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
           .added-product-horizontal { display: flex !important; gap: 16px; align-items: flex-start; }
           .added-product-horizontal .image { flex-shrink: 0; max-width: 180px; }
-          @media (max-width: 480px) { .added-product-horizontal .image { max-width: 120px; } }
+          @media (max-width: 480px) { .added-product-horizontal .image { max-width: 144px; } }
           .added-product-horizontal .image img { width: 100%; height: auto; display: block; }
           .added-product-horizontal .name {
             font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
