@@ -401,7 +401,7 @@
             border: none; background: transparent; color: #000;
             font-size: 26px; line-height: 1; cursor: pointer; padding: 0px; margin: 10px 0px;
           }
-          .upselling-panel-close:focus{ outline: 2px solid #000; outline-offset: 2px; }
+          .upselling-panel-close:hover, .upselling-panel-close:focus { color: #000; border-color: unset; background-color: unset; }
 
           /* Toast */
           .upselling-toast {
