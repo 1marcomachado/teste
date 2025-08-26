@@ -48,6 +48,10 @@
     margin: '0',
     borderRadius: '0',
     display: 'none',
+    height: '55px',
+    padding: '20px',
+    borderColor: '#363636',
+    background: '#363636',
   });
   document.body.appendChild(fixedBtn);
 
