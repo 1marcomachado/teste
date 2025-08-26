@@ -185,8 +185,7 @@ window.addEventListener("load", () => {
     }
     .fav-btn.active{
       background-position: 0 -26px; /* mostra o frame de baixo (ativo) */
-    }
-  `;
+    }`;
   document.head.appendChild(style);
 
   // ===== MOBILE MODAL =====
@@ -369,8 +368,40 @@ window.addEventListener("load", () => {
     openSizeModal('', variantes);
   }, { passive: false });
 
+  // Adicionar ao carrinho (desktop e mobile)
+  document.addEventListener('click', function (e) {
+    const desktopOpt = (window.innerWidth >= 768)
+      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
+      : null;
+    const mobileOpt = (window.innerWidth < 768)
+      ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
+      : null;
+    const opt = desktopOpt || mobileOpt;
+    if (!opt) return;
+
+    const productId = opt.getAttribute('data-id');
+    if (!productId) return;
+
+    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
+      .then(res => res.json())
+      .then(json => {
+        const ok = (json?.status === true || json?.status === "true");
+        if (ok) {
+          if (window.innerWidth < 768) closeSizeModal();
+          showToast('Adicionado ao carrinho', 'success');
+          setTimeout(() => window.location.reload(), 900);
+        } else {
+          if (window.innerWidth < 768) closeSizeModal();
+          showToast('Erro ao adicionar ao carrinho', 'error', 2800);
+        }
+      })
+      .catch(() => {
+        if (window.innerWidth < 768) closeSizeModal();
+        showToast('Erro ao adicionar ao carrinho', 'error', 2800);
+      });
+  });
   /* ========================== ⭐ FAVORITOS (eventos, sem localStorage) ========================== */
-  panel.addEventListener('click', async function (e) {
+  document.addEventListener('click', async function (e) {
     const btn = e.target.closest('.fav-btn');
     if (!btn) return;
 
@@ -416,38 +447,5 @@ window.addEventListener("load", () => {
     }
   });
 }
-
-  // Adicionar ao carrinho (desktop e mobile)
-  document.addEventListener('click', function (e) {
-    const desktopOpt = (window.innerWidth >= 768)
-      ? e.target.closest('.sizes-list div[data-id]:not(.out-of-stock)')
-      : null;
-    const mobileOpt = (window.innerWidth < 768)
-      ? e.target.closest('.upselling-size-modal .size-option:not(.out-of-stock)')
-      : null;
-    const opt = desktopOpt || mobileOpt;
-    if (!opt) return;
-
-    const productId = opt.getAttribute('data-id');
-    if (!productId) return;
-
-    fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${productId}/1/0`)
-      .then(res => res.json())
-      .then(json => {
-        const ok = (json?.status === true || json?.status === "true");
-        if (ok) {
-          if (window.innerWidth < 768) closeSizeModal();
-          showToast('Adicionado ao carrinho', 'success');
-          setTimeout(() => window.location.reload(), 900);
-        } else {
-          if (window.innerWidth < 768) closeSizeModal();
-          showToast('Erro ao adicionar ao carrinho', 'error', 2800);
-        }
-      })
-      .catch(() => {
-        if (window.innerWidth < 768) closeSizeModal();
-        showToast('Erro ao adicionar ao carrinho', 'error', 2800);
-      });
-  });
 })();
 });
