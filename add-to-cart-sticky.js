@@ -51,7 +51,7 @@
     margin: '0',
     borderRadius: '0',
     display: 'none',
-    height: '58px',
+    height: '60px',
     padding: '20px',
     borderColor: '#363636',
     background: '#363636',
