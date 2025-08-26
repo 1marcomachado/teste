@@ -455,7 +455,7 @@
             position: absolute;
             bottom: 8px; left: 8px;
             background-color: #bcbcbc; color: #fff;
-            font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
+            font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10; line-height: 12px;
           }
           .upselling-panel .image { position: relative; overflow: hidden; }
 
