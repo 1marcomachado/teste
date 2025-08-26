@@ -14,8 +14,8 @@
   // Seletores possíveis do chat (alguns widgets mudam a classe/estrutura)
   const chatSelectors = [
     '.online_chat.online_chat_mini_button',
-    '.online_chat',                 // fallback
-    '[class*="chat"][class*="mini"]' // fallback genérico
+    '.online_chat',
+    '[class*="chat"][class*="mini"]'
   ];
 
   // Util: encontrar o chat atual
@@ -27,12 +27,11 @@
     return null;
   };
 
-  let chatWidget = findChat();
-
-  // CSS com prioridade p/ ocultar chat
+  // CSS utilitário
   const style = document.createElement('style');
   style.textContent = `
     .chat-hidden { display: none !important; }
+    .force-hide-footer { display: none !important; }
   `;
   document.head.appendChild(style);
 
@@ -47,101 +46,40 @@
     zIndex: '9999',
     margin: '0',
     borderRadius: '0',
-    display: 'none',
     height: '55px',
     padding: '20px',
     borderColor: '#363636',
     background: '#363636',
+    display: 'block' // sempre visível
   });
   document.body.appendChild(fixedBtn);
+
+  // 🔹 Esconde a barra original SEMPRE
+  if (footerBar) {
+    footerBar.classList.add('force-hide-footer');
+    // se algum script remover o estilo, voltamos a aplicar
+    new MutationObserver(() => footerBar.classList.add('force-hide-footer'))
+      .observe(footerBar, { attributes: true, attributeFilter: ['class', 'style'] });
+  }
+
+  // 🔹 Chat sempre escondido (se definido)
+  let chatWidget = findChat();
+  const applyHideChat = (el) => el && el.classList.add('chat-hidden');
+  if (HIDE_CHAT_ALWAYS) applyHideChat(chatWidget);
+
+  // Observa o DOM para reaparição/troca do chat
+  const moBody = new MutationObserver(() => {
+    const fresh = findChat();
+    if (fresh && fresh !== chatWidget) {
+      chatWidget = fresh;
+      if (HIDE_CHAT_ALWAYS) applyHideChat(fresh);
+    }
+  });
+  moBody.observe(document.documentElement || document.body, { childList: true, subtree: true });
 
   // Clicar no fixo → dispara o original
   fixedBtn.addEventListener('click', (e) => {
     e.preventDefault();
     originalBtn.click();
   });
-
-  // Helpers
-  let originalInView = false;
-  let footerInView = false;
-
-  const isActuallyVisible = (el) => {
-    if (!el) return false;
-    const cs = getComputedStyle(el);
-    return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
-  };
-
-  // 🔹 Controla visibilidade do botão fixo + chat
-  const updateVisibility = () => {
-    const footerActive =
-      !!footerBar &&
-      (footerBar.classList.contains('visible') || footerInView) &&
-      isActuallyVisible(footerBar);
-
-    const shouldShowFixed = !originalInView && !footerActive;
-
-    // Mostrar/esconder botão fixo
-    fixedBtn.style.display = shouldShowFixed ? 'block' : 'none';
-
-    // Chat: se HIDE_CHAT_ALWAYS -> fica escondido SEMPRE neste modo
-    chatWidget = chatWidget || findChat();
-    if (chatWidget) {
-      if (HIDE_CHAT_ALWAYS || shouldShowFixed || footerActive) {
-        chatWidget.classList.add('chat-hidden');
-      } else {
-        chatWidget.classList.remove('chat-hidden');
-      }
-    }
-  };
-
-  // Observa botão original no viewport
-  const ioBtn = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (e.target === originalBtn) originalInView = e.isIntersecting;
-      }
-      updateVisibility();
-    },
-    { threshold: 0.1 }
-  );
-  ioBtn.observe(originalBtn);
-
-  // Observa footerBar
-  if (footerBar) {
-    const ioFooter = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.target === footerBar) footerInView = e.isIntersecting;
-        }
-        updateVisibility();
-      },
-      { threshold: 0.01 }
-    );
-    ioFooter.observe(footerBar);
-
-    const moFooter = new MutationObserver(updateVisibility);
-    moFooter.observe(footerBar, { attributes: true, attributeFilter: ['class', 'style'] });
-  }
-
-  // Observa o DOM inteiro p/ reaparição do chat
-  const moBody = new MutationObserver(() => {
-    const fresh = findChat();
-    if (fresh) {
-      chatWidget = fresh;
-      // aplica a regra imediatamente
-      if (HIDE_CHAT_ALWAYS) {
-        fresh.classList.add('chat-hidden');
-      }
-    }
-  });
-  moBody.observe(document.documentElement || document.body, {
-    childList: true,
-    subtree: true
-  });
-
-  window.addEventListener('scroll', updateVisibility, { passive: true });
-  window.addEventListener('resize', updateVisibility);
-
-  // Primeira avaliação
-  updateVisibility();
 })();
