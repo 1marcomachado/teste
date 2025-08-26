@@ -1,5 +1,6 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
+  if (params.get('mostrar_carrossel') !== '1') return;
 
   function waitForAngularInjector() {
     const appElement = document.querySelector('[ng-app]') || document.body;
