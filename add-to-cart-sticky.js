@@ -9,8 +9,6 @@
   const originalBtn = document.querySelector('#btt_addcart');
   if (!originalBtn) return;
 
-  const footerBar = document.querySelector('.wrapper-footer-product');
-
   // Seletores possíveis do chat (alguns widgets mudam a classe/estrutura)
   const chatSelectors = [
     '.online_chat.online_chat_mini_button',
@@ -73,12 +71,8 @@
 
   // 🔹 Controla visibilidade do botão fixo + chat
   const updateVisibility = () => {
-    const footerActive =
-      !!footerBar &&
-      (footerBar.classList.contains('visible') || footerInView) &&
-      isActuallyVisible(footerBar);
-
-    const shouldShowFixed = !originalInView && !footerActive;
+    
+    const shouldShowFixed = !originalInView;
 
     // Mostrar/esconder botão fixo
     fixedBtn.style.display = shouldShowFixed ? 'block' : 'none';
@@ -105,23 +99,6 @@
     { threshold: 0.1 }
   );
   ioBtn.observe(originalBtn);
-
-  // Observa footerBar
-  if (footerBar) {
-    const ioFooter = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.target === footerBar) footerInView = e.isIntersecting;
-        }
-        updateVisibility();
-      },
-      { threshold: 0.01 }
-    );
-    ioFooter.observe(footerBar);
-
-    const moFooter = new MutationObserver(updateVisibility);
-    moFooter.observe(footerBar, { attributes: true, attributeFilter: ['class', 'style'] });
-  }
 
   // Observa o DOM inteiro p/ reaparição do chat
   const moBody = new MutationObserver(() => {
