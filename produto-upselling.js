@@ -1,345 +1,569 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('mostrar_carrossel') !== '1') return;
 
   function waitForAngularInjector() {
-  const appElement = document.querySelector('[ng-app]') || document.body;
+    const appElement = document.querySelector('[ng-app]') || document.body;
 
-  if (window.angular && angular.element(appElement).injector()) {
-    const injector = angular.element(appElement).injector();
+    if (window.angular && angular.element(appElement).injector()) {
+      const injector = angular.element(appElement).injector();
 
-    injector.invoke(function ($rootScope) {
-      function isTamanhoSelecionado() {
-        return !!document.querySelector('.sizes label.sel');
-      }
+      injector.invoke(function ($rootScope) {
+        /* ========================== TOAST (topo do ecrã) ========================== */
+        const toast = document.createElement('div');
+        toast.className = 'upselling-toast';
+        document.body.appendChild(toast);
 
-      function extractReferencia(fromElem) {
-        const produtoElem = fromElem.closest('.produto');
-        let refElem = produtoElem?.querySelector('.ref p.small') || document.querySelector('.ref p.small');
-        return refElem ? refElem.textContent.trim() : null;
-      }
+        function showToast(msg, type = 'success', ms = 2200) {
+          toast.className = `upselling-toast ${type === 'error' ? 'error' : 'success'}`;
+          toast.textContent = msg;
+          toast.style.display = 'block';
+          clearTimeout(showToast._t);
+          showToast._t = setTimeout(() => { toast.style.display = 'none'; }, ms);
+        }
 
-      async function abrirPainelComCarrossel(referencia) {
-        document.querySelector('.upselling-overlay')?.remove();
+        /* ========================== HELPERS ========================== */
+        function isTamanhoSelecionadoProdutoBase() {
+          return !!document.querySelector('.sizes label.sel');
+        }
+        function extractReferencia(fromElem) {
+          const produtoElem = fromElem.closest('.produto');
+          let refElem = produtoElem?.querySelector('.ref p.small') || document.querySelector('.ref p.small');
+          return refElem ? refElem.textContent.trim() : null;
+        }
 
-        const overlay = document.createElement('div');
-        overlay.className = 'upselling-overlay';
-        overlay.onclick = () => {
-          overlay.remove();
-          document.body.style.overflow = '';
-        };
+        /* ========================== ⭐ WISHLIST API (sem localStorage) ========================== */
+        const WISHLIST_ADD    = id => `https://www.bzronline.com/api/api.php/addToWishList/${id}`;
+        const WISHLIST_REMOVE = id => `https://www.bzronline.com/api/api.php/removeFromWishlist/${id}`;
 
-        const panel = document.createElement('div');
-        panel.className = 'upselling-panel';
-        panel.onclick = e => e.stopPropagation();
+        /* ========================== ABRIR PAINEL ========================== */
+        async function abrirPainelComCarrossel(referencia) {
+          // Remove overlay anterior se existir
+          document.querySelector('.upselling-overlay')?.remove();
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'upselling-carousel';
+          // Overlay + Painel
+          const overlay = document.createElement('div');
+          overlay.className = 'upselling-overlay';
+          overlay.onclick = () => {
+            overlay.remove();
+            document.body.style.overflow = '';
+          };
 
-        const header = document.createElement('div');
-        header.className = 'carousel-header';
+          const panel = document.createElement('div');
+          panel.className = 'upselling-panel';
+          panel.onclick = e => e.stopPropagation();
 
-        const title = document.createElement('h2');
-        title.className = 'carousel-title';
-        title.textContent = 'FREQUENTEMENTE COMPRADOS EM CONJUNTO';
-
-        header.appendChild(title);
-        wrapper.appendChild(header);
-
-        const gridContainer = document.createElement('div');
-        gridContainer.className = 'upselling-grid';
-
-        wrapper.appendChild(gridContainer);
-        panel.appendChild(wrapper);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-        document.body.style.overflow = 'hidden';
-
-        setTimeout(() => {
-          panel.classList.add('open');
-        }, 10);
-
-        const isMobile = window.innerWidth < 768;
-
-        if (isMobile && !window.Swiper) {
-          await new Promise((resolve, reject) => {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-            document.head.appendChild(link);
-
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
+          // Botão FECHAR
+          const closeBtn = document.createElement('button');
+          closeBtn.className = 'upselling-panel-close';
+          closeBtn.setAttribute('aria-label', 'Fechar');
+          closeBtn.innerHTML = '&times;';
+          closeBtn.addEventListener('click', () => {
+            overlay.remove();
+            document.body.style.overflow = '';
           });
-        }
+          panel.appendChild(closeBtn);
 
-        let data;
-        try {
-          const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
-          data = await res.json();
-        } catch (e) {
-          console.error("Erro ao carregar upselling:", e);
-          return;
-        }
+          // Estrutura do painel
+          const wrapper = document.createElement('div');
+          wrapper.className = 'upselling-carousel';
 
-        const produto = data.produtos.find(p => p.mpn === referencia || p.reference === referencia);
-        if (!produto?.sugestoes?.length) return;
+          const header = document.createElement('div');
+          header.className = 'carousel-header';
+          const title = document.createElement('h3');
+          title.className = 'carousel-title';
+          title.textContent = 'Talvez te interesse';
+          header.appendChild(title);
+          wrapper.appendChild(header);
 
-        const sugestoes = data.produtos.filter(p => produto.sugestoes.includes(p.id));
-        if (!sugestoes.length) return;
+          const gridContainer = document.createElement('div');
+          gridContainer.className = 'upselling-grid';
+          wrapper.appendChild(gridContainer);
 
-        const addedNotice = document.createElement('div');
-        addedNotice.className = 'added-product-notice';
-        addedNotice.innerHTML = `
-          <h3 class="added-title">✅ Produto adicionado ao carrinho</h3>
-          <article class="product added-product-horizontal grid-item" data-row="1">
-            <div class="image">
-              <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
-            </div>
-            <div class="desc">
-              <div class="wrapper-top clearfix">
-                <p class="brand">${produto.brand || ''}</p>
-              </div>
-              <div class="wrapper-bottom">
-                <p class="name">${produto.title}</p>
-                <p class="product-size">Tamanho: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
-                <div class="price clearfix">
-                  <p class="current">${(produto.price || '').replace('.', ',')} €</p>
-                </div>
-              </div>
-            </div>
-          </article>
-          <hr class="separator">
-        `;
-        panel.insertBefore(addedNotice, wrapper);
+          panel.appendChild(wrapper);
+          overlay.appendChild(panel);
+          document.body.appendChild(overlay);
+          document.body.style.overflow = 'hidden';
 
-        sugestoes.forEach(s => {
-          const slide = document.createElement('div');
-          slide.className = isMobile ? 'swiper-slide' : 'grid-item';
-          slide.innerHTML = `
-            <article class="product" data-row="1">
+          setTimeout(() => { panel.classList.add('open'); }, 10);
+
+          // Carregar JSON
+          let data;
+          try {
+            const res = await fetch('https://raw.githubusercontent.com/1marcomachado/upselling-json/main/upselling_final.json');
+            data = await res.json();
+          } catch (e) {
+            console.error("Erro ao carregar upselling:", e);
+            return;
+          }
+
+          const produto = data.produtos.find(p => p.mpn === referencia || p.reference === referencia);
+          if (!produto?.sugestoes?.length) return;
+
+          const sugestoes = data.produtos.filter(p => produto.sugestoes.includes(p.mpn));
+          if (!sugestoes.length) return;
+
+          // Produto adicionado (topo do painel)
+          const addedNotice = document.createElement('div');
+          addedNotice.className = 'added-product-notice';
+          addedNotice.innerHTML = `
+            <h3 class="added-title">Produto adicionado ao carrinho</h3>
+            <article class="product added-product-horizontal grid-item" data-row="1">
               <div class="image">
-                <a href="/item_${s.id}.html">
-                  <figure style="margin:0">
-                    <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
-                  </figure>
-                </a>
+                <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
+                <br><a href="/checkout/v1/?id=1" class="btn-cart">VER CARRINHO</a>
               </div>
               <div class="desc">
-                <a href="/item_${s.id}.html">
-                  <div class="wrapper-top clearfix">
-                    <p class="brand">${s.brand || ''}</p>
-                    <p class="available-colors">${s.cores || ''}</p>
+                <div class="wrapper-top clearfix">
+                  <p class="brand">${produto.brand || ''}</p>
+                </div>
+                <div class="wrapper-bottom">
+                  <p class="name">${produto.title}</p>
+                  <p class="product-size">Tamanho: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
+                  <div class="price clearfix">
+                    <p class="current">${(produto.price || '').replace('.', ',')} €</p>
                   </div>
-                  <div class="wrapper-bottom">
-                    <p class="name">${s.title}</p>
-                    <div class="price clearfix">
-                      <p class="current">${(s.price || '').replace('.', ',')} €</p>
-                    </div>
-                  </div>
-                </a>
+                </div>
               </div>
             </article>
+            <hr class="separator">
           `;
-          gridContainer.appendChild(slide);
-        });
+          panel.insertBefore(addedNotice, wrapper);
 
-        if (isMobile) {
-          gridContainer.classList.add('swiper');
-          const swiperWrapper = document.createElement('div');
-          swiperWrapper.className = 'swiper-wrapper';
-          swiperWrapper.innerHTML = gridContainer.innerHTML;
-          gridContainer.innerHTML = '';
-          gridContainer.appendChild(swiperWrapper);
+          // Render das sugestões (com botão + e listas de tamanhos) + FAVORITOS no .available-colors
+          sugestoes.forEach(s => {
+            const slide = document.createElement('div');
+            slide.className = 'grid-item';
 
-          new Swiper(gridContainer, {
-            slidesPerView: 1.5,
-            spaceBetween: 16,
-            autoHeight: true,
-            breakpoints: {
-              480: { slidesPerView: 1.5 },
-              640: { slidesPerView: 1.5 },
-              768: { slidesPerView: 3 }
+            const sizesList = Array.isArray(s.variantes) && s.variantes.length
+              ? `
+                <div class="sizes-list" style="display:none;">
+                  <div class="sizes-list-header">Seleciona o teu tamanho</div>
+                  ${s.variantes.map(v => `
+                    <div class="size-option ${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">
+                      ${v.size}
+                    </div>
+                  `).join('')}
+                </div>
+              `
+              : '';
+
+            slide.innerHTML = `
+              <article class="product" data-row="1" data-pid="${s.id}">
+                <div class="image">
+                  <a href="/item_${s.id}.html">
+                    <figure style="margin:0">
+                      <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
+                    </figure>
+                  </a>
+                  <div class="size-popup-button">+</div>
+                  ${sizesList}
+                </div>
+                <div class="desc">
+                  <a href="/item_${s.id}.html">
+                    <div class="wrapper-top clearfix">
+                      <p class="brand">${s.brand || ''}</p>
+                      <p class="available-colors">
+                        ${s.cores || ''}
+                        <button class="fav-btn"
+                                type="button"
+                                aria-label="Adicionar aos favoritos"
+                                aria-pressed="false"
+                                title="Adicionar aos favoritos"
+                                data-id="${s.id}"></button>
+                      </p>
+                    </div>
+                    <div class="wrapper-bottom">
+                      <p class="name">${s.title}</p>
+                      <div class="price clearfix">
+                        <p class="current">${(s.price || '').replace('.', ',')} €</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </article>
+            `;
+            gridContainer.appendChild(slide);
+          });
+
+          /* ============ MOBILE MODAL para tamanhos (half-screen) ============ */
+          const modalBackdrop = document.createElement('div');
+          modalBackdrop.className = 'upselling-size-backdrop';
+          const modal = document.createElement('div');
+          modal.className = 'upselling-size-modal';
+          modal.innerHTML = `
+            <div class="upselling-size-modal-header">
+              <span>Seleciona o tamanho</span>
+              <span class="upselling-size-modal-close" aria-label="Fechar">&times;</span>
+            </div>
+            <div class="upselling-size-modal-body"></div>
+          `;
+          document.body.appendChild(modalBackdrop);
+          document.body.appendChild(modal);
+
+          function openSizeModalFromProductCard(productCard) {
+            const sizes = productCard.querySelectorAll('.sizes-list .size-option');
+            const body = modal.querySelector('.upselling-size-modal-body');
+            body.innerHTML = Array.from(sizes).map(opt => `
+              <div class="size-option-modal ${opt.classList.contains('out-of-stock') ? 'out-of-stock' : ''}"
+                   data-id="${opt.getAttribute('data-id')}">
+                ${opt.textContent.trim()}
+              </div>
+            `).join('');
+            modalBackdrop.classList.add('show');
+            modal.classList.add('show');
+            body.scrollTop = 0;
+          }
+          function closeSizeModal(){ modalBackdrop.classList.remove('show'); modal.classList.remove('show'); }
+          modalBackdrop.addEventListener('click', closeSizeModal);
+          modal.querySelector('.upselling-size-modal-close').addEventListener('click', closeSizeModal);
+          document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSizeModal(); });
+
+          /* ========================== EVENTOS NO PAINEL ========================== */
+
+          // Fechar outros dropdowns desktop
+          function closeAllDesktopLists(ctx) {
+            ctx.querySelectorAll('.sizes-list').forEach(p => {
+              if (getComputedStyle(p).display !== 'none') p.style.display = 'none';
+            });
+          }
+
+          // Botão "+" → abrir lista de tamanhos (desktop) ou modal (mobile)
+          panel.addEventListener('click', function (e) {
+            const plus = e.target.closest('.size-popup-button');
+            if (!plus) return;
+
+            const product = plus.closest('article.product');
+            const list = product.querySelector('.sizes-list');
+
+            if (window.innerWidth < 768) {
+              if (list) openSizeModalFromProductCard(product);
+              e.stopPropagation();
+              e.preventDefault();
+              return;
+            }
+
+            if (list) {
+              closeAllDesktopLists(panel);
+              list.style.display = (list.style.display === 'none' || !list.style.display) ? 'block' : 'none';
+              if (list.style.display === 'block') {
+                if (list.scrollHeight > list.clientHeight) {
+                  list.scrollTop = list.scrollHeight;
+                } else {
+                  list.scrollTop = 0;
+                }
+              }
+            }
+            e.stopPropagation();
+            e.preventDefault();
+          });
+
+          // Seleção (desktop): ADD TO BASKET
+          panel.addEventListener('click', function (e) {
+            const desktopOpt = (window.innerWidth >= 768)
+              ? e.target.closest('.sizes-list .size-option:not(.out-of-stock)')
+              : null;
+
+            if (desktopOpt) {
+              const variantId = desktopOpt.getAttribute('data-id');
+              const list = desktopOpt.closest('.sizes-list');
+              if (!variantId) return;
+
+              fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${variantId}/1/0`)
+                .then(r => r.json())
+                .then(json => {
+                  const ok = (json?.status === true || json?.status === "true");
+                  if (ok) {
+                    showToast('Adicionado ao carrinho', 'success');
+                    if (list) list.style.display = 'none';
+                  } else {
+                    showToast('Erro ao adicionar ao carrinho', 'error', 2600);
+                  }
+                })
+                .catch(() => showToast('Erro ao adicionar ao carrinho', 'error', 2600));
+            }
+          });
+
+          // Seleção (mobile): ADD TO BASKET
+          modal.addEventListener('click', function (e) {
+            const opt = e.target.closest('.size-option-modal:not(.out-of-stock)');
+            if (!opt) return;
+
+            const variantId = opt.getAttribute('data-id');
+            if (!variantId) return;
+
+            fetch(`https://www.bzronline.com/api/api.php/addToBasket/5/0/${variantId}/1/0`)
+              .then(r => r.json())
+              .then(json => {
+                const ok = (json?.status === true || json?.status === "true");
+                if (ok) {
+                  showToast('Adicionado ao carrinho', 'success');
+                  closeSizeModal();
+                } else {
+                  showToast('Erro ao adicionar ao carrinho', 'error', 2600);
+                }
+              })
+              .catch(() => showToast('Erro ao adicionar ao carrinho', 'error', 2600));
+          });
+
+          /* ========================== ⭐ FAVORITOS (eventos, sem localStorage) ========================== */
+          panel.addEventListener('click', async function (e) {
+            const btn = e.target.closest('.fav-btn');
+            if (!btn) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const id = btn.getAttribute('data-id');
+            const willAdd = !btn.classList.contains('active');
+
+            // UI otimista
+            btn.classList.toggle('active', willAdd);
+            btn.setAttribute('aria-pressed', willAdd ? 'true' : 'false');
+            btn.setAttribute('aria-label', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+            btn.setAttribute('title', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+
+            try {
+              const url = willAdd ? WISHLIST_ADD(id) : WISHLIST_REMOVE(id);
+              const res = await fetch(url, {
+                method: 'GET',
+                credentials: 'include',
+                headers: { 'Accept': 'application/json,*/*;q=0.9' }
+              });
+
+              let ok = res.ok;
+              try {
+                const data = await res.clone().json();
+                if (typeof data?.status !== 'undefined') {
+                  ok = (data.status === true || data.status === 'true');
+                }
+              } catch { /* pode não ser JSON */ }
+
+              if (!ok) throw new Error('Wishlist request failed');
+
+              showToast(willAdd ? 'Adicionado aos favoritos' : 'Removido dos favoritos', 'success');
+            } catch (err) {
+              // reverte UI se falhar
+              const reverted = !willAdd;
+              btn.classList.toggle('active', reverted);
+              btn.setAttribute('aria-pressed', reverted ? 'true' : 'false');
+              btn.setAttribute('aria-label', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+              btn.setAttribute('title', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+              showToast('Erro ao atualizar favoritos', 'error', 2600);
             }
           });
         }
-      }
 
-      $rootScope.$on('addCartFunc', async function (e, data) {
-        const elem = data.$elem.currentTarget || data.$elem.target;
+        /* ========================== HOOK ANGULAR ========================== */
+        $rootScope.$on('addCartFunc', async function (e, data) {
+          const elem = data.$elem?.currentTarget || data.$elem?.target || null;
+          if (!elem) return;
+          if (!isTamanhoSelecionadoProdutoBase()) return;
+          const referencia = extractReferencia(elem);
+          if (referencia) abrirPainelComCarrossel(referencia);
+        });
 
-        if (!isTamanhoSelecionado()) {
-          alert("⚠️ Por favor, selecione um tamanho antes de continuar.");
-          return;
-        }
+        /* ========================== CSS ========================== */
+        const style = document.createElement('style');
+        style.textContent = `
+          /* Overlay e painel */
+          .upselling-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 9998;
+          }
+          .upselling-panel {
+            position: fixed;
+            z-index: 9999;
+            background: #fff;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            overflow-y: auto;
+            max-height: 100vh;
+            padding: 24px;
+            opacity: 0;
+          }
+          @media (min-width: 768px) {
+            .upselling-panel { top: 0; right: 0; width: 510px; height: 100%; transform: translateX(100%); }
+            .upselling-panel.open { transform: translateX(0); opacity: 1; }
+          }
+          @media (max-width: 767px) {
+            .upselling-panel { left: 0; right: 0; bottom: 0; max-height: 80vh; transform: translateY(100%); }
+            .upselling-panel.open { transform: translateY(0); opacity: 1; }
+          }
 
-        const referencia = extractReferencia(elem);
-        if (referencia) {
-          abrirPainelComCarrossel(referencia);
-        }
+          /* Botão fechar */
+          .upselling-panel-close{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px; height: 36px;
+            border: none; background: transparent; color: #000;
+            font-size: 26px; line-height: 1; cursor: pointer; padding: 0px; margin: 10px 0px;
+          }
+          .upselling-panel-close:focus{ outline: 2px solid #000; outline-offset: 2px; }
+
+          /* Toast */
+          .upselling-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+            background: #111;
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(0,0,0,.2);
+          }
+          .upselling-toast.error { background: red; }
+
+          /* Grid */
+          .upselling-carousel .carousel-header { margin-bottom: 12px; }
+          .upselling-carousel .carousel-title { font-size: 16px; font-weight: 600; margin: 0; color: #000; }
+          .upselling-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+          .upselling-panel .product .image img { width: 100%; height: auto; display: block; }
+          .upselling-panel .wrapper-top {display: flex;  justify-content: space-between; align-items: center;}
+          .upselling-panel .product .brand { font-size: 12px; color: #000; margin: 0; }
+          .upselling-panel .product .name {
+            font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
+            min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+          }
+          .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 4px; }
+
+          /* Produto adicionado */
+          .added-product-notice { margin-bottom: 24px; }
+          .added-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+          .added-product-horizontal { display: flex !important; gap: 16px; align-items: flex-start; }
+          .added-product-horizontal .image { flex-shrink: 0; max-width: 180px; }
+          @media (max-width: 480px) { .added-product-horizontal .image { max-width: 120px; } }
+          .added-product-horizontal .image img { width: 100%; height: auto; display: block; }
+          .added-product-horizontal .name {
+            font-size: 13px; font-weight: bold; margin: 6px 0 4px; line-height: 1.2em;
+            min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+          }
+          .added-product-horizontal .product-size,
+          .added-product-horizontal .price .current { font-size: 13px; color: #000; margin: 2px 0; }
+          .separator { border: none; border-top: 1px solid #ccc; margin: 16px 0; }
+
+          /* Botão + e lista tamanhos */
+          .size-popup-button {
+            position: absolute;
+            bottom: 8px; left: 8px;
+            background-color: #bcbcbc; color: #fff;
+            font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
+          }
+          .upselling-panel .image { position: relative; overflow: hidden; }
+
+          @media (min-width: 768px) {
+            .sizes-list {
+              position: absolute;
+              bottom: 0; left: 0; right: 0;
+              display: none;
+              background: #fff;
+              border: 1px solid #000;
+              z-index: 999;
+              max-height: min(60vh, 420px);
+              overflow-y: auto;
+              box-sizing: border-box;
+              text-align: center;
+              scrollbar-width: thin;
+              scrollbar-color: #999 transparent;
+            }
+            .sizes-list::-webkit-scrollbar { width: 6px; }
+            .sizes-list::-webkit-scrollbar-track { background: transparent; }
+            .sizes-list::-webkit-scrollbar-thumb { background-color: #999; border-radius: 3px; }
+          }
+          .sizes-list-header {
+            font-size: 13px;
+            font-weight: 400;
+            color: #000;
+            padding: 6px 12px;
+            border-bottom: 1px solid #ddd;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
+          }
+          .sizes-list .size-option {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+          }
+          .sizes-list .size-option:hover { background: #f5f5f5; }
+          .sizes-list .out-of-stock {
+            opacity: .5; text-decoration: line-through; pointer-events: none; background: #eee;
+          }
+
+          /* MOBILE: modal half-screen */
+          @media (max-width: 767.98px) {
+            .upselling-size-backdrop {
+              position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 10000;
+              opacity: 0; pointer-events: none; transition: opacity .25s ease;
+            }
+            .upselling-size-backdrop.show { opacity: 1; pointer-events: auto; }
+
+            .upselling-size-modal {
+              position: fixed; z-index: 10001; left: 0; right: 0; bottom: -60vh;
+              width: 100vw; max-height: 50vh; background: #fff; border: 1px solid #000;
+              box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+              opacity: 0; transition: bottom .28s ease, opacity .28s ease;
+            }
+            .upselling-size-modal.show { bottom: 0; opacity: 1; }
+
+            .upselling-size-modal-header {
+              display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+              padding: 12px 8px; font-weight: 600; border-bottom: 1px solid #eee;
+            }
+            .upselling-size-modal-header > span:first-child { grid-column: 2; justify-self: center; }
+            .upselling-size-modal-close {
+              grid-column: 3; justify-self: end; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+              cursor: pointer; font-size: 20px; line-height: 1;
+            }
+            .upselling-size-modal-body { padding: 12px 16px 16px; max-height: calc(50vh - 52px); overflow-y: auto; }
+            .size-option-modal {
+              padding: 10px 14px; font-size: 15px; cursor: pointer; border-radius: 6px; text-align: center;
+            }
+            .size-option-modal:hover { background: #f5f5f5; }
+            .size-option-modal.out-of-stock { opacity: .5; text-decoration: line-through; pointer-events: none; }
+            .upselling-panel .btn-cart { padding: 8px 10px; }
+          }
+
+          /* ========================== ⭐ FAVORITOS (sprite vertical) ========================== */
+          .upselling-panel .available-colors {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .fav-btn{
+            width: 26px;
+            height: 26px;
+            margin-left: 4px;
+            border: none;
+            background: url('https://1250447178.rsc.cdn77.org/sysimages/icon-wishlist-product.png') no-repeat 0 0;
+            background-size: 26px 52px;   /* 2 frames verticais (26x26 cada) */
+            cursor: pointer;
+            padding: 0px;
+            background-color: unset !important;
+            border-color: unset !important;
+          }
+          .fav-btn:hover{
+            background-color: unset !important;
+            border-color: unset !important;
+          }
+          .fav-btn.active{
+            background-position: 0 -26px; /* mostra o frame de baixo (ativo) */
+          }
+        `;
+        document.head.appendChild(style);
+
       });
-
-      const style = document.createElement('style');
-      style.textContent = `
-        .upselling-overlay {
-          position: fixed;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0, 0, 0, 0.4);
-          z-index: 9998;
-        }
-        .upselling-panel {
-          position: fixed;
-          z-index: 9999;
-          background: #fff;
-          box-shadow: 0 0 20px rgba(0,0,0,0.2);
-          transition: transform 0.4s ease, opacity 0.4s ease;
-          overflow-y: auto;
-          max-height: 100vh;
-          padding: 24px;
-          opacity: 0;
-        }
-        @media (min-width: 768px) {
-          .upselling-panel {
-            top: 0; right: 0;
-            width: 480px;
-            height: 100%;
-            transform: translateX(100%);
-          }
-          .upselling-panel.open {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-        @media (max-width: 767px) {
-          .upselling-panel {
-            left: 0; right: 0; bottom: 0;
-            height: auto;
-            max-height: 80vh;
-            transform: translateY(100%);
-          }
-          .upselling-panel.open {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        .upselling-panel .carousel-title {
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 20px;
-        }
-        .upselling-panel .upselling-grid.swiper { overflow: hidden; }
-        .upselling-panel .grid-item, .upselling-panel .swiper-slide {
-          box-sizing: border-box;
-          padding: 10px;
-        }
-        @media (min-width: 768px) {
-          .upselling-panel .upselling-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-          }
-        }
-        .upselling-panel .product .image img {
-          width: 100%;
-          height: auto;
-        }
-        .upselling-panel .product .brand {
-          font-size: 12px;
-          color: #000;
-          margin-bottom: 4px;
-        }
-        .upselling-panel .product .name {
-          font-size: 13px;
-          font-weight: bold;
-          margin: 6px 0 4px;
-          line-height: 1.2em;
-          min-height: 3.6em;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-        }
-        .upselling-panel .product .price .current {
-          font-size: 14px;
-          color: #000;
-          margin-top: 4px;
-        }
-
-        .upselling-panel .added-product-notice {
-          margin-bottom: 24px;
-        }
-        .upselling-panel .added-title {
-          font-size: 16px;
-          font-weight: 600;
-          color: green;
-          margin-bottom: 12px;
-        }
-        .upselling-panel .added-product-horizontal {
-          display: flex !important;
-          flex-direction: row;
-          gap: 16px;
-          align-items: flex-start;
-        }
-        .upselling-panel .added-product-horizontal .image {
-          flex-shrink: 0;
-          max-width: 180px;
-        }
-        @media (max-width: 480px) {
-          .upselling-panel .added-product-horizontal .image {
-            max-width: 100px;
-          }
-        }
-        .upselling-panel .added-product-horizontal .image img {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-        .upselling-panel .added-product-horizontal .desc {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .upselling-panel .added-product-horizontal .brand {
-          font-size: 12px;
-          color: #000;
-          margin-bottom: 4px;
-        }
-        .upselling-panel .added-product-horizontal .name {
-          font-size: 13px;
-          font-weight: bold;
-          margin: 6px 0 4px;
-          line-height: 1.2em;
-          min-height: 3.6em;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-        }
-        .upselling-panel .added-product-horizontal .product-size,
-        .upselling-panel .added-product-horizontal .price .current {
-          font-size: 13px;
-          color: #000;
-          margin: 2px 0;
-        }
-        .upselling-panel .separator {
-          border: none;
-          border-top: 1px solid #ccc;
-          margin: 16px 0;
-        }
-      `;
-      document.head.appendChild(style);
-    });
-  } else {
-    setTimeout(waitForAngularInjector, 100);
+    } else {
+      setTimeout(waitForAngularInjector, 100);
+    }
   }
-}
 
-waitForAngularInjector();
-
+  waitForAngularInjector();
 })();
