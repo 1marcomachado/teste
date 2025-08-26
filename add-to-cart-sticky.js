@@ -1,7 +1,7 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
   const isMobile = window.innerWidth <= 768; // ajusta se quiseres incluir tablet
-  if (params.get('mostrar_carrinho') !== '1' || !isMobile) return;
+  if (!isMobile) return;
 
   const HIDE_CHAT_ALWAYS = true;
 
@@ -55,6 +55,7 @@
     padding: '20px',
     borderColor: '#363636',
     background: '#363636',
+    border: '1px solid #fff',
   });
   document.body.appendChild(fixedBtn);
 
