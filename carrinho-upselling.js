@@ -160,6 +160,32 @@ window.addEventListener("load", () => {
     }
     .upselling-toast.success { background: #111; }
     .upselling-toast.error   { background: red; }
+
+    /* ========================== ⭐ FAVORITOS (sprite vertical) ========================== */
+    .upselling-panel .available-colors {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fav-btn{
+      width: 26px;
+      height: 26px;
+      margin-left: 4px;
+      border: none;
+      background: url('https://1250447178.rsc.cdn77.org/sysimages/icon-wishlist-product.png') no-repeat 0 0;
+      background-size: 26px 52px;   /* 2 frames verticais (26x26 cada) */
+      cursor: pointer;
+      padding: 0px;
+      background-color: unset !important;
+      border-color: unset !important;
+    }
+    .fav-btn:hover{
+      background-color: unset !important;
+      border-color: unset !important;
+    }
+    .fav-btn.active{
+      background-position: 0 -26px; /* mostra o frame de baixo (ativo) */
+    }
   `;
   document.head.appendChild(style);
 
@@ -275,6 +301,7 @@ window.addEventListener("load", () => {
             <div class="wrapper-top clearfix">
               <p class="brand">${s.brand || ''}</p>
               <p class="available-colors">${s.cores || ''}</p>
+              <button class="fav-btn" type="button" aria-label="Adicionar aos favoritos"                                 aria-pressed="false" title="Adicionar aos favoritos" data-id="${s.id}"></button>
             </div>
             <div class="wrapper-bottom">
               <p class="name">${s.title}</p>
@@ -341,6 +368,54 @@ window.addEventListener("load", () => {
     }
     openSizeModal('', variantes);
   }, { passive: false });
+
+  /* ========================== ⭐ FAVORITOS (eventos, sem localStorage) ========================== */
+  panel.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.fav-btn');
+    if (!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const id = btn.getAttribute('data-id');
+    const willAdd = !btn.classList.contains('active');
+
+    // UI otimista
+    btn.classList.toggle('active', willAdd);
+    btn.setAttribute('aria-pressed', willAdd ? 'true' : 'false');
+    btn.setAttribute('aria-label', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+    btn.setAttribute('title', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+
+    try {
+      const url = willAdd ? WISHLIST_ADD(id) : WISHLIST_REMOVE(id);
+      const res = await fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Accept': 'application/json,*/*;q=0.9' }
+      });
+
+      let ok = res.ok;
+      try {
+        const data = await res.clone().json();
+        if (typeof data?.status !== 'undefined') {
+          ok = (data.status === true || data.status === 'true');
+        }
+      } catch { /* pode não ser JSON */ }
+
+      if (!ok) throw new Error('Wishlist request failed');
+
+      showToast(willAdd ? 'Adicionado aos favoritos' : 'Removido dos favoritos', 'success');
+    } catch (err) {
+      // reverte UI se falhar
+      const reverted = !willAdd;
+      btn.classList.toggle('active', reverted);
+      btn.setAttribute('aria-pressed', reverted ? 'true' : 'false');
+      btn.setAttribute('aria-label', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+      btn.setAttribute('title', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+      showToast('Erro ao atualizar favoritos', 'error', 2600);
+    }
+  });
+}
 
   // Adicionar ao carrinho (desktop e mobile)
   document.addEventListener('click', function (e) {
