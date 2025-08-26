@@ -446,6 +446,5 @@ window.addEventListener("load", () => {
       showToast('Erro ao atualizar favoritos', 'error', 2600);
     }
   });
-}
 })();
 });
