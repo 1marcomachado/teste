@@ -457,6 +457,14 @@
             background-color: #bcbcbc; color: #fff;
             font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10; line-height: 12px;
           }
+          .size-popup-button::before { 
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+          }
           .upselling-panel .image { position: relative; overflow: hidden; }
 
           @media (min-width: 768px) {
