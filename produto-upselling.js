@@ -24,14 +24,6 @@
     return fallbackFlat || "";
   }
 
-  /* Locale & preço (EUR por defeito) */
-  const LANG_TO_LOCALE = { pt: "pt-PT", es: "es-ES", en: "en-GB" };
-  function formatPrice(input, currency="EUR"){
-    const n = Number(String(input).replace(",", "."));
-    if (Number.isNaN(n)) return String(input || "");
-    return new Intl.NumberFormat(LANG_TO_LOCALE[LANG] || LANG_TO_LOCALE.pt, { style:"currency", currency, minimumFractionDigits:2 }).format(n).replace(/\u00A0/g, " ");
-  }
-
   function waitForAngularInjector() {
     const appElement = document.querySelector('[ng-app]') || document.body;
 
