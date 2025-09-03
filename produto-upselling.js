@@ -1,12 +1,14 @@
 (function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('mostrar_carrossel') !== '1') return;
   const LANG = (document.body.getAttribute("data-shop-lang") || document.documentElement.lang || "pt").toLowerCase();
   const FALLBACK_LANG = "pt";
 
   /* Textos fixos */
   const I18N = {
-    pt: { maybe:"Talvez te interesse", added:"Produto adicionado ao carrinho", size:"Seleciona o teu tamanho", seeCart:"VER CARRINHO", addToCart:"Adicionado ao carrinho", addToFav:"Adicionado aos favoritos", removeFromFav:"Removido dos favoritos", errorCart:"Erro ao adicionar ao carrinho", errorFav:"Erro ao atualizar favoritos", favAdd: "Adicionar aos favoritos", favRemove: "Remover dos favoritos" },
-    es: { maybe:"Quizás te interese", added:"Producto añadido al carrito", size:"Selecciona tu talla", seeCart:"VER CARRITO", addToCart:"Añadido al carrito", addToFav:"Añadido a favoritos", removeFromFav:"Eliminado de favoritos", errorCart:"Error al añadir al carrito", errorFav:"Error al actualizar favoritos", favAdd: "Añadir a favoritos", favRemove: "Quitar de favoritos" },
-    en: { maybe:"You may also like", added:"Product added to cart", size:"Select your size", seeCart:"VIEW CART", addToCart:"Added to cart", addToFav:"Added to wishlist", removeFromFav:"Removed from wishlist", errorCart:"Error adding to cart", errorFav:"Error updating wishlist", favAdd: "Add to wishlist",
+    pt: { maybe:"Talvez te interesse", added:"Produto adicionado ao carrinho", size:"Seleciona o teu tamanho", seeCart:"VER CARRINHO", addToCart:"Adicionado ao carrinho", addToFav:"Adicionado aos favoritos", removeFromFav:"Removido dos favoritos", errorCart:"Erro ao adicionar ao carrinho", errorFav:"Erro ao atualizar favoritos", sizeLabel: "Tamanho", favAdd: "Adicionar aos favoritos", favRemove: "Remover dos favoritos" },
+    es: { maybe:"Quizás te interese", added:"Producto añadido al carrito", size:"Selecciona tu talla", seeCart:"VER CARRITO", addToCart:"Añadido al carrito", addToFav:"Añadido a favoritos", removeFromFav:"Eliminado de favoritos", errorCart:"Error al añadir al carrito", errorFav:"Error al actualizar favoritos",  sizeLabel: "Tamanho", favAdd: "Añadir a favoritos", favRemove: "Quitar de favoritos" },
+    en: { maybe:"You may also like", added:"Product added to cart", size:"Select your size", seeCart:"VIEW CART", addToCart:"Added to cart", addToFav:"Added to wishlist", removeFromFav:"Removed from wishlist", errorCart:"Error adding to cart", errorFav:"Error updating wishlist", sizeLabel: "Tamanho", favAdd: "Add to wishlist",
     favRemove: "Remove from wishlist" }
   };
   function t(key){ return (I18N[LANG] && I18N[LANG][key]) || (I18N[FALLBACK_LANG] && I18N[FALLBACK_LANG][key]) || key; }
@@ -150,7 +152,7 @@
                 </div>
                 <div class="wrapper-bottom">
                   <p class="name">${produtoTitle}</p>
-                  <p class="product-size">Tamanho: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
+                  <p class="product-size">${t("sizeLabel")}: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
                   <div class="price clearfix">
                     <p class="current">${(produto.price || '').replace('.', ',')} €</p>
                   </div>
@@ -219,7 +221,7 @@
           modal.className = 'upselling-size-modal';
           modal.innerHTML = `
             <div class="upselling-size-modal-header">
-              <span>Seleciona o tamanho</span>
+              <span>${t("size")}</span>
               <span class="upselling-size-modal-close" aria-label="Fechar">&times;</span>
             </div>
             <div class="upselling-size-modal-body"></div>
