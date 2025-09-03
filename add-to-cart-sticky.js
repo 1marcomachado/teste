@@ -47,7 +47,7 @@
     bottom: '0',
     left: '0',
     right: '0',
-    zIndex: '9999',
+    zIndex: '9997',
     margin: '0',
     borderRadius: '0',
     display: 'none',
