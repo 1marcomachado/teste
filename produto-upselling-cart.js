@@ -1,7 +1,4 @@
 (function(){
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('mostrar_carrossel') !== '1') return;
-
   var CART_WRAP = '#header .cart';   // wrapper do ícone do carrinho
   var CART_LINK = '#itemsCart';      // link/ícone do carrinho
   var DROPDOWN  = '.items-dropdown'; // dropdown do mini-carrinho
