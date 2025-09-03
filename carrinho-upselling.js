@@ -1,4 +1,28 @@
-window.addEventListener("load", () => {
+  const LANG = (document.body.getAttribute("data-shop-lang") || document.documentElement.lang || "pt").toLowerCase();
+  const FALLBACK_LANG = "pt";
+
+  /* Textos fixos */
+  const I18N = {
+    pt: { maybe:"Talvez te interesse", added:"Produto adicionado ao carrinho", size:"Seleciona o teu tamanho", seeCart:"VER CARRINHO", addToCart:"Adicionado ao carrinho", addToFav:"Adicionado aos favoritos", removeFromFav:"Removido dos favoritos", errorCart:"Erro ao adicionar ao carrinho", errorFav:"Erro ao atualizar favoritos", sizeLabel: "Tamanho", favAdd: "Adicionar aos favoritos", favRemove: "Remover dos favoritos" },
+    es: { maybe:"Quizás te interese", added:"Producto añadido al carrito", size:"Selecciona tu talla", seeCart:"VER CARRITO", addToCart:"Añadido al carrito", addToFav:"Añadido a favoritos", removeFromFav:"Eliminado de favoritos", errorCart:"Error al añadir al carrito", errorFav:"Error al actualizar favoritos",  sizeLabel: "Tamanho", favAdd: "Añadir a favoritos", favRemove: "Quitar de favoritos" },
+    en: { maybe:"You may also like", added:"Product added to cart", size:"Select your size", seeCart:"VIEW CART", addToCart:"Added to cart", addToFav:"Added to wishlist", removeFromFav:"Removed from wishlist", errorCart:"Error adding to cart", errorFav:"Error updating wishlist", sizeLabel: "Tamanho", favAdd: "Add to wishlist",
+    favRemove: "Remove from wishlist" }
+  };
+  function t(key){ return (I18N[LANG] && I18N[LANG][key]) || (I18N[FALLBACK_LANG] && I18N[FALLBACK_LANG][key]) || key; }
+
+  function pickLocalized(obj, baseKey) {
+    if (!obj) return "";
+    const val = obj[baseKey];
+    if (val && typeof val === "object") {
+      return val[LANG] || val[FALLBACK_LANG] || Object.values(val).find(Boolean) || "";
+    }
+    const flat = obj[`${baseKey}_${LANG}`] || obj[`${baseKey}_${LANG.toUpperCase()}`];
+    if (flat) return flat;
+    if (typeof val === "string") return val; // já é string (ex.: só PT)
+    const fallbackFlat = obj[`${baseKey}_${FALLBACK_LANG}`] || obj[`${baseKey}_${FALLBACK_LANG.toUpperCase()}`];
+    return fallbackFlat || "";
+  }
+window.addEventListener("load", () => {  
 (async () => {
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
@@ -42,6 +66,14 @@ window.addEventListener("load", () => {
     .upselling-carousel .size-popup-button {
       position: absolute; bottom: 8px; left: 8px; background-color: #bcbcbc; color: #fff;
       font-size: 12px; padding: 3px 6px; cursor: pointer; z-index: 10;
+    }
+    .upselling-carousel .size-popup-button::before { 
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
     }
 
     /* ===== DESKTOP: lista de tamanhos (abre de cima para baixo) ===== */
@@ -193,7 +225,7 @@ window.addEventListener("load", () => {
   modal.className = 'upselling-size-modal';
   modal.innerHTML = `
     <div class="upselling-size-modal-header">
-      <span>Seleciona o tamanho</span>
+      <span>${t("size")}</span>
       <span class="upselling-size-modal-close" aria-label="Fechar">&times;</span>
     </div>
     <div class="upselling-size-modal-body"></div>
@@ -275,19 +307,19 @@ window.addEventListener("load", () => {
     item.className = 'grid-item';
     const sizesList = Array.isArray(s.variantes) && s.variantes.length
       ? `<div class="sizes-list">
-           <div class="sizes-list-header">Seleciona o teu tamanho</div>
+           <div class="sizes-list-header">${t("size")}</div>
            ${s.variantes.map(v => `
              <div class="${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">${v.size}</div>
            `).join('')}
          </div>`
       : '';
-
+    const sTitle = pickLocalized(s, "title") || "";           
     item.innerHTML = `
       <article class="product">
         <div class="image">
           <a href="/item_${s.id}.html">
             <figure style="margin:0">
-              <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
+              <img src="${s.image}" alt="${sTitle}" title="${sTitle}" loading="lazy">
             </figure>
           </a>
           <div class="size-popup-button">+</div>
@@ -298,10 +330,10 @@ window.addEventListener("load", () => {
             <div class="wrapper-top clearfix">
               <p class="brand">${s.brand || ''}</p>
               <p class="available-colors">${s.cores || ''}
-              <button class="fav-btn" type="button" aria-label="Adicionar aos favoritos"                                 aria-pressed="false" title="Adicionar aos favoritos" data-id="${s.id}"></button></p>
+              <button class="fav-btn" type="button" data-id="${s.id}"></button></p>
             </div>
             <div class="wrapper-bottom">
-              <p class="name">${s.title}</p>
+              <p class="name">${sTitle}</p>
               <div class="price clearfix">
                 <p class="current">${(s.price || '').replace('.', ',')} €</p>
               </div>
@@ -386,16 +418,16 @@ window.addEventListener("load", () => {
         const ok = (json?.status === true || json?.status === "true");
         if (ok) {
           if (window.innerWidth < 768) closeSizeModal();
-          showToast('Adicionado ao carrinho', 'success');
+          showToast(t("addToCart"), 'success');
           setTimeout(() => window.location.reload(), 900);
         } else {
           if (window.innerWidth < 768) closeSizeModal();
-          showToast('Erro ao adicionar ao carrinho', 'error', 2800);
+          showToast(t("errorCart"), 'error', 2800);
         }
       })
       .catch(() => {
         if (window.innerWidth < 768) closeSizeModal();
-        showToast('Erro ao adicionar ao carrinho', 'error', 2800);
+        showToast(t("errorCart"), 'error', 2800);
       });
   });
   /* ========================== ⭐ FAVORITOS ========================== */
@@ -412,8 +444,8 @@ window.addEventListener("load", () => {
     // UI otimista
     btn.classList.toggle('active', willAdd);
     btn.setAttribute('aria-pressed', willAdd ? 'true' : 'false');
-    btn.setAttribute('aria-label', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-    btn.setAttribute('title', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+    btn.setAttribute('aria-label', willAdd ? t('favRemove') : t('favAdd'));
+    btn.setAttribute('title', willAdd ? t('favRemove') : t('favAdd'));
 
     const WISHLIST_ADD    = id => `https://www.bzronline.com/api/api.php/addToWishList/${id}`;
     const WISHLIST_REMOVE = id => `https://www.bzronline.com/api/api.php/removeFromWishlist/${id}`;
@@ -436,15 +468,15 @@ window.addEventListener("load", () => {
 
       if (!ok) throw new Error('Wishlist request failed');
 
-      showToast(willAdd ? 'Adicionado aos favoritos' : 'Removido dos favoritos', 'success');
+      showToast(willAdd ? t("addToFav") : t("removeFromFav"), 'success');
     } catch (err) {
       // reverte UI se falhar
       const reverted = !willAdd;
       btn.classList.toggle('active', reverted);
       btn.setAttribute('aria-pressed', reverted ? 'true' : 'false');
-      btn.setAttribute('aria-label', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-      btn.setAttribute('title', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-      showToast('Erro ao atualizar favoritos', 'error', 2600);
+      btn.setAttribute('aria-label', reverted ? t('favRemove') : t('favAdd'));
+      btn.setAttribute('title', reverted ? t('favRemove') : t('favAdd'));
+      showToast(t("errorFav"), 'error', 2600);
     }
   });
 })();
