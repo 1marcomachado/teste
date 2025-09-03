@@ -1,6 +1,4 @@
 (function () {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('mostrar_carrossel') !== '1') return;
   const LANG = (document.body.getAttribute("data-shop-lang") || document.documentElement.lang || "pt").toLowerCase();
   const FALLBACK_LANG = "pt";
 
