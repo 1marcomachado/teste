@@ -1,6 +1,38 @@
 (function () {
   const params = new URLSearchParams(window.location.search);
   if (params.get('mostrar_carrossel') !== '1') return;
+  const LANG = (document.body.getAttribute("data-shop-lang") || document.documentElement.lang || "pt").toLowerCase();
+  const FALLBACK_LANG = "pt";
+
+  /* Textos fixos */
+  const I18N = {
+    pt: { maybe:"Talvez te interesse", added:"Produto adicionado ao carrinho", size:"Seleciona o teu tamanho", seeCart:"VER CARRINHO", addToCart:"Adicionado ao carrinho", addToFav:"Adicionado aos favoritos", removeFromFav:"Removido dos favoritos", errorCart:"Erro ao adicionar ao carrinho", errorFav:"Erro ao atualizar favoritos", favAdd: "Adicionar aos favoritos", favRemove: "Remover dos favoritos" },
+    es: { maybe:"Quizás te interese", added:"Producto añadido al carrito", size:"Selecciona tu talla", seeCart:"VER CARRITO", addToCart:"Añadido al carrito", addToFav:"Añadido a favoritos", removeFromFav:"Eliminado de favoritos", errorCart:"Error al añadir al carrito", errorFav:"Error al actualizar favoritos", favAdd: "Añadir a favoritos", favRemove: "Quitar de favoritos" },
+    en: { maybe:"You may also like", added:"Product added to cart", size:"Select your size", seeCart:"VIEW CART", addToCart:"Added to cart", addToFav:"Added to wishlist", removeFromFav:"Removed from wishlist", errorCart:"Error adding to cart", errorFav:"Error updating wishlist", favAdd: "Add to wishlist",
+    favRemove: "Remove from wishlist" }
+  };
+  function t(key){ return (I18N[LANG] && I18N[LANG][key]) || (I18N[FALLBACK_LANG] && I18N[FALLBACK_LANG][key]) || key; }
+
+  function pickLocalized(obj, baseKey) {
+    if (!obj) return "";
+    const val = obj[baseKey];
+    if (val && typeof val === "object") {
+      return val[LANG] || val[FALLBACK_LANG] || Object.values(val).find(Boolean) || "";
+    }
+    const flat = obj[`${baseKey}_${LANG}`] || obj[`${baseKey}_${LANG.toUpperCase()}`];
+    if (flat) return flat;
+    if (typeof val === "string") return val; // já é string (ex.: só PT)
+    const fallbackFlat = obj[`${baseKey}_${FALLBACK_LANG}`] || obj[`${baseKey}_${FALLBACK_LANG.toUpperCase()}`];
+    return fallbackFlat || "";
+  }
+
+  /* Locale & preço (EUR por defeito) */
+  const LANG_TO_LOCALE = { pt: "pt-PT", es: "es-ES", en: "en-GB" };
+  function formatPrice(input, currency="EUR"){
+    const n = Number(String(input).replace(",", "."));
+    if (Number.isNaN(n)) return String(input || "");
+    return new Intl.NumberFormat(LANG_TO_LOCALE[LANG] || LANG_TO_LOCALE.pt, { style:"currency", currency, minimumFractionDigits:2 }).format(n).replace(/\u00A0/g, " ");
+  }
 
   function waitForAngularInjector() {
     const appElement = document.querySelector('[ng-app]') || document.body;
@@ -72,7 +104,7 @@
           header.className = 'carousel-header';
           const title = document.createElement('h3');
           title.className = 'carousel-title';
-          title.textContent = 'Talvez te interesse';
+          title.textContent = t("maybe");
           header.appendChild(title);
           wrapper.appendChild(header);
 
@@ -104,21 +136,22 @@
           if (!sugestoes.length) return;
 
           // Produto adicionado (topo do painel)
+          const produtoTitle = pickLocalized(produto, "title") || "";
           const addedNotice = document.createElement('div');
           addedNotice.className = 'added-product-notice';
           addedNotice.innerHTML = `
-            <h3 class="added-title">Produto adicionado ao carrinho</h3>
+            <h3 class="added-title">${t("added")}</h3>
             <article class="product added-product-horizontal grid-item" data-row="1">
               <div class="image">
-                <img src="${produto.image}" alt="${produto.title}" title="${produto.title}" loading="lazy">
-                <br><a href="/checkout/v1/?id=1" class="btn-cart">VER CARRINHO</a>
+                <img src="${produto.image}" alt="${produtoTitle}" title="${produtoTitle}" loading="lazy">
+                <br><a href="/checkout/v1/?id=1" class="btn-cart">${t("seeCart")}</a>
               </div>
               <div class="desc">
                 <div class="wrapper-top clearfix">
                   <p class="brand">${produto.brand || ''}</p>
                 </div>
                 <div class="wrapper-bottom">
-                  <p class="name">${produto.title}</p>
+                  <p class="name">${produtoTitle}</p>
                   <p class="product-size">Tamanho: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
                   <div class="price clearfix">
                     <p class="current">${(produto.price || '').replace('.', ',')} €</p>
@@ -138,7 +171,7 @@
             const sizesList = Array.isArray(s.variantes) && s.variantes.length
               ? `
                 <div class="sizes-list" style="display:none;">
-                  <div class="sizes-list-header">Seleciona o teu tamanho</div>
+                  <div class="sizes-list-header">${t("size")}</div>
                   ${s.variantes.map(v => `
                     <div class="size-option ${v.availability !== 'in stock' ? 'out-of-stock' : ''}" data-id="${v.id}">
                       ${v.size}
@@ -147,13 +180,13 @@
                 </div>
               `
               : '';
-
+            const sTitle = pickLocalized(s, "title") || "";          
             slide.innerHTML = `
               <article class="product" data-row="1" data-pid="${s.id}">
                 <div class="image">
                   <a href="/item_${s.id}.html">
                     <figure style="margin:0">
-                      <img src="${s.image}" alt="${s.title}" title="${s.title}" loading="lazy">
+                      <img src="${s.image}" alt="${sTitle}" title="${sTitle}" loading="lazy">
                     </figure>
                   </a>
                   <div class="size-popup-button">+</div>
@@ -165,16 +198,11 @@
                       <p class="brand">${s.brand || ''}</p>
                       <p class="available-colors">
                         ${s.cores || ''}
-                        <button class="fav-btn"
-                                type="button"
-                                aria-label="Adicionar aos favoritos"
-                                aria-pressed="false"
-                                title="Adicionar aos favoritos"
-                                data-id="${s.id}"></button>
+                        <button class="fav-btn" type="button" data-id="${s.id}"></button>
                       </p>
                     </div>
                     <div class="wrapper-bottom">
-                      <p class="name">${s.title}</p>
+                      <p class="name">${sTitle}</p>
                       <div class="price clearfix">
                         <p class="current">${(s.price || '').replace('.', ',')} €</p>
                       </div>
@@ -274,13 +302,13 @@
                 .then(json => {
                   const ok = (json?.status === true || json?.status === "true");
                   if (ok) {
-                    showToast('Adicionado ao carrinho', 'success');
+                    showToast(t("addToCart"), 'success');
                     if (list) list.style.display = 'none';
                   } else {
-                    showToast('Erro ao adicionar ao carrinho', 'error', 2600);
+                    showToast(t("errorCart"), 'error', 2600);
                   }
                 })
-                .catch(() => showToast('Erro ao adicionar ao carrinho', 'error', 2600));
+                .catch(() => showToast(t("errorCart"), 'error', 2600));
             }
           });
 
@@ -297,13 +325,13 @@
               .then(json => {
                 const ok = (json?.status === true || json?.status === "true");
                 if (ok) {
-                  showToast('Adicionado ao carrinho', 'success');
+                  showToast(t("addToCart"), 'success');
                   closeSizeModal();
                 } else {
-                  showToast('Erro ao adicionar ao carrinho', 'error', 2600);
+                  showToast(t("errorCart"), 'error', 2600);
                 }
               })
-              .catch(() => showToast('Erro ao adicionar ao carrinho', 'error', 2600));
+              .catch(() => showToast(t("errorCart"), 'error', 2600));
           });
 
           /* ========================== ⭐ FAVORITOS (eventos, sem localStorage) ========================== */
@@ -320,8 +348,8 @@
             // UI otimista
             btn.classList.toggle('active', willAdd);
             btn.setAttribute('aria-pressed', willAdd ? 'true' : 'false');
-            btn.setAttribute('aria-label', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-            btn.setAttribute('title', willAdd ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+            btn.setAttribute('aria-label', willAdd ? t('favRemove') : t('favAdd'));
+            btn.setAttribute('title', willAdd ? t('favRemove') : t('favAdd'));
 
             try {
               const url = willAdd ? WISHLIST_ADD(id) : WISHLIST_REMOVE(id);
@@ -341,15 +369,15 @@
 
               if (!ok) throw new Error('Wishlist request failed');
 
-              showToast(willAdd ? 'Adicionado aos favoritos' : 'Removido dos favoritos', 'success');
+              showToast(willAdd ? t("addToFav") : t("removeFromFav"), 'success');
             } catch (err) {
               // reverte UI se falhar
               const reverted = !willAdd;
               btn.classList.toggle('active', reverted);
               btn.setAttribute('aria-pressed', reverted ? 'true' : 'false');
-              btn.setAttribute('aria-label', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-              btn.setAttribute('title', reverted ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-              showToast('Erro ao atualizar favoritos', 'error', 2600);
+              btn.setAttribute('aria-label', reverted ? t('favRemove') : t('favAdd'));
+              btn.setAttribute('title', reverted ? t('favRemove') : t('favAdd'));
+              showToast(t("errorFav"), 'error', 2600);
             }
           });
         }
