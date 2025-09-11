@@ -22,6 +22,36 @@
     const fallbackFlat = obj[`${baseKey}_${FALLBACK_LANG}`] || obj[`${baseKey}_${FALLBACK_LANG.toUpperCase()}`];
     return fallbackFlat || "";
   }
+  function formatPriceEUR(val){
+  if (val == null || val === '') return '';
+  const n = typeof val === 'number' ? val : parseFloat(String(val).replace(',', '.'));
+  if (isNaN(n)) return '';
+  return n.toFixed(2).replace('.', ',') + ' €';
+}
+
+function getPriceInfoSimple(p){
+  const cur = p.sale_price ?? null;          // preço novo
+  const orig = p.price;                       // preço antigo
+  const toNum = v => typeof v === 'number' ? v : parseFloat(String(v).replace(',', '.'));
+
+  const nCur  = cur != null ? toNum(cur)  : null;
+  const nOrig = orig != null ? toNum(orig) : null;
+
+  // Só mostra “antigo + novo” se o sale_price existir e for mesmo menor
+  if (nCur != null && nOrig != null && nCur < nOrig){
+    return {
+      originalText: formatPriceEUR(nOrig),
+      currentText:  formatPriceEUR(nCur)
+    };
+  }
+
+  // Caso contrário, só o preço normal
+  return {
+    originalText: '',
+    currentText: formatPriceEUR(nOrig)
+  };
+}
+
 window.addEventListener("load", () => {  
 (async () => {
   if (!window.location.pathname.includes("/checkout/")) return;
@@ -57,6 +87,10 @@ window.addEventListener("load", () => {
     .upselling-carousel article.product:hover .desc .name { text-decoration: underline; }
     .upselling-carousel .price .current {
       font-size: 14px; color: #000; margin-top: 4px; text-align: left;
+      font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
+    }
+    .upselling-carousel .price .old {
+      font-size: 14px; color: #000; margin-right: 17px; text-decoration: line-through; margin-top: 4px; text-align: left;
       font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif; font-weight: normal;
     }
 
@@ -312,7 +346,8 @@ window.addEventListener("load", () => {
            `).join('')}
          </div>`
       : '';
-    const sTitle = pickLocalized(s, "title") || "";           
+    const sTitle = pickLocalized(s, "title") || "";  
+    const pInfoAdded = getPriceInfo(s);
     item.innerHTML = `
       <article class="product">
         <div class="image">
@@ -333,9 +368,10 @@ window.addEventListener("load", () => {
             </div>
             <div class="wrapper-bottom">
               <p class="name">${sTitle}</p>
-              <div class="price clearfix">
-                <p class="current">${(s.price || '').replace('.', ',')} €</p>
-              </div>
+                <div class="price clearfix">
+                  ${pInfoAdded.originalText ? `<p class="old">${pInfoAdded.originalText}</p>` : ``}
+                  <p class="current">${pInfoAdded.currentText}</p>
+                </div>
             </div>
           </a>
         </div>
