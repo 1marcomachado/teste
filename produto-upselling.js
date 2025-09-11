@@ -483,7 +483,7 @@ function getPriceInfoSimple(p){
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; padding-bottom: 0px !important; padding-right: 0px !important;
           }
           .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 4px; }
-          .upselling-panel .product .price .old {margin-right: 17px; text-decoration: line-through;}
+          .upselling-panel .product .price .old { font-size: 14px; margin-right: 17px; text-decoration: line-through;}
 
           /* Produto adicionado */
           .added-product-notice { margin-bottom: 24px; }
@@ -499,7 +499,7 @@ function getPriceInfoSimple(p){
           }
           .added-product-horizontal .product-size,
           .added-product-horizontal .price .current { font-size: 13px; color: #000; margin: 2px 0; }
-          .added-product-horizontal .price .old {margin-right: 17px; text-decoration: line-through;}
+          .added-product-horizontal .price .old { font-size: 13px; margin-right: 17px; text-decoration: line-through;}
           .separator { border: none; border-top: 1px solid #ccc; margin: 16px 0; }
 
           /* Botão + e lista tamanhos */
