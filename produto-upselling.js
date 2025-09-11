@@ -482,7 +482,7 @@ function getPriceInfoSimple(p){
             min-height: 3.6em; overflow: hidden; text-overflow: ellipsis;
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; padding-bottom: 0px !important; padding-right: 0px !important;
           }
-          .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 4px; }
+          .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 0px; }
           .upselling-panel .product .price .old { font-size: 14px; margin-right: 17px; text-decoration: line-through;}
 
           /* Produto adicionado */
