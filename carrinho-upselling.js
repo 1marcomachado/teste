@@ -1,3 +1,4 @@
+  if (!window.location.pathname.includes("/checkout/")) return;
   const LANG = (document.body.getAttribute("data-shop-lang") || document.documentElement.lang || "pt").toLowerCase();
   const FALLBACK_LANG = "pt";
 
