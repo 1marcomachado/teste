@@ -23,7 +23,35 @@
     const fallbackFlat = obj[`${baseKey}_${FALLBACK_LANG}`] || obj[`${baseKey}_${FALLBACK_LANG.toUpperCase()}`];
     return fallbackFlat || "";
   }
+function formatPriceEUR(val){
+  if (val == null || val === '') return '';
+  const n = typeof val === 'number' ? val : parseFloat(String(val).replace(',', '.'));
+  if (isNaN(n)) return '';
+  return n.toFixed(2).replace('.', ',') + ' €';
+}
 
+function getPriceInfoSimple(p){
+  const cur = p.sale_price ?? null;          // preço novo
+  const orig = p.price;                       // preço antigo
+  const toNum = v => typeof v === 'number' ? v : parseFloat(String(v).replace(',', '.'));
+
+  const nCur  = cur != null ? toNum(cur)  : null;
+  const nOrig = orig != null ? toNum(orig) : null;
+
+  // Só mostra “antigo + novo” se o sale_price existir e for mesmo menor
+  if (nCur != null && nOrig != null && nCur < nOrig){
+    return {
+      originalText: formatPriceEUR(nOrig),
+      currentText:  formatPriceEUR(nCur)
+    };
+  }
+
+  // Caso contrário, só o preço normal
+  return {
+    originalText: '',
+    currentText: formatPriceEUR(nOrig)
+  };
+}
   function waitForAngularInjector() {
     const appElement = document.querySelector('[ng-app]') || document.body;
 
@@ -129,6 +157,7 @@
           const produtoTitle = pickLocalized(produto, "title") || "";
           const addedNotice = document.createElement('div');
           addedNotice.className = 'added-product-notice';
+          const pInfoAdded = getPriceInfoSimple(produto);
           addedNotice.innerHTML = `
             <h3 class="added-title">${t("added")}</h3>
             <article class="product added-product-horizontal grid-item" data-row="1">
@@ -144,11 +173,12 @@
                   <p class="name">${produtoTitle}</p>
                   <p class="product-size">${t("sizeLabel")}: ${document.querySelector('.sizes label.sel')?.textContent.trim() || '-'}</p>
                   <div class="price clearfix">
-                    <p class="current">${(produto.price || '').replace('.', ',')} €</p>
+                    ${pInfoAdded.originalText ? `<p class="old">${pInfoAdded.originalText}</p>` : ``}
+                    <p class="current">${pInfoAdded.currentText}</p>
                   </div>
                 </div>
               </div>
-            </article>
+            </article> 
             <hr class="separator">
           `;
           panel.insertBefore(addedNotice, wrapper);
@@ -170,7 +200,8 @@
                 </div>
               `
               : '';
-            const sTitle = pickLocalized(s, "title") || "";          
+            const sTitle = pickLocalized(s, "title") || "";        
+            const pInfo = getPriceInfoSimple(s);
             slide.innerHTML = `
               <article class="product" data-row="1" data-pid="${s.id}">
                 <div class="image">
@@ -194,7 +225,8 @@
                     <div class="wrapper-bottom">
                       <p class="name">${sTitle}</p>
                       <div class="price clearfix">
-                        <p class="current">${(s.price || '').replace('.', ',')} €</p>
+                        ${pInfo.originalText ? `<p class="old">${pInfo.originalText}</p>` : ``}
+                        <p class="current">${pInfo.currentText}</p>
                       </div>
                     </div>
                   </a>
@@ -451,6 +483,7 @@
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; padding-bottom: 0px !important; padding-right: 0px !important;
           }
           .upselling-panel .product .price .current { font-size: 14px; color: #000; margin-top: 4px; }
+          .upselling-panel .product .price .old {margin-right: 17px; text-decoration: line-through;}
 
           /* Produto adicionado */
           .added-product-notice { margin-bottom: 24px; }
@@ -466,6 +499,7 @@
           }
           .added-product-horizontal .product-size,
           .added-product-horizontal .price .current { font-size: 13px; color: #000; margin: 2px 0; }
+          .added-product-horizontal .price .old {margin-right: 17px; text-decoration: line-through;}
           .separator { border: none; border-top: 1px solid #ccc; margin: 16px 0; }
 
           /* Botão + e lista tamanhos */
