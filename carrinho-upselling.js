@@ -29,7 +29,7 @@
   return n.toFixed(2).replace('.', ',') + ' €';
 }
 
-function getPriceInfoSimple(p){
+function getPriceInfo(p){
   const cur = p.sale_price ?? null;          // preço novo
   const orig = p.price;                       // preço antigo
   const toNum = v => typeof v === 'number' ? v : parseFloat(String(v).replace(',', '.'));
