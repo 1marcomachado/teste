@@ -124,6 +124,7 @@
 
     // limpar inserções anteriores
     document.querySelectorAll('.rdc-klarna-injected').forEach(n => n.remove());
+    document.querySelectorAll('#rdc-productrange-expeditioninfo').forEach(n => n.remove());
 
     const original = allKlarna[0];
     if (mode === 'clone') {
