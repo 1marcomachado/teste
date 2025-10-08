@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded",function(){
   const AC_U="4", AC_F="4", AC_ACTION="https://bazardesportivo.activehosted.com/proc.php";
   const MAP={ fullname:"cms_field_30", email:"cms_field_31", genero:"cms_field_33", tipo:"cms_field_156", consent:"cms_field_42", dob:"cms_field_64" };
-  const AC_DOB_FIELD_NAME=null;
+  const AC_DOB_FIELD_NAME="field[1]";
 
   const form = document.getElementById("cms_frm1899545180")
             || document.getElementById("cms_frm2022765208")
