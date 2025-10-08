@@ -58,8 +58,7 @@ window.addEventListener("DOMContentLoaded",function(){
     if(lgSel){
       const optLg=lgSel.options[lgSel.selectedIndex];
       if(optLg){
-        // pega o code do idioma (ou value)
-        language = optLg.getAttribute("data-code") || optLg.value || language;
+        language = optLg.getAttribute("data-name") || optLg.value || language;
       }
     }
     return {countryCode, language};
