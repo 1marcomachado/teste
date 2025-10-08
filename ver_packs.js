@@ -2,15 +2,38 @@ document.addEventListener('DOMContentLoaded', function () {
   const script = document.currentScript;
   const shopLang = script?.getAttribute('data-shop-lang');
   const flagElement = document.querySelector('.rdc-packs-maingrid');
-
   if (!flagElement) return;
 
+  // =======================
+  // 1) MOVER AS DIVs
+  // =======================
+  const visual = document.querySelector('[ng-controller="visualPagerBlocksController"]');
+  const product = document.querySelector('[ng-controller="productPacksGroupController"]');
+
+  if (visual && product && product.parentNode) {
+    // só move se ainda não estiver antes
+    const alreadyBefore = visual.compareDocumentPosition(product) & Node.DOCUMENT_POSITION_FOLLOWING;
+    if (!alreadyBefore) {
+      product.parentNode.insertBefore(visual, product);
+    }
+  }
+
+  // =======================
+  // 2) RESTO DO SEU SCRIPT
+  // =======================
   const elementoParaMover = document.querySelector('.rdc-product-beforebuttons');
   const elementoAlvo = document.querySelector('.wrapper-accordion-info');
   const klarnaOriginal = document.querySelector('.rdc-product-klarna-placement');
   const botaoAlvo = document.querySelector('#fixedDiv .buttons.clearfix');
 
-  // mover bloco
+  // helper para rolar com offset (header fixo, etc.)
+  function scrollToWithOffset(el, offset) {
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - (offset || 0);
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // mover bloco "beforebuttons" para antes do "wrapper-accordion-info"
   if (elementoParaMover && elementoAlvo && elementoAlvo.parentNode) {
     elementoAlvo.parentNode.insertBefore(elementoParaMover, elementoAlvo);
     elementoAlvo.style.padding = '0';
@@ -32,26 +55,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const langPrefix = (shopLang || '').substring(0, 2);
     const imageName = klarnaImgMap[langPrefix] || 'misc35.jpg';
 
-    // ⚠️ O botão fica no ORIGINAL (não no clone)
-    klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="meuBotaoPacks" style="cursor:pointer;" />`;
+    // botão vai no ORIGINAL
+    klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="meuBotaoPacks" style="cursor:pointer;" alt="Ver packs" />`;
   }
 
-  // ligar o clique AO VIVO (depois de injetar o HTML)
+  // ligar o clique do botão para ir ao "visual" (fallback: .rdc-packs-maingrid)
   const botao = document.getElementById('meuBotaoPacks');
   if (!botao) return;
 
   botao.addEventListener('click', function () {
-    const destino = document.querySelector('.rdc-packs-maingrid');
+    let destino = document.querySelector('[ng-controller="visualPagerBlocksController"]') 
+               || document.querySelector('.rdc-packs-maingrid');
     if (!destino) return;
 
-    const headerOffset = 250; // ajusta conforme a altura do header fixo
-    const elementTop = destino.getBoundingClientRect().top + window.pageYOffset;
-    const offsetTop = elementTop - headerOffset;
-
-    // ✅ usar scrollTo para compensar o offset
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    });
+    const headerOffset = 100; // ajuste conforme o header fixo
+    scrollToWithOffset(destino, headerOffset);
   });
 });
