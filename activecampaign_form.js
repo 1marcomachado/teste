@@ -2,6 +2,8 @@ window.addEventListener("DOMContentLoaded",function(){
   const AC_U="4", AC_F="4", AC_ACTION="https://bazardesportivo.activehosted.com/proc.php";
   const MAP={ fullname:"cms_field_30", email:"cms_field_31", genero:"cms_field_33", tipo:"cms_field_156", consent:"cms_field_42", dob:"cms_field_64" };
   const AC_DOB_FIELD_NAME="field[1]";
+  const AC_COUNTRY_FIELD="field[11]";
+  const AC_LANGUAGE_FIELD="field[12]";
 
   const form = document.getElementById("cms_frm1899545180")
             || document.getElementById("cms_frm2022765208")
@@ -20,7 +22,6 @@ window.addEventListener("DOMContentLoaded",function(){
   }
   const emailRx=/^[+_a-z0-9-'&=]+(\.[+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i;
 
-  // Cria (uma vez) o iframe e o form oculto que falam com o AC
   const iframeName="ac_iframe_"+Math.random().toString(36).slice(2);
   const iframe=document.createElement("iframe");
   iframe.name=iframeName; iframe.style.display="none"; document.body.appendChild(iframe);
@@ -43,26 +44,48 @@ window.addEventListener("DOMContentLoaded",function(){
     inp.type="hidden"; inp.name=name; inp.value=value; acForm.appendChild(inp);
   }
 
+  function getCountryAndLanguage(){
+    let countryCode="", language="";
+    const countrySel=document.getElementById("country");
+    if(countrySel){
+      const opt=countrySel.options[countrySel.selectedIndex];
+      if(opt){
+        countryCode = opt.getAttribute("data-code") || opt.value || "";
+        language = opt.getAttribute("data-lg") || "";
+      }
+    }
+    const lgSel=document.getElementById("lg");
+    if(lgSel){
+      const optLg=lgSel.options[lgSel.selectedIndex];
+      if(optLg){
+        // pega o code do idioma (ou value)
+        language = optLg.getAttribute("data-code") || optLg.value || language;
+      }
+    }
+    return {countryCode, language};
+  }
+
   function sendToActiveCampaign(){
     const email=fval(MAP.email), consent=fval(MAP.consent), genero=fval(MAP.genero), tipo=fval(MAP.tipo);
     if(!email || !emailRx.test(email) || !consent || !genero || !tipo || tipo==="0"){ return; }
 
     resetACForm();
 
-    // campos AC
     hid("fullname", fval(MAP.fullname));
     hid("email", email);
-    // field[13] — “Pretendes receber newsletters de:”
     hid("field[13]", genero);
-    // field[6] — “Que tipo de comunicação preferes?”
-    hid("field[6]", tipo);
+    hid("field[6]",  tipo);
 
+    // Data de nascimento
     if(AC_DOB_FIELD_NAME){
       const rawDob=fval(MAP.dob);
       if(rawDob) hid(AC_DOB_FIELD_NAME, rawDob);
     }
 
-    // UTMs
+    const {countryCode, language} = getCountryAndLanguage();
+    if(countryCode && AC_COUNTRY_FIELD) hid(AC_COUNTRY_FIELD, countryCode);
+    if(language   && AC_LANGUAGE_FIELD) hid(AC_LANGUAGE_FIELD, language);
+
     const params=new URLSearchParams(location.search);
     ["utm_source","utm_medium","utm_campaign","utm_term","utm_content"].forEach(k=>{
       const v=params.get(k); if(v) hid(k, v);
@@ -75,5 +98,7 @@ window.addEventListener("DOMContentLoaded",function(){
     acForm.submit();
   }
 
-  form.addEventListener("submit", function(){ try{ sendToActiveCampaign(); }catch(err){ console.warn("AC error:", err); } }, true);
+  form.addEventListener("submit", function(){
+    try{ sendToActiveCampaign(); }catch(err){ console.warn("AC error:", err); }
+  }, true);
 });
