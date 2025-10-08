@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const klarnaOriginal = document.querySelector('.rdc-product-klarna-placement');
   const botaoAlvo = document.querySelector('#fixedDiv .buttons.clearfix');
 
+  // helper para rolar com offset (header fixo, etc.)
+  function scrollToWithOffset(el, offset) {
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - (offset || 0);
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
   // mover bloco
   if (elementoParaMover && elementoAlvo && elementoAlvo.parentNode) {
     elementoAlvo.parentNode.insertBefore(elementoParaMover, elementoAlvo);
@@ -33,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const imageName = klarnaImgMap[langPrefix] || 'misc35.jpg';
 
     // ⚠️ O botão fica no ORIGINAL (não no clone)
-    klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="meuBotaoPacks" style="cursor:pointer;" />`;
+    klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="meuBotaoPacks" style="cursor:pointer;" alt="Ver packs" />`;
   }
 
   // ligar o clique AO VIVO (depois de injetar o HTML)
@@ -41,17 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!botao) return;
 
   botao.addEventListener('click', function () {
-    const destino = document.querySelector('.rdc-packs-maingrid');
+    // 1º tenta a seção "visual"
+    let destino = document.querySelector('[ng-controller="visualPagerBlocksController"]');
+
+    // fallback: mantém o antigo destino caso o "visual" não exista
+    if (!destino) destino = document.querySelector('.rdc-packs-maingrid');
     if (!destino) return;
 
-    const headerOffset = 250; // ajusta conforme a altura do header fixo
-    const elementTop = destino.getBoundingClientRect().top + window.pageYOffset;
-    const offsetTop = elementTop - headerOffset;
-
-    // ✅ usar scrollTo para compensar o offset
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    });
+    const headerOffset = 250; // ajuste conforme a altura do header fixo
+    scrollToWithOffset(destino, headerOffset);
   });
 });
