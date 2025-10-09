@@ -33,7 +33,7 @@
   ].map(norm);
 
   function hasLastUnitsFlag(){
-    const flags = Array.from(document.querySelectorAll('.flags .flag'));
+    const flags = Array.from(document.querySelectorAll('.product-info .flags .flag'));
     return flags.some(f => LAST_UNITS_VARIANTS.includes(norm(f.textContent)));
   }
 
