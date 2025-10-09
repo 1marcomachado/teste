@@ -26,8 +26,12 @@ window.addEventListener("DOMContentLoaded",function(){
   const iframe=document.createElement("iframe");
   iframe.name=iframeName; iframe.style.display="none"; document.body.appendChild(iframe);
 
-  const acForm=document.createElement("form");
-  acForm.action=AC_ACTION; acForm.method="POST"; acForm.target=iframeName; acForm.style.display="none";
+  const acForm = document.createElement("form");
+  acForm.action = AC_ACTION;
+  acForm.method = "POST";
+  acForm.target = iframeName;
+  acForm.style.display = "none";
+  acForm.acceptCharset = "UTF-8";
   document.body.appendChild(acForm);
 
   const hiddenBase={ u:AC_U, f:AC_F, s:"", c:"0", m:"0", act:"sub", v:"2" };
