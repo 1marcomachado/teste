@@ -78,13 +78,13 @@
     const num = count > 0 ? String(Math.min(count, 30)) : '';
     const one = count === 1;
     if (lang === 'pt'){
-      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} {one ? 'disponível' : 'disponíveis'}, compra antes que esgote.`;
+      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} ${one ? 'disponível' : 'disponíveis'}, compra antes que esgote.`;
     } else if (lang === 'es'){
       return `Este artículo tiene solo ${num} ${one ? 'unidad' : 'unidades'} disponible${one ? '' : 's'}, compra antes de que ${one ? 'se agote' : 'se agoten'}.`;
     } else if (lang === 'en'){
       return `This item has only ${num} ${one ? 'unit' : 'units'} available — buy before it sells out.`;
     } else {
-      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} {one ? 'disponível' : 'disponíveis'}, compra antes que esgote.`;
+      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} ${one ? 'disponível' : 'disponíveis'}, compra antes que esgote.`;
     }
   }
 
