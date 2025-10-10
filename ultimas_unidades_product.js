@@ -1,10 +1,10 @@
 (async function moveKlarna_onlyWhenLastUnitsFlag(){
-  const KL_SEL   = '.rdc-product-klarna-placement';
-  const BTN_SEL  = '#fixedDiv .buttons.clearfix';
-  const AFTER_SEL= '.rdc-product-afterprice';
+  const KL_SEL    = '.rdc-product-klarna-placement';
+  const BTN_SEL   = '#fixedDiv .buttons.clearfix';
+  const AFTER_SEL = '.rdc-product-afterprice';
 
   const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
-  async function waitForEl(sel, timeout=10000){
+  async function waitForEl(sel, timeout=6000){
     const t0=Date.now();
     while (Date.now()-t0 < timeout){
       const el=document.querySelector(sel);
@@ -47,6 +47,7 @@
     return false;
   }
 
+  // estilos do alerta (uma vez)
   if (!document.querySelector('style[data-lastunits-alert]')){
     const st=document.createElement('style');
     st.setAttribute('data-lastunits-alert','');
@@ -64,7 +65,6 @@
   }
 
   const lang=(document.documentElement.lang||'pt').slice(0,2).toLowerCase();
-  const T = ({ pt:{title:'ÚLTIMAS UNIDADES!'}, es:{title:'¡ÚLTIMAS UNIDADES!'}, en:{title:'LAST UNITS!'} })[lang] || ({ title:'ÚLTIMAS UNIDADES!' });
 
   function formatTitle(count){
     const one = count === 1;
@@ -97,96 +97,60 @@
     svg.setAttribute('viewBox','0 0 24 24');
     svg.innerHTML='<path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z"/>';
     const wrap=document.createElement('div');
-
     const title=document.createElement('strong');
     title.className='lastunits-alert__title';
     title.textContent = formatTitle(units);
-
     const p=document.createElement('p');
     p.className='lastunits-alert__desc';
     p.textContent = formatDesc(units);
-
     wrap.append(title,p); box.append(svg,wrap);
     return {box,p,title};
   }
 
-  const flagPresent = await waitForLastUnitsFlag(8000);
+  // 1) Só mostramos se existir a flag
+  const flagPresent = await waitForLastUnitsFlag(6000);
   if (!flagPresent) return;
 
-  const buttons = await waitForEl(BTN_SEL, 12000);
-  const isActuallyVisible = (el)=>{
-    if (!el || !el.isConnected) return false;
-    const rect = el.getBoundingClientRect();
-    const style = window.getComputedStyle(el);
-    return (rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none');
-  };
+  // 2) Tenta Klarna só uma vez, sem esperar
+  const klarnaOrigin = document.querySelector(KL_SEL) || null;
+  const afterpriceEl = klarnaOrigin ? null : (document.querySelector(AFTER_SEL) || await waitForEl(AFTER_SEL, 3000));
+  const anchor = klarnaOrigin || afterpriceEl;
+  if (!anchor) return;
 
-  async function getKlarnaOrigin(){
-    let list = Array.from(document.querySelectorAll(KL_SEL));
-    if (!list.length){
-      const waited = await waitForEl(KL_SEL, 12000);
-      if (!waited) return null;
-      list = Array.from(document.querySelectorAll(KL_SEL));
-    }
-    return list.find(isActuallyVisible) || list[0] || null;
-  }
-
-  // ---------- NOVO: fallback para .rdc-product-afterprice ----------
-  const klarnaOrigin = await getKlarnaOrigin();
-  const afterpriceEl = klarnaOrigin ? null : await waitForEl(AFTER_SEL, 12000);
-  const anchor = klarnaOrigin || afterpriceEl; // onde vamos inserir o alerta
-  if (!anchor) return; // não há onde inserir
-  // ---------------------------------------------------------------
-
+  // remove alertas antigos
   document.querySelectorAll('.lastunits-alert').forEach(n=>n.remove());
 
+  // 3) Cria e insere o alerta imediatamente DEPOIS do anchor definido
   const units = totalUnits();
   const {box, p} = buildAlert(units);
-
-  // inserir o alerta imediatamente DEPOIS do anchor (Klarna ou Afterprice)
   const parent = anchor.parentNode;
   if (parent){
     if (anchor.nextSibling) parent.insertBefore(box, anchor.nextSibling);
     else parent.appendChild(box);
   }
 
-  function placeSingleKlarna(){
-    if (!klarnaOrigin) return false; // só tenta mover Klarna se existir
-    const chosen = isActuallyVisible(klarnaOrigin) ? klarnaOrigin : klarnaOrigin;
-    if (!chosen || !buttons || !buttons.parentNode) return false;
-
-    if (buttons.previousElementSibling !== chosen && chosen.parentNode){
-      try {
-        buttons.parentNode.insertBefore(chosen, buttons);
-      } catch(e){
-        return false;
-      }
+  // 4) Se houver Klarna já presente, move-a antes dos botões (sem observer)
+  if (klarnaOrigin){
+    const buttons = document.querySelector(BTN_SEL);
+    const isVisible = (el)=>{
+      if (!el || !el.isConnected) return false;
+      const r = el.getBoundingClientRect();
+      const cs = window.getComputedStyle(el);
+      return r.width>0 && r.height>0 && cs.visibility!=='hidden' && cs.display!=='none';
+    };
+    if (buttons && buttons.parentNode && isVisible(klarnaOrigin)){
+      try{
+        buttons.parentNode.insertBefore(klarnaOrigin, buttons);
+        klarnaOrigin.style.paddingBottom='10px';
+      }catch(e){}
     }
-    chosen.style.paddingBottom='10px';
-    return true;
   }
 
-  // Só move Klarna se existir
-  if (klarnaOrigin) placeSingleKlarna();
-
+  // 5) Atualiza a contagem ao mexer nos tamanhos
   const sizesEl = document.querySelector('.sizes');
   if (sizesEl){
-    const refresh=()=>{
-      const u = totalUnits();
-      p.textContent = formatDesc(u);
-    };
+    const refresh=()=>{ p.textContent = formatDesc(totalUnits()); };
     sizesEl.addEventListener('change', refresh);
     new MutationObserver(refresh).observe(sizesEl,{childList:true,subtree:true,attributes:true,attributeFilter:['qtd']});
-  }
-
-  // Observa futuras inserções da Klarna apenas se a Klarna existir/for re-inserida
-  if (!window.__KLARNA_FIX_OBS__ && klarnaOrigin){
-    const obs=new MutationObserver((muts)=>{
-      if (muts.some(m=>[...m.addedNodes].some(n=> n.nodeType===1 && (n.matches?.(KL_SEL) || n.querySelector?.(KL_SEL))))){
-        placeSingleKlarna();
-      }
-    });
-    obs.observe(document.body,{childList:true,subtree:true});
-    window.__KLARNA_FIX_OBS__ = obs;
   }
 })();
