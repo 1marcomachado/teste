@@ -65,14 +65,35 @@
 
   const lang=(document.documentElement.lang||'pt').slice(0,2).toLowerCase();
   const T = ({
-    pt:{title:'ÚLTIMAS UNIDADES!', desc:'Este artigo tem apenas {x} unidades disponíveis, compra antes que esgote.'},
-    es:{title:'¡ÚLTIMAS UNIDADES!', desc:'Este artículo tiene solo {x} unidades disponibles, compra antes de que se agoten.'},
-    en:{title:'LAST UNITS!', desc:'This item has only {x} units available — buy before it sells out.'}
-  })[lang] || ({
-    title:'ÚLTIMAS UNIDADES!',
-    desc:'Este artigo tem apenas {x} unidades disponíveis, compra antes que esgote.'
-  });
-
+    pt:{title:'ÚLTIMAS UNIDADES!'},
+    es:{title:'¡ÚLTIMAS UNIDADES!'},
+    en:{title:'LAST UNITS!'}
+  })[lang] || ({ title:'ÚLTIMAS UNIDADES!' });
+  
+  function formatTitle(count){
+    const one = count === 1;
+    if (lang === 'pt') return one ? 'ÚLTIMA UNIDADE!' : 'ÚLTIMAS UNIDADES!';
+    if (lang === 'es') return one ? '¡ÚLTIMA UNIDAD!' : '¡ÚLTIMAS UNIDADES!';
+    if (lang === 'en') return one ? 'LAST UNIT!' : 'LAST UNITS!';
+    return one ? 'ÚLTIMA UNIDADE!' : 'ÚLTIMAS UNIDADES!';
+  }
+  
+  function formatDesc(count){
+    const num = count > 0 ? String(Math.min(count, 30)) : '';
+    const one = count === 1;
+  
+    if (lang === 'pt'){
+      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} disponível${one ? '' : 's'}, compra antes que esgote.`;
+    } else if (lang === 'es'){
+      // verbo concordado
+      return `Este artículo tiene solo ${num} ${one ? 'unidad' : 'unidades'} disponible${one ? '' : 's'}, compra antes de que ${one ? 'se agote' : 'se agoten'}.`;
+    } else if (lang === 'en'){
+      return `This item has only ${num} ${one ? 'unit' : 'units'} available — buy before it sells out.`;
+    } else {
+      return `Este artigo tem apenas ${num} ${one ? 'unidade' : 'unidades'} disponível${one ? '' : 's'}, compra antes que esgote.`;
+    }
+  }
+  
   function buildAlert(units){
     const box=document.createElement('div');
     box.className='lastunits-alert';
@@ -82,16 +103,19 @@
     svg.setAttribute('viewBox','0 0 24 24');
     svg.innerHTML='<path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z"/>';
     const wrap=document.createElement('div');
+  
     const title=document.createElement('strong');
     title.className='lastunits-alert__title';
-    title.textContent=T.title;
+    // se não quiseres título dinâmico, usa "T.title"
+    title.textContent = formatTitle(units);
+  
     const p=document.createElement('p');
     p.className='lastunits-alert__desc';
-    p.textContent=T.desc.replace('{x}', units>0? String(units): 'x');
+    p.textContent = formatDesc(units);
+  
     wrap.append(title,p); box.append(svg,wrap);
-    return {box,p};
+    return {box,p,title};
   }
-
   const flagPresent = await waitForLastUnitsFlag(8000);
   if (!flagPresent){
     return;
@@ -153,18 +177,16 @@
   }
   placeSingleKlarna();
 
-  // manter o número do alerta em sincronia com as variações de tamanho (opcional)
   const sizesEl = document.querySelector('.sizes');
   if (sizesEl){
     const refresh=()=>{
       const u = totalUnits();
-      p.textContent = T.desc.replace('{x}', u>0? String(u): 'x');
+      p.textContent = formatDesc(u);
     };
     sizesEl.addEventListener('change', refresh);
     new MutationObserver(refresh).observe(sizesEl,{childList:true,subtree:true,attributes:true,attributeFilter:['qtd']});
   }
 
-  // se o Klarna aparecer dinamicamente mais tarde, tentar reposicionar (sem ocultar nada)
   if (!window.__KLARNA_FIX_OBS__){
     const obs=new MutationObserver((muts)=>{
       if (muts.some(m=>[...m.addedNodes].some(n=> n.nodeType===1 && (
