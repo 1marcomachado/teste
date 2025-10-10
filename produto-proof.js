@@ -7,11 +7,18 @@
   const sku = (rawSku.split("|")[0]||"").trim();
   if (!sku) return;
 
-  fetch(WORKER + "/increment", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({ sku, type: "view" })
-  }).catch(()=>{ /* ignora */ });
+  const isProbablyHuman =
+    !navigator.webdriver &&
+    document.visibilityState === 'visible' &&
+    !('connection' in navigator && navigator.connection.saveData);
+  
+  if (isProbablyHuman) {
+    fetch(WORKER + "/increment", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ sku, type: "view" })
+    }).catch(()=>{});
+  }
 
   const AUTO_CLOSE_MS = 8000;          // 0 = não fechar
   const OFFSET_TOP_PCT = 45;           // desktop: altura da badge (% da imagem)
