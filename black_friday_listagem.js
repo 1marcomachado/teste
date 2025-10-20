@@ -10,7 +10,7 @@
       const s=document.createElement('style'); s.id='bd-pills-inline-overlap-x';
       s.textContent = `
         :root{
-          --pill-h: 34px;        /* altura das pílulas (desktop) */
+          --pill-h: 26px;        /* altura das pílulas (desktop) */
           --overlap-y: 20px;     /* quanto entram sobre os botões (vertical) */
           --overlap-x: 10px;     /* quanto a preta sobrepõe a verde (horizontal) */
         }
@@ -25,7 +25,7 @@
         .bd-pill{
           display:inline-flex; align-items:center; justify-content:center;
           height:var(--pill-h); line-height:var(--pill-h);
-          padding:0 16px; border-radius:9999px;
+          padding:0 16px; border-radius:5px;
           font-size:14px; font-weight:700; white-space:nowrap;
           font-variant-numeric: tabular-nums;
           position:relative;
@@ -52,7 +52,7 @@
 
         /* === Mobile === */
         @media (max-width:768px){
-          :root{ --pill-h: 30px; --overlap-y: 14px; --overlap-x: 8px; }
+          :root{ --pill-h: 22px; --overlap-y: 14px; --overlap-x: 8px; }
           .bd-pill{ padding:0 12px; font-size:13px; }
           .bd-pill--note{ max-width:65vw; overflow:hidden; text-overflow:ellipsis; }
         }
