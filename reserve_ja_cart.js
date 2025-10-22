@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const referenciasDesejadas = new Set(['IU5011']); // inclui mobile
 
   const mensagens = {
-    pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 20 de junho. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
-    es: 'El envío de este artículo está previsto para el 20 de junio. <span style="color: #35cf2d;">¡RESÉRVALO AHORA ANTES DE QUE SE AGOTE!</span>',
-    en: 'Shipping for this item is expected by June 20th. <span style="color: #35cf2d;">BOOK IT NOW BEFORE IT SELLS OUT!</span>'
+    pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 28 de outubro. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
+    es: 'El envío de este artículo está previsto para el 28 de octuber. <span style="color: #35cf2d;">¡RESÉRVALO AHORA ANTES DE QUE SE AGOTE!</span>',
+    en: 'Shipping for this item is expected by october 28th. <span style="color: #35cf2d;">BOOK IT NOW BEFORE IT SELLS OUT!</span>'
   };
 
   const langPrefix = shopLang.substring(0, 2);
