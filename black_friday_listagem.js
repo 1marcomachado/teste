@@ -54,11 +54,13 @@
         @media (max-width:768px){
           :root{ --pill-h: 22px; --overlap-y: 14px; --overlap-x: 8px; }
           .bd-pill{ padding:0 12px; font-size:13px; }
+          .bd-pills-inline { margin-bottom: unset; }
           .bd-pill--note{ max-width:65vw; overflow:hidden; text-overflow:ellipsis; }
         }
         @media (max-width:430px){
           :root{ --pill-h: 28px; --overlap-y: 12px; --overlap-x: 6px; }
           .bd-pill{ padding:0 10px; font-size:12px; }
+          .bd-pills-inline { margin-bottom: unset; }
           .bd-pill--note{ max-width:60vw; }
         }
       `;
