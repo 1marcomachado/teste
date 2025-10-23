@@ -1,104 +1,121 @@
 (function(){
   const params = new URLSearchParams(window.location.search);
-    if (params.get('mostrar_blackfriday') === '1') {
-    const CARD  = 'article.product';
-    const PRICE = '.price, .product-price, .current-price span, .price .price, [itemprop="price"]';
-    const NOTE_TEXT = '-50% a partir de 28/10';
+  const ver = params.get('mostrar_blackfriday');
 
-    // ==== CSS: overlap horizontal ====
-    if(!document.getElementById('bd-pills-inline-overlap-x')){
-      const s=document.createElement('style'); s.id='bd-pills-inline-overlap-x';
-      s.textContent = `
-        :root{
-          --pill-h: 26px;        /* altura das pílulas (desktop) */
-          --overlap-y: 20px;     /* quanto entram sobre os botões (vertical) */
-          --overlap-x: 10px;     /* quanto a preta sobrepõe a verde (horizontal) */
-        }
+  if (ver !== '3') return;
 
-        .bd-pills-inline{
-          display:flex; align-items:center;
-          margin-top:8px;
-          margin-bottom: calc(var(--overlap-y) * -1); /* “por cima” dos botões */
-          position:relative; z-index:3; pointer-events:none;
-        }
+  const CARD  = 'article.product';
+  const PRICE = '.price, .product-price, .current-price span, .price .price, [itemprop="price"]';
 
-        .bd-pill{
-          display:inline-flex; align-items:center; justify-content:center;
-          height:var(--pill-h); line-height:var(--pill-h);
-          padding:0 16px; border-radius:5px;
-          font-size:14px; font-weight:700; white-space:nowrap;
-          font-variant-numeric: tabular-nums;
-          position:relative;
-        }
+  // Texto dinâmico: muda conforme data
+  const now = new Date();
+  const noteText = (now >= new Date('2025-10-28')) ? '🔥 -50% HOJE!' : '-50% a partir de 28/10';
 
-        .bd-pill--price{
-          background:#8DFE4A; color:#111; font-weight:800;
-          z-index:1;
-        }
-
-        /* sobreposição lateral: a preta avança por cima da verde */
-        .bd-pill--note{
-          background:#1F1F1F; color:#fff;
-          margin-left: calc(var(--overlap-x) * -1);
-          z-index:2;
-        }
-
-        /* encostar aos botões e compensar o overlap vertical */
-        .bd-pills-inline + .item-buttons{
-          margin-top:0 !important;
-          padding-top: var(--overlap-y);
-          position:relative; z-index:1;
-        }
-
-        /* === Mobile === */
-        @media (max-width:768px){
-          :root{ --pill-h: 22px; --overlap-y: 14px; --overlap-x: 8px; }
-          .bd-pill{ padding:0 12px; font-size:13px; }
-          .bd-pills-inline { margin-bottom: unset; }
-          .bd-pill--note{ max-width:65vw; overflow:hidden; text-overflow:ellipsis; }
-        }
-        @media (max-width:430px){
-          :root{ --pill-h: 28px; --overlap-y: 12px; --overlap-x: 6px; }
-          .bd-pill{ padding:0 10px; font-size:12px; }
-          .bd-pills-inline { margin-bottom: unset; }
-          .bd-pill--note{ max-width:60vw; }
-        }
-      `;
-      document.head.appendChild(s);
-    }
-
-    // ==== JS: insere antes da .item-buttons ====
-    function t(el){ return (el && (el.textContent||'').trim()) || ''; }
-
-    function mount(card){
-      if(card.querySelector('.bd-pills-inline')) return;
-      const btns = card.querySelector('.item-buttons'); if(!btns) return;
-
-      const priceEl = card.querySelector(PRICE);
-      const price   = t(priceEl); if(!price) return;
-
-      const wrap = document.createElement('div');
-      wrap.className = 'bd-pills-inline';
-
-      const g = document.createElement('div');
-      g.className = 'bd-pill bd-pill--price';
-      g.textContent = price;
-      wrap.appendChild(g);
-
-      if (NOTE_TEXT){
-        const b = document.createElement('div');
-        b.className = 'bd-pill bd-pill--note';
-        b.textContent = NOTE_TEXT;
-        wrap.appendChild(b);
+  if(!document.getElementById('bd3-pills')){
+    const s = document.createElement('style');
+    s.id = 'bd3-pills';
+    s.textContent = `
+      :root{
+        --bd3-pill-h: 30px;
+        --bd3-gap: 8px;
+        --bd3-overlap-y: 12px;
+        --bd3-green: #93FF3F;
+        --bd3-dark: #121212;
+        --bd3-font: 14px;
       }
 
-      btns.parentNode.insertBefore(wrap, btns);
-    }
+      .bd3-pills{
+        display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+        gap: var(--bd3-gap);
+        margin-top:8px;
+        margin-bottom: calc(var(--bd3-overlap-y) * -1);
+        position:relative; z-index:3;
+        animation: bd3-fadein .4s ease-out both;
+      }
 
-    function run(root){ (root||document).querySelectorAll(CARD).forEach(mount); }
-    run();
+      @keyframes bd3-fadein{
+        from{ opacity:0; transform:translateY(4px); }
+        to{ opacity:1; transform:none; }
+      }
 
-    const mo=new MutationObserver(()=>{ clearTimeout(run._t); run._t=setTimeout(()=>run(document.body),80); });
-    mo.observe(document.body,{childList:true,subtree:true});
+      .bd3-pill{
+        display:inline-flex; align-items:center; justify-content:center;
+        padding:6px 16px;
+        border-radius:9999px;
+        font-size:var(--bd3-font);
+        font-weight:800;
+        white-space:nowrap;
+        line-height:1;
+        position:relative;
+        box-shadow:0 1px 4px rgba(0,0,0,.08);
+        transition: transform .2s ease, box-shadow .2s ease;
+      }
+
+      .bd3-pill--price{
+        background:var(--bd3-green); color:#111;
+      }
+      .bd3-pill--price:hover{ transform:scale(1.05); }
+
+      .bd3-pill--note{
+        background:var(--bd3-dark); color:#fff;
+        overflow:hidden; text-overflow:ellipsis;
+        max-width:80vw;
+      }
+
+      .bd3-pills + .item-buttons{
+        margin-top:0 !important;
+        padding-top: var(--bd3-overlap-y);
+        position:relative; z-index:1;
+      }
+
+      @media (max-width:768px){
+        :root{ --bd3-pill-h: 34px; --bd3-gap: 8px; --bd3-font: 13.5px; }
+        .bd3-pill{ padding:8px 14px; text-align:center; }
+        .bd3-pill--note{ max-width:85vw; }
+      }
+
+      @media (max-width:430px){
+        :root{ --bd3-pill-h: 36px; --bd3-font: 13px; }
+        .bd3-pills{ flex-direction:column; gap:6px; }
+        .bd3-pill{ width:auto; }
+      }
+
+      @media (prefers-color-scheme: dark){
+        .bd3-pill--price{ background:#B6FF6B; color:#000; }
+        .bd3-pill--note{ background:#1A1A1A; }
+      }
+    `;
+    document.head.appendChild(s);
   }
+
+  function mount(card){
+    if(card.querySelector('.bd3-pills')) return;
+    const btns = card.querySelector('.item-buttons'); if(!btns) return;
+
+    const priceEl = card.querySelector(PRICE);
+    const price   = (priceEl && priceEl.textContent.trim()) || ''; if(!price) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'bd3-pills';
+
+    const g = document.createElement('div');
+    g.className = 'bd3-pill bd3-pill--price';
+    g.textContent = price;
+    g.setAttribute('aria-label', 'Preço atual ' + price);
+    wrap.appendChild(g);
+
+    const b = document.createElement('div');
+    b.className = 'bd3-pill bd3-pill--note';
+    b.textContent = noteText;
+    b.setAttribute('aria-label', noteText);
+    wrap.appendChild(b);
+
+    btns.parentNode.insertBefore(wrap, btns);
+  }
+
+  function run(root){ (root||document).querySelectorAll(CARD).forEach(mount); }
+  run();
+
+  const mo=new MutationObserver(()=>{ clearTimeout(run._t); run._t=setTimeout(()=>run(document.body),80); });
+  mo.observe(document.body,{childList:true,subtree:true});
 })();
