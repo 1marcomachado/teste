@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const script = document.currentScript;
   const shopLang = script?.getAttribute('data-shop-lang')?.toLowerCase() || 'pt';
 
-  const referenciasDesejadas = new Set(['DH2920-111']); // inclui mobile
+  const referenciasDesejadas = new Set(['DH2920-111', 'IH4498-101','CW2626-003','CW2626-101','FQ8690-801','CW1590-100']); // inclui mobile
 
   const mensagens = {
     pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 28 de outubro. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
