@@ -26,7 +26,7 @@
 
   // ===== REFERÊNCIAS COM PREORDER =====
   const REFERENCIAS_PREORDER = [
-    'DH2920-111'
+    'DH2920-111', 'IH4498-101','CW2626-003','CW2626-101','FQ8690-801','CW1590-100'
   ];
 
   function getReferencia() {
