@@ -18,8 +18,8 @@
       if (k.toLowerCase() === "id" && /^\d+$/.test(v)) return v;
     }
     const path = u.pathname + (u.search || "") + (u.hash || "");
-    const m = path.match(/[_-](\d+)(?:\.html|$|\?|\/)/i);
-    return m ? m[1] : null;
+    const m = path.match(/(?:[_-](\d+)|(\d+)[_-])(?:\.html|$|\?|\/)/i);
+    return m ? (m[1] || m[2]) : null;
   }
 
   const hexToRgb = (hex) => {
