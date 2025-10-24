@@ -1,122 +1,81 @@
 (function () {
-  // Esconde os menus alvo antes de aplicar estilo
-  const idsParaEstilo = ["435", "436", "437"];
-  idsParaEstilo.forEach(id => {
-    const container = document.querySelector(`[attr-id-hover="${id}"] .column-menu > ul`);
-    if (container) container.style.display = 'none';
-  });
-
-  requestAnimationFrame(() => {
-    // === DESKTOP ===
-
-    // Aplica estilo ao menu de desporto (1871) - já existente
-    const menuDesporto = document.querySelector('[attr-id-hover="1871"] .column-menu > ul');
-    if (menuDesporto) {
-      const items = menuDesporto.querySelectorAll(':scope > li');
-      if (items.length >= 1) {
-        const futebol = items[1];
-        const link = futebol.querySelector('a');
-
-        futebol.classList.add('futebol-li');
-        futebol.style.backgroundColor = "#38D430";
-        futebol.style.borderRadius = "4px";
-        futebol.style.margin = "0 4px";
-
-        if (link) {
-          link.style.color = "#000";
-          link.style.display = "inline-block";
-          link.style.padding = "5px 10px";
-        }
-      }
-      menuDesporto.style.display = '';
+  function getIdFromHref(href) {
+    if (!href) return null;
+    const q = href.split("?")[1];
+    if (q) {
+      const p = new URLSearchParams(q);
+      const qpId = p.get("id");
+      if (qpId && /^\d+$/.test(qpId)) return qpId;
     }
+    const m = href.match(/_(\d+)\.html(?:$|\?)/);
+    if (m) return m[1];
+    return null;
+  }
 
-    // Aplica estilo aos menus 435, 436, 437
-    const idsParaEstilo = ["435", "436", "437"];
-    idsParaEstilo.forEach(id => {
-      const ul = document.querySelector(`[attr-id-hover="${id}"] .column-menu > ul`);
-      if (ul) {
-        const items = ul.querySelectorAll(':scope > li');
-        if (items.length >= 1) {
-          const segundo = items[1];
-          const link = segundo.querySelector('a');
+  function styleLi(li, bgColor, textColor) {
+    if (!li) return;
+    const link = li.querySelector("a");
+    li.style.backgroundColor = bgColor;
+    li.style.borderRadius = "4px";
+    li.style.margin = "0 4px";
+    if (link) {
+      link.style.color = textColor;
+      link.style.display = "inline-block";
+      link.style.padding = "5px 10px";
+    }
+    li.dataset.styled = "1";
+  }
 
-          segundo.classList.add('outro-li');
-          segundo.style.backgroundColor = "#ECECEC";
-          segundo.style.borderRadius = "4px";
-          segundo.style.margin = "0 4px";
+  // ====== A TUA CONFIG DESKTOP (usa os IDs reais!) ======
+  const menusConfig = {
+    "1871": { idLink: "2100", bg: "#38D430", color: "#000" },
+    "435":  { idLink: "538",  bg: "#ECECEC", color: "#333" },
+    "436":  { idLink: "475",  bg: "#ECECEC", color: "#333" },
+    "437":  { idLink: "600", bg: "#ECECEC", color: "#333" },
+  };
 
-          if (link) {
-            link.style.color = "#333";
-            link.style.display = "inline-block";
-            link.style.padding = "5px 10px";
-          }
+  // ====== MOBILE ======
+  const mobileConfig = {};
+  for (const key in menusConfig) {
+    const { idLink, bg, color } = menusConfig[key];
+    if (idLink) mobileConfig[idLink] = { bg, color };
+  }
+
+  function styleMobileMenus(root = document) {
+    const mobileMenus = root.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
+    mobileMenus.forEach((ul) => {
+      Array.from(ul.children).forEach((li) => {
+        if (li.tagName !== 'LI' || li.dataset.styled === "1") return;
+        const a = li.querySelector('a[href]');
+        const id = a ? getIdFromHref(a.getAttribute('href')) : null;
+        if (id && mobileConfig[id]) {
+          const { bg, color } = mobileConfig[id];
+          styleLi(li, bg, color);
         }
-        ul.style.display = '';
-      }
+      });
     });
+  }
 
-    // Injeta os estilos de hover para ambas as classes
-    const style = document.createElement("style");
-    style.textContent = `
-      [attr-id-hover="1871"] .futebol-li > a:hover,
-      [attr-id-hover="1871"] .futebol-li.sel > a {
-        background-color: #2DB82B !important;
-        color: #000 !important;
-        border-radius: 4px;
-        padding: 5px 10px;
-      }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => styleMobileMenus());
+  } else {
+    styleMobileMenus();
+  }
 
-      [attr-id-hover="435"] .outro-li > a:hover,
-      [attr-id-hover="435"] .outro-li.sel > a,
-      [attr-id-hover="436"] .outro-li > a:hover,
-      [attr-id-hover="436"] .outro-li.sel > a,
-      [attr-id-hover="437"] .outro-li > a:hover,
-      [attr-id-hover="437"] .outro-li.sel > a {
-        background-color: #ECECEC !important;
-        color: #333 !important;
-        border-radius: 4px;
-        padding: 5px 10px;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // === MOBILE ===
-    const mobileMenus = document.querySelectorAll('#menu .wrapper-sub-mobile .sub-mobile:not(.sub)');
-    mobileMenus.forEach((ul, index) => {
-      const items = ul.querySelectorAll(':scope > li');
-      if (items.length >= 2) {
-        const secondItem = items[2];
-        const link = secondItem.querySelector('a');
-
-        // Ignora o índice 4 (desporto)
-        if (index !== 3 && !secondItem.dataset.styled) {
-          secondItem.style.backgroundColor = "#ECECEC";
-          secondItem.style.borderRadius = "4px";
-          secondItem.style.margin = "0 4px";
-
-          if (link) {
-            link.style.color = "#333";
-            link.style.display = "inline-block";
-            link.style.padding = "5px 10px";
-          }
-          secondItem.dataset.styled = "1";
-        }
-
-        // Aplica verde ao índice 4 (Desporto)
-        if (index === 3 && !secondItem.dataset.styled) {
-          secondItem.style.backgroundColor = "#38D430";
-          secondItem.style.borderRadius = "4px";
-          secondItem.style.margin = "0 4px";
-
-          if (link) {
-            link.style.color = "#000";
-            link.style.display = "inline-block";
-            link.style.padding = "5px 10px";
-          }
-          secondItem.dataset.styled = "1";
+  const observer = new MutationObserver((mutations) => {
+    let shouldRestyle = false;
+    for (const m of mutations) {
+      if (m.type === 'childList') {
+        if ([...m.addedNodes].some(n =>
+          n.nodeType === 1 && n.matches && (n.matches('#menu .wrapper-sub-mobile *') || n.closest?.('#menu .wrapper-sub-mobile'))
+        )) {
+          shouldRestyle = true;
+          break;
         }
       }
-    });
+    }
+    if (shouldRestyle) styleMobileMenus(document);
   });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 })();
