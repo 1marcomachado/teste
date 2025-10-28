@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const script = document.currentScript;
   const shopLang = script?.getAttribute('data-shop-lang')?.toLowerCase() || 'pt';
 
-  const referenciasDesejadas = new Set(['DH2920-111', 'IH4498-101','CW2626-003','CW2626-101','FQ8690-801','CW1590-100']); // inclui mobile
+  const referenciasDesejadas = new Set(['HQ2181']); // inclui mobile
 
   const mensagens = {
-    pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 28 de outubro. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
-    es: 'El envío de este artículo está previsto para el 28 de octuber. <span style="color: #35cf2d;">¡RESÉRVALO AHORA ANTES DE QUE SE AGOTE!</span>',
-    en: 'Shipping for this item is expected by october 28th. <span style="color: #35cf2d;">BOOK IT NOW BEFORE IT SELLS OUT!</span>'
+    pt: 'O Envio DESTE ARTIGO ESTÁ previsto para 31 de outubro. <span style="color: #35cf2d;">RESERVA-O AGORA ANTES QUE ESGOTE!</span>',
+    es: 'El envío de este artículo está previsto para el 31 de octuber. <span style="color: #35cf2d;">¡RESÉRVALO AHORA ANTES DE QUE SE AGOTE!</span>',
+    en: 'Shipping for this item is expected by october 31th. <span style="color: #35cf2d;">BOOK IT NOW BEFORE IT SELLS OUT!</span>'
   };
 
   const langPrefix = shopLang.substring(0, 2);
