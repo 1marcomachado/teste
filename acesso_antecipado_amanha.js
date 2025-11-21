@@ -1,5 +1,12 @@
 (function () {
-  // ===== Helpers =====
+  // =====================================================
+  //  BLOCO 1: CONTEXTO, LOCALSTORAGE, USER & WORKER
+  //  - Helpers (waitForEl, LS)
+  //  - GA user_id + getUserId()
+  //  - TEXTS
+  //  - checkUserExistsIfNeeded()  (localStorage + workerUrl)
+  // =====================================================
+
   function waitForEl(selector, { timeout = 7000 } = {}) {
     return new Promise(resolve => {
       const now = document.querySelector(selector);
@@ -48,80 +55,12 @@
     } catch (e) {}
   }
 
-  // ===== Contexto do formulário para JSONP =====
+  // Contexto do formulário (usado depois pelos callbacks JSONP da AC)
   let bdFormContext = {
     errorEl: null,
     successEl: null,
     submitBtn: null,
     emailInput: null
-  };
-
-  // Estes helpers vão ser chamados pela AC via JSONP (_show_thank_you / _show_error)
-  function bdHandleAcSuccess(emailFromAc) {
-    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
-    if (!successEl || !submitBtn) return;
-
-    const email =
-      emailFromAc ||
-      (emailInput && emailInput.value ? emailInput.value.trim() : '');
-
-    // marcar subscrito
-    const userId = getUserId();
-    try {
-      if (userId) {
-        setLS('bd_nl_subscribed_' + userId, '1');
-      } else if (email) {
-        setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
-      }
-    } catch (e) {}
-
-    if (errorEl) {
-      errorEl.style.display = 'none';
-    }
-    successEl.textContent = L.success;
-    successEl.style.display = 'block';
-
-    // remover badge com fade
-    const badge = document.querySelector('.preorder-badge');
-    if (badge) {
-      badge.style.transition = 'opacity 0.4s ease';
-      badge.style.opacity = '0';
-      setTimeout(() => badge.remove(), 400);
-    }
-
-    // reativar botão
-    submitBtn.disabled = false;
-
-    // fechar painel passado 2.5s
-    setTimeout(() => {
-      closePanel();
-    }, 2500);
-  }
-
-  function bdHandleAcError(message) {
-    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
-    if (!errorEl || !submitBtn) return;
-
-    if (successEl) {
-      successEl.style.display = 'none';
-    }
-    errorEl.textContent = message || L.genericError;
-    errorEl.style.display = 'block';
-
-    if (emailInput) {
-      emailInput.classList.add('_has_error');
-    }
-
-    submitBtn.disabled = false;
-  }
-
-  // ActiveCampaign JSONP callbacks
-  window._show_thank_you = function (id, message, trackcmp_url, email) {
-    bdHandleAcSuccess(email);
-  };
-
-  window._show_error = function (id, message, html) {
-    bdHandleAcError(message || L.genericError);
   };
 
   // ===== GA: obter user_id do dataLayer (Arguments / arrays / objetos) =====
@@ -131,16 +70,13 @@
     for (const item of dl) {
       if (!item || typeof item !== 'object') continue;
 
-      // Trata Arrays e 'Arguments' da mesma forma:
       const kind = item[0]; // 'config', 'event', etc.
       const params = item[2]; // onde está o user_id no config
 
-      // Caso 1: gtag('config', 'G-3RMG5XN702', { user_id: '...' })
       if (kind === 'config' && params && params.user_id) {
         return String(params.user_id);
       }
 
-      // Caso 2: objeto simples com user_id (fallback geral)
       if (item.user_id) {
         return String(item.user_id);
       }
@@ -162,10 +98,8 @@
   const workerUrl = currentScript?.getAttribute('data-worker-url') || '';
 
   function getUserId() {
-    // 1) tentar vir do data-user-id
     let id = currentScript?.getAttribute('data-user-id') || '';
 
-    // se vier vazio ou placeholder Redicom, tenta GA
     if (!id || id === '{ID_UTILIZADOR}') {
       const fromGA = getUserIdFromGA();
       if (fromGA) id = fromGA;
@@ -174,11 +108,13 @@
     return id || '';
   }
 
-  // Textos
+  // Textos por idioma
   const TEXTS = {
     pt: {
       badge:
         'SUBSCREVE A NOSSA NEWSLETTER E USUFRUI DE 15% EM TUDO! APENAS DIAS 22/11 E 23/11.',
+      badgeApplied:
+        'JÁ ÉS SUBSCRITOR! O DESCONTO DE 15% FOI APLICADO A ESTA COMPRA.',
       panelTitle: 'Subscreve a nossa newsletter',
       panelSubtitle:
         'e usufrui de 15% em tudo! Apenas dias 22/11 e 23/11.',
@@ -193,6 +129,8 @@
     es: {
       badge:
         '¡SUSCRÍBETE A NUESTRA NEWSLETTER Y DISFRUTA DE UN 15% EN TODO! SOLO LOS DÍAS 22/11 Y 23/11.',
+      badgeApplied:
+        '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 15% SE HA APLICADO A ESTA COMPRA.',
       panelTitle: 'Suscríbete a nuestra newsletter',
       panelSubtitle:
         'y disfruta de un 15% en todo. Solo los días 22/11 y 23/11.',
@@ -207,6 +145,8 @@
     en: {
       badge:
         'SUBSCRIBE TO OUR NEWSLETTER AND ENJOY 15% OFF EVERYTHING! ONLY ON 22/11 AND 23/11.',
+      badgeApplied:
+        'YOU ARE ALREADY SUBSCRIBED! THE 15% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
       panelTitle: 'Subscribe to our newsletter',
       panelSubtitle:
         'and enjoy 15% off everything. Only on 22/11 and 23/11.',
@@ -222,16 +162,70 @@
 
   const L = TEXTS[lang] || TEXTS.pt;
 
-  // Referências elegíveis para mostrar a campanha
-  const REFERENCIAS_PREORDER = ['IH4119-006']; // podes adicionar mais
+  // ===== Worker + LocalStorage: verifica se o user já existe/subscrito =====
+  async function checkUserExistsIfNeeded() {
+    const userId = getUserId();
 
-  function getReferencia() {
-    const el = document.querySelector('.ref p.small');
-    if (!el) return null;
-    return el.textContent.trim().replace(/^#/, '').split('|')[0].trim();
+    if (!userId || !workerUrl) {
+      // não temos id ou worker -> não conseguimos validar, mostra badge normal
+      return { shouldShowBadge: true };
+    }
+
+    const subscribedKey = 'bd_nl_subscribed_' + userId;
+    const existsKey = 'bd_nl_exists_' + userId;
+    const checkedKey = 'bd_nl_checked_' + userId;
+
+    // 1) já sabemos via LS que subscreveu neste userId
+    if (getLS(subscribedKey) === '1') {
+      return { shouldShowBadge: false, alreadySubscribed: true };
+    }
+
+    // 2) já sabemos via LS que o contacto existe (resultado anterior do worker)
+    if (getLS(existsKey) === '1') {
+      return { shouldShowBadge: false, exists: true };
+    }
+
+    // 3) já verificámos antes via worker e ficou marcado como "não existe"
+    if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
+      return { shouldShowBadge: true };
+    }
+
+    // 4) primeira vez -> chamar worker
+    try {
+      const resp = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_utilizador: userId })
+      });
+      const data = await resp.json();
+      // data esperado: { exists: boolean, contactId?, ... }
+
+      setLS(checkedKey, '1');
+
+      if (data && data.exists) {
+        setLS(existsKey, '1');
+        return { shouldShowBadge: false, exists: true, contactId: data.contactId };
+      } else {
+        return { shouldShowBadge: true, exists: false };
+      }
+    } catch (e) {
+      console.warn('[BD NL] Erro ao chamar worker AC:', e);
+      // fallback: não bloquear campanha
+      return { shouldShowBadge: true, error: true };
+    }
   }
 
-  // ===== CSS injetado (badge + painel + form) =====
+  // =====================================================
+  //  BLOCO 2: UI, FORMULÁRIO, JSONP, VOUCHER & INIT
+  //  - CSS / ensureStyles
+  //  - Panel (overlay, open/close)
+  //  - applyVoucher()
+  //  - Callbacks AC JSONP (_show_thank_you / _show_error)
+  //  - renderFormIntoSlot()
+  //  - addBadge(mode)
+  //  - init() com gate acesso_amanha
+  // =====================================================
+
   function ensureStyles() {
     if (document.querySelector('style[data-bd-nl]')) return;
 
@@ -247,12 +241,11 @@
         font-family:'Oswald-Regular', Arial, Helvetica, 'Segoe UI', sans-serif;
         font-weight:800; text-transform:uppercase;
         color:#FFFFFF !important; user-select:none;
-        cursor:pointer;
       }
-      .preorder-badge--compact{ padding:12px 16px; display:inline-flex; }
-      .preorder-badge--full{ padding:12px 16px; display:flex; width:100%; }
+      .preorder-badge--full{ padding:12px 16px; display:flex; width:100%; cursor:pointer; }
+      .preorder-badge--info{ cursor:default; }
       .preorder-badge__text{
-        font-size:13px; line-height:1.3; color:#FFFFFF !important; text-align:center;
+        font-size:13px; line-height:1.3; color:#FFFFFF !important; text-align:center; width:100%;
       }
       @media (max-width:560px){
         .preorder-badge--full .preorder-badge__text{ font-size:12px; }
@@ -387,7 +380,6 @@
     document.head.appendChild(style);
   }
 
-  // ===== Overlay + painel =====
   function ensurePanel() {
     ensureStyles();
 
@@ -432,6 +424,113 @@
     return { overlay, panel };
   }
 
+  function openPanel() {
+    const { overlay, panel } = ensurePanel();
+    const slot = panel.querySelector('#bd-nl-form-slot');
+
+    renderFormIntoSlot(slot);
+
+    overlay.classList.add('is-open');
+    panel.classList.add('is-open');
+  }
+
+  function closePanel() {
+    const overlay = document.querySelector('.bd-nl-overlay');
+    const panel = document.querySelector('.bd-nl-panel');
+    if (overlay) overlay.classList.remove('is-open');
+    if (panel) panel.classList.remove('is-open');
+  }
+
+  // ===== Aplicar voucher no formulário desktop =====
+  function applyVoucher() {
+    try {
+      const form = document.querySelector('#rdc-form-voucher-desktop');
+      if (!form) return;
+
+      const el = form.querySelector('input[name="gid"]');
+      if (!el) return;
+
+      el.value = '6u7M09eFzQnBUADhG1bq';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+
+      const btn = form.querySelector('input[type="submit"], button[type="submit"]');
+      if (btn) btn.click();
+    } catch (e) {
+      console.warn('[BD NL] Erro ao aplicar voucher:', e);
+    }
+  }
+
+  // ===== Sucesso / erro AC (JSONP) =====
+  function bdHandleAcSuccess(emailFromAc) {
+    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
+    if (!successEl || !submitBtn) return;
+
+    const email =
+      emailFromAc ||
+      (emailInput && emailInput.value ? emailInput.value.trim() : '');
+
+    const userId = getUserId();
+    try {
+      if (userId) {
+        setLS('bd_nl_subscribed_' + userId, '1');
+      } else if (email) {
+        setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
+      }
+    } catch (e) {}
+
+    if (errorEl) {
+      errorEl.style.display = 'none';
+    }
+    successEl.textContent = L.success;
+    successEl.style.display = 'block';
+
+    // se já houver badge, transformamos em "applied"
+    const badge = document.querySelector('.preorder-badge');
+    if (badge) {
+      const span = badge.querySelector('.preorder-badge__text');
+      if (span) span.textContent = L.badgeApplied;
+      badge.classList.add('preorder-badge--info');
+      badge.style.cursor = 'default';
+      badge.replaceWith(badge); // remove listeners antigos
+    }
+
+    submitBtn.disabled = false;
+
+    // Aplicar voucher após subscrição
+    applyVoucher();
+
+    setTimeout(() => {
+      closePanel();
+    }, 2500);
+  }
+
+  function bdHandleAcError(message) {
+    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
+    if (!errorEl || !submitBtn) return;
+
+    if (successEl) {
+      successEl.style.display = 'none';
+    }
+    errorEl.textContent = message || L.genericError;
+    errorEl.style.display = 'block';
+
+    if (emailInput) {
+      emailInput.classList.add('_has_error');
+    }
+
+    submitBtn.disabled = false;
+  }
+
+  // JSONP callbacks da ActiveCampaign
+  window._show_thank_you = function (id, message, trackcmp_url, email) {
+    bdHandleAcSuccess(email);
+  };
+
+  window._show_error = function (id, message, html) {
+    bdHandleAcError(message || L.genericError);
+  };
+
   function renderFormIntoSlot(slot) {
     if (!slot || slot.dataset.bdRendered === '1') return;
     slot.dataset.bdRendered = '1';
@@ -454,14 +553,12 @@
         <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
       </form>
     `;
-
     const form = slot.querySelector('#bd-nl-form');
     const emailInput = slot.querySelector('#bd-nl-email');
     const errorEl = slot.querySelector('#bd-nl-error');
     const successEl = slot.querySelector('#bd-nl-success');
     const submitBtn = slot.querySelector('#bd-nl-submit');
 
-    // guardar contexto global para o JSONP da AC
     bdFormContext.errorEl = errorEl;
     bdFormContext.successEl = successEl;
     bdFormContext.submitBtn = submitBtn;
@@ -470,14 +567,12 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // reset erros
       errorEl.style.display = 'none';
       successEl.style.display = 'none';
       emailInput.classList.remove('_has_error');
 
       const email = emailInput.value.trim();
 
-      // validações
       if (!email) {
         errorEl.textContent = L.requiredError;
         errorEl.style.display = 'block';
@@ -494,7 +589,6 @@
 
       submitBtn.disabled = true;
 
-      // construir query para ActiveCampaign (igual ao form 6)
       const params = new URLSearchParams();
       params.set('u', '6');
       params.set('f', '6');
@@ -507,7 +601,6 @@
       params.set('email', email);
       params.set('jsonp', 'true');
 
-      // JSONP: inject script para contornar CORS
       const script = document.createElement('script');
       script.src =
         'https://bazardesportivo.activehosted.com/proc.php?' +
@@ -520,29 +613,11 @@
     });
   }
 
-  function openPanel() {
-    const { overlay, panel } = ensurePanel();
-    const slot = panel.querySelector('#bd-nl-form-slot');
-
-    renderFormIntoSlot(slot);
-
-    overlay.classList.add('is-open');
-    panel.classList.add('is-open');
-  }
-
-  function closePanel() {
-    const overlay = document.querySelector('.bd-nl-overlay');
-    const panel = document.querySelector('.bd-nl-panel');
-    if (overlay) overlay.classList.remove('is-open');
-    if (panel) panel.classList.remove('is-open');
-  }
-
-  // ===== BADGE =====
-  async function addBadge() {
-    // garantir CSS antes de criar o badge (para evitar ficar com estilos do tema)
+  // Badge em dois modos: "subscribe" (abre painel) ou "applied" (info)
+  async function addBadge(mode) {
     ensureStyles();
 
-    const anchorSelector = '.rdc-product-afterprice';
+    const anchorSelector = '#wrapper-amazon-error-mobile';
     const ref =
       document.querySelector(anchorSelector) || (await waitForEl(anchorSelector));
     if (!ref) return;
@@ -551,142 +626,59 @@
 
     const wrap = document.createElement('div');
     wrap.className = 'preorder-badge preorder-badge--full';
-    wrap.setAttribute('role', 'button');
-    wrap.setAttribute('tabindex', '0');
-    wrap.setAttribute('aria-live', 'polite');
-    wrap.setAttribute('aria-label', L.badge);
-    // força mesmo o vermelho e branco
     wrap.style.background = '#E30613';
     wrap.style.color = '#FFFFFF';
 
     const text = document.createElement('span');
     text.className = 'preorder-badge__text';
-    text.textContent = L.badge;
+
+    if (mode === 'applied') {
+      wrap.classList.add('preorder-badge--info');
+      text.textContent = L.badgeApplied;
+      wrap.setAttribute('aria-live', 'polite');
+      wrap.setAttribute('aria-label', L.badgeApplied);
+    } else {
+      text.textContent = L.badge;
+      wrap.setAttribute('role', 'button');
+      wrap.setAttribute('tabindex', '0');
+      wrap.setAttribute('aria-live', 'polite');
+      wrap.setAttribute('aria-label', L.badge);
+
+      wrap.addEventListener('click', openPanel);
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPanel();
+        }
+      });
+    }
 
     wrap.append(text);
-    ref.insertAdjacentElement('afterend', wrap);
-
-    wrap.addEventListener('click', openPanel);
-    wrap.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openPanel();
-      }
-    });
-  }
-
-  // ===== Worker: verificar se já existe contacto pelo id_utilizador =====
-  async function checkUserExistsIfNeeded() {
-    const userId = getUserId();
-
-    if (!userId || !workerUrl) {
-      // não temos id ou worker -> não conseguimos validar, mostra badge normal
-      return { shouldShowBadge: true };
-    }
-
-    const subscribedKey = 'bd_nl_subscribed_' + userId;
-    const existsKey = 'bd_nl_exists_' + userId;
-    const checkedKey = 'bd_nl_checked_' + userId;
-
-    // Se já sabemos que subscreveu, nem mostra badge
-    if (getLS(subscribedKey) === '1') {
-      return { shouldShowBadge: false };
-    }
-
-    // Se já sabemos que existe (resultado anterior do worker), também não mostramos
-    if (getLS(existsKey) === '1') {
-      return { shouldShowBadge: false };
-    }
-
-    // Se já marcámos que verificámos e decidimos mostrar badge, não voltamos a chamar worker
-    if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
-      return { shouldShowBadge: true };
-    }
-
-    // Chamar worker pela primeira vez
-    try {
-      const resp = await fetch(workerUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_utilizador: userId })
-      });
-      const data = await resp.json();
-      // data: { exists: boolean, contactId?, fieldValueId?, value? }
-
-      setLS(checkedKey, '1');
-
-      if (data && data.exists) {
-        setLS(existsKey, '1');
-        return { shouldShowBadge: false, exists: true, contactId: data.contactId };
-      } else {
-        return { shouldShowBadge: true, exists: false };
-      }
-    } catch (e) {
-      console.warn('[BD NL] Erro ao chamar worker AC:', e);
-      // fallback: não bloquear a campanha só porque a AC falhou
-      return { shouldShowBadge: true, error: true };
-    }
-  }
-
-  // ===== Klarna (igual ao teu, opcional) =====
-  async function placeKlarna({ mode = 'move' } = {}) {
-    const targetSel = '#fixedDiv .buttons.clearfix';
-    const target =
-      document.querySelector(targetSel) || (await waitForEl(targetSel));
-    if (!target || !target.parentNode) return;
-
-    const allKlarna = Array.from(
-      document.querySelectorAll('.rdc-product-klarna-placement')
-    );
-    if (!allKlarna.length) return;
-
-    document
-      .querySelectorAll('.rdc-klarna-injected')
-      .forEach(n => n.remove());
-    document
-      .querySelectorAll('#rdc-productrange-expeditioninfo')
-      .forEach(n => n.remove());
-
-    const original = allKlarna[0];
-    if (mode === 'clone') {
-      const clone = original.cloneNode(true);
-      clone.classList.add('rdc-klarna-injected');
-      clone.style.paddingBottom = '10px';
-      target.parentNode.insertBefore(clone, target);
-    } else {
-      original.classList.add('rdc-klarna-injected');
-      original.style.paddingBottom = '10px';
-      target.parentNode.insertBefore(original, target);
-      allKlarna.forEach(el => {
-        if (el !== original) el.remove();
-      });
-    }
+    ref.insertAdjacentElement('beforebegin', wrap);
   }
 
   // ===== Init =====
   async function init() {
-    // -------- GATE ACESSO_AMANHA --------
+    // Gate por parâmetro de URL
     const params = new URLSearchParams(window.location.search);
     const acessoAmanha = params.get('acesso_amanha');
     if (acessoAmanha !== '1') {
-      // sem o parâmetro, não faz NADA (Opção B)
-      return;
-    }
-    // -----------------------------------
-
-    const refAtual = getReferencia();
-    if (!refAtual || !REFERENCIAS_PREORDER.includes(refAtual)) {
       return;
     }
 
     const workerResult = await checkUserExistsIfNeeded();
 
-    if (workerResult.shouldShowBadge) {
-      await addBadge();
+    // Se já está subscrito / contacto existe:
+    // 1) aplica voucher
+    // 2) mostra barra informativa "já foi aplicado"
+    if (!workerResult.shouldShowBadge && (workerResult.alreadySubscribed || workerResult.exists)) {
+      applyVoucher();
+      await addBadge('applied');
+      return;
     }
 
-    // Klarna se for necessário
-    await placeKlarna({ mode: 'move' });
+    // Caso contrário, mostra barra de subscrição normal
+    await addBadge('subscribe');
   }
 
   if (document.readyState === 'loading') {
