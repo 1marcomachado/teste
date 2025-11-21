@@ -48,6 +48,34 @@
     } catch (e) {}
   }
 
+  // ===== GA: obter user_id do dataLayer (Arguments / arrays / objetos) =====
+  function getUserIdFromGA() {
+    const dl = window.dataLayer || [];
+
+    for (const item of dl) {
+      if (!item || typeof item !== 'object') continue;
+
+      // Trata Arrays e 'Arguments' da mesma forma:
+      const kind = item[0];     // 'config', 'event', etc.
+      const params = item[2];   // onde está o user_id no config
+
+      // Caso 1: gtag('config', 'G-3RMG5XN702', { user_id: '...' })
+      if (kind === 'config' && params && params.user_id) {
+        return String(params.user_id);
+      }
+
+      // Caso 2: objeto simples com user_id (fallback geral)
+      if (item.user_id) {
+        return String(item.user_id);
+      }
+      if (item.user_properties && item.user_properties.user_id) {
+        return String(item.user_properties.user_id);
+      }
+    }
+
+    return null;
+  }
+
   // ===== Config & contexto do script =====
   const currentScript =
     document.currentScript || document.getElementById('bd-nl-script');
@@ -56,7 +84,19 @@
     currentScript?.getAttribute('data-shop-lang')?.toLowerCase() || 'pt';
   const lang = shopLang.slice(0, 2);
   const workerUrl = currentScript?.getAttribute('data-worker-url') || '';
-  const userId = currentScript?.getAttribute('data-user-id') || '';
+
+  function getUserId() {
+    // 1) tentar vir do data-user-id
+    let id = currentScript?.getAttribute('data-user-id') || '';
+
+    // se vier vazio ou placeholder Redicom, tenta GA
+    if (!id || id === '{ID_UTILIZADOR}') {
+      const fromGA = getUserIdFromGA();
+      if (fromGA) id = fromGA;
+    }
+
+    return id || '';
+  }
 
   // Textos
   const TEXTS = {
@@ -65,21 +105,42 @@
         'SUBSCREVE A NOSSA NEWSLETTER E USUFRUI DE 15% EM TUDO! APENAS DIAS 22/11 E 23/11.',
       panelTitle: 'Subscreve a nossa newsletter',
       panelSubtitle:
-        'e usufrui de 15% em tudo! Apenas dias 22/11 e 23/11.'
+        'e usufrui de 15% em tudo! Apenas dias 22/11 e 23/11.',
+      emailLabel: 'E-mail',
+      emailPlaceholder: 'Introduza o seu e-mail',
+      submit: 'Submeter',
+      requiredError: 'Este campo é obrigatório.',
+      emailError: 'Introduza um endereço de e-mail válido.',
+      genericError: 'Lamentamos, mas o envio falhou. Tente novamente.',
+      success: 'Obrigado! A sua subscrição foi registada com sucesso.'
     },
     es: {
       badge:
         '¡SUSCRÍBETE A NUESTRA NEWSLETTER Y DISFRUTA DE UN 15% EN TODO! SOLO LOS DÍAS 22/11 Y 23/11.',
       panelTitle: 'Suscríbete a nuestra newsletter',
       panelSubtitle:
-        'y disfruta de un 15% en todo. Solo los días 22/11 y 23/11.'
+        'y disfruta de un 15% en todo. Solo los días 22/11 y 23/11.',
+      emailLabel: 'Correo electrónico',
+      emailPlaceholder: 'Introduce tu correo electrónico',
+      submit: 'Enviar',
+      requiredError: 'Este campo es obligatorio.',
+      emailError: 'Introduce una dirección de correo válida.',
+      genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de nuevo.',
+      success: '¡Gracias! Tu suscripción se ha registrado correctamente.'
     },
     en: {
       badge:
         'SUBSCRIBE TO OUR NEWSLETTER AND ENJOY 15% OFF EVERYTHING! ONLY ON 22/11 AND 23/11.',
       panelTitle: 'Subscribe to our newsletter',
       panelSubtitle:
-        'and enjoy 15% off everything. Only on 22/11 and 23/11.'
+        'and enjoy 15% off everything. Only on 22/11 and 23/11.',
+      emailLabel: 'Email',
+      emailPlaceholder: 'Enter your email',
+      submit: 'Submit',
+      requiredError: 'This field is required.',
+      emailError: 'Please enter a valid email address.',
+      genericError: 'Sorry, something went wrong. Please try again.',
+      success: 'Thank you! Your subscription has been registered successfully.'
     }
   };
 
@@ -94,7 +155,7 @@
     return el.textContent.trim().replace(/^#/, '').split('|')[0].trim();
   }
 
-  // ===== CSS injetado (badge + painel) =====
+  // ===== CSS injetado (badge + painel + form) =====
   function ensureStyles() {
     if (document.querySelector('style[data-bd-nl]')) return;
 
@@ -104,7 +165,9 @@
       .preorder-badge{
         box-sizing:border-box;
         display:inline-flex; align-items:center; justify-content:center; gap:14px;
-        background:#E30613; border:0; border-radius:0;
+        background:#E30613 !important;
+        border:0 !important;
+        border-radius:0 !important;
         font-family:'Oswald-Regular', Arial, Helvetica, 'Segoe UI', sans-serif;
         font-weight:800; text-transform:uppercase;
         color:#FFFFFF !important; user-select:none;
@@ -191,6 +254,53 @@
           transform:translateY(0);
         }
       }
+
+      .bd-nl-form{
+        margin-top:8px;
+      }
+      .bd-nl-form-group{
+        margin-bottom:12px;
+      }
+      .bd-nl-form-label{
+        display:block;
+        font-weight:600;
+        margin-bottom:4px;
+      }
+      .bd-nl-form-input{
+        width:100%;
+        padding:8px 10px;
+        border:1px solid #979797;
+        border-radius:4px;
+        font-size:14px;
+        box-sizing:border-box;
+      }
+      .bd-nl-form-input._has_error{
+        border-color:#F37C7B;
+      }
+      .bd-nl-form-error{
+        color:#CA0000;
+        font-size:12px;
+        margin-top:4px;
+      }
+      .bd-nl-form-success{
+        color:#008A00;
+        font-size:14px;
+        margin-top:8px;
+      }
+      .bd-nl-submit{
+        display:inline-block;
+        padding:10px 16px;
+        border:0;
+        border-radius:4px;
+        background:#004CFF;
+        color:#fff;
+        font-size:14px;
+        cursor:pointer;
+      }
+      .bd-nl-submit:disabled{
+        opacity:0.6;
+        cursor:not-allowed;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -240,23 +350,95 @@
     return { overlay, panel };
   }
 
+  function renderFormIntoSlot(slot) {
+    if (!slot || slot.dataset.bdRendered === '1') return;
+    slot.dataset.bdRendered = '1';
+
+    // Formulário simples que envia para a ActiveCampaign (u=6, f=6, etc.)
+    slot.innerHTML = `
+      <form method="POST"
+            action="https://bazardesportivo.activehosted.com/proc.php"
+            id="_form_6_"
+            class="bd-nl-form"
+            novalidate>
+        <input type="hidden" name="u" value="6">
+        <input type="hidden" name="f" value="6">
+        <input type="hidden" name="s" value="">
+        <input type="hidden" name="c" value="0">
+        <input type="hidden" name="m" value="0">
+        <input type="hidden" name="act" value="sub">
+        <input type="hidden" name="v" value="2">
+        <input type="hidden" name="or" value="3f05d62f-1319-4e2a-9330-253b98afd0ee">
+
+        <div class="bd-nl-form-group">
+          <label for="bd-nl-email" class="bd-nl-form-label">
+            ${L.emailLabel} *
+          </label>
+          <input type="email"
+                 id="bd-nl-email"
+                 name="email"
+                 class="bd-nl-form-input"
+                 placeholder="${L.emailPlaceholder}">
+          <div class="bd-nl-form-error" id="bd-nl-error" style="display:none;"></div>
+        </div>
+
+        <button type="submit" class="bd-nl-submit" id="bd-nl-submit">
+          ${L.submit}
+        </button>
+
+        <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
+      </form>
+    `;
+
+    const form = slot.querySelector('#_form_6_');
+    const emailInput = slot.querySelector('#bd-nl-email');
+    const errorEl = slot.querySelector('#bd-nl-error');
+    const successEl = slot.querySelector('#bd-nl-success');
+    const submitBtn = slot.querySelector('#bd-nl-submit');
+
+    form.addEventListener('submit', function (e) {
+      // validação mínima no front-end
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+      emailInput.classList.remove('_has_error');
+
+      const email = emailInput.value.trim();
+      if (!email) {
+        e.preventDefault();
+        errorEl.textContent = L.requiredError;
+        errorEl.style.display = 'block';
+        emailInput.classList.add('_has_error');
+        return;
+      }
+      const emailRegex = /^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i;
+      if (!emailRegex.test(email)) {
+        e.preventDefault();
+        errorEl.textContent = L.emailError;
+        errorEl.style.display = 'block';
+        emailInput.classList.add('_has_error');
+        return;
+      }
+
+      // Marca já como subscrito no localStorage (antes do redirect)
+      const userId = getUserId();
+      try {
+        if (userId) {
+          setLS('bd_nl_subscribed_' + userId, '1');
+        } else {
+          setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
+        }
+      } catch (err) {}
+
+      // Aqui deixamos o submit normal do form acontecer (vai para a AC)
+      // Se quiseres evitar redirect e fazer AJAX, aí já temos de ir para JSONP/fetch com CORS.
+    });
+  }
+
   function openPanel() {
     const { overlay, panel } = ensurePanel();
     const slot = panel.querySelector('#bd-nl-form-slot');
 
-    // mover formulário AC para dentro do painel
-    const acForm = document.getElementById('_form_6_');
-    if (!acForm) {
-      console.warn(
-        '[BD NL] Formulário ActiveCampaign (#_form_6_) não encontrado na página.'
-      );
-    } else {
-      if (acForm.parentElement !== slot) {
-        slot.innerHTML = '';
-        slot.appendChild(acForm);
-      }
-      acForm.style.display = 'block';
-    }
+    renderFormIntoSlot(slot);
 
     overlay.classList.add('is-open');
     panel.classList.add('is-open');
@@ -271,6 +453,9 @@
 
   // ===== BADGE =====
   async function addBadge() {
+    // garantir CSS antes de criar o badge (para evitar ficar com estilos do tema)
+    ensureStyles();
+
     const anchorSelector = '.rdc-product-afterprice';
     const ref =
       document.querySelector(anchorSelector) || (await waitForEl(anchorSelector));
@@ -284,6 +469,9 @@
     wrap.setAttribute('tabindex', '0');
     wrap.setAttribute('aria-live', 'polite');
     wrap.setAttribute('aria-label', L.badge);
+    // força mesmo o vermelho e branco
+    wrap.style.background = '#E30613';
+    wrap.style.color = '#FFFFFF';
 
     const text = document.createElement('span');
     text.className = 'preorder-badge__text';
@@ -301,31 +489,10 @@
     });
   }
 
-  // ===== Integração ActiveCampaign: marcar subscrito no localStorage =====
-  (function hookActiveCampaignThankYou() {
-    const original = window._show_thank_you;
-
-    window._show_thank_you = function (id, message, trackcmp_url, email) {
-      if (typeof original === 'function') {
-        original(id, message, trackcmp_url, email);
-      }
-
-      try {
-        if (userId) {
-          setLS('bd_nl_subscribed_' + userId, '1');
-        } else if (email) {
-          setLS('bd_nl_subscribed_email_' + String(email).toLowerCase(), '1');
-        } else {
-          setLS('bd_nl_subscribed_generic', '1');
-        }
-      } catch (e) {}
-
-      closePanel();
-    };
-  })();
-
   // ===== Worker: verificar se já existe contacto pelo id_utilizador =====
   async function checkUserExistsIfNeeded() {
+    const userId = getUserId();
+
     if (!userId || !workerUrl) {
       // não temos id ou worker -> não conseguimos validar, mostra badge normal
       return { shouldShowBadge: true };
