@@ -166,46 +166,63 @@
 
   async function checkUserExistsIfNeeded() {
     const userId = getUserId();
+    const hasUserId = !!userId;
+    const hasWorker = !!workerUrl;
 
-    if (!userId || !workerUrl) {
-      return { shouldShowBadge: true };
-    }
+    // 1) Se tivermos userId, primeiro tentamos decidir só pelo localStorage
+    if (hasUserId) {
+      const subscribedKey = 'bd_nl_subscribed_' + userId;
+      const existsKey = 'bd_nl_exists_' + userId;
+      const checkedKey = 'bd_nl_checked_' + userId;
 
-    const subscribedKey = 'bd_nl_subscribed_' + userId;
-    const existsKey = 'bd_nl_exists_' + userId;
-    const checkedKey = 'bd_nl_checked_' + userId;
-
-    if (getLS(subscribedKey) === '1') {
-      return { shouldShowBadge: false, alreadySubscribed: true };
-    }
-
-    if (getLS(existsKey) === '1') {
-      return { shouldShowBadge: false, exists: true };
-    }
-
-    if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
-      return { shouldShowBadge: true };
-    }
-
-    try {
-      const resp = await fetch(workerUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_utilizador: userId })
-      });
-      const data = await resp.json();
-
-      setLS(checkedKey, '1');
-
-      if (data && data.exists) {
-        setLS(existsKey, '1');
-        return { shouldShowBadge: false, exists: true, contactId: data.contactId };
-      } else {
-        return { shouldShowBadge: true, exists: false };
+      if (getLS(subscribedKey) === '1') {
+        // Já foi subscrito nesta máquina/navegador
+        return { shouldShowBadge: false, alreadySubscribed: true };
       }
-    } catch (e) {
-      return { shouldShowBadge: true, error: true };
+
+      if (getLS(existsKey) === '1') {
+        // Worker já confirmou que existe contacto na AC
+        return { shouldShowBadge: false, exists: true };
+      }
+
+      // 2) Se não há worker configurado, ficamos por aqui:
+      if (!hasWorker) {
+        return { shouldShowBadge: true };
+      }
+
+      // 3) Se já chamámos o worker antes e deu "não existe", não voltamos a chamar
+      if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
+        return { shouldShowBadge: true };
+      }
+
+      // 4) Primeira chamada ao worker para este userId
+      try {
+        const resp = await fetch(workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_utilizador: userId })
+        });
+        const data = await resp.json();
+
+        setLS(checkedKey, '1');
+
+        if (data && data.exists) {
+          setLS(existsKey, '1');
+          return {
+            shouldShowBadge: false,
+            exists: true,
+            contactId: data.contactId
+          };
+        } else {
+          return { shouldShowBadge: true, exists: false };
+        }
+      } catch (e) {
+        return { shouldShowBadge: true, error: true };
+      }
     }
+
+    // Se não temos userId, não conseguimos ligar LS/worker a ninguém → mostra badge normal
+    return { shouldShowBadge: true };
   }
 
   // =========================
@@ -447,8 +464,6 @@
       const btn = form.querySelector('input[type="submit"], button[type="submit"]');
       if (btn) {
         btn.click();
-      } else {
-        console.log(LOG_PREFIX, 'Botão submit do voucher não encontrado');
       }
     } catch (e) {
       console.warn(LOG_PREFIX, 'Erro ao aplicar voucher:', e);
