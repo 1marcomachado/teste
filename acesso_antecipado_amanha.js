@@ -48,6 +48,34 @@
     } catch (e) {}
   }
 
+  // ===== GA: obter user_id do dataLayer (Arguments / arrays / objetos) =====
+  function getUserIdFromGA() {
+    const dl = window.dataLayer || [];
+
+    for (const item of dl) {
+      if (!item || typeof item !== 'object') continue;
+
+      // Trata Arrays e 'Arguments' da mesma forma:
+      const kind = item[0];     // 'config', 'event', etc.
+      const params = item[2];   // onde está o user_id no config
+
+      // Caso 1: gtag('config', 'G-3RMG5XN702', { user_id: '...' })
+      if (kind === 'config' && params && params.user_id) {
+        return String(params.user_id);
+      }
+
+      // Caso 2: objeto simples com user_id (não é o teu caso agora, mas fica preparado)
+      if (item.user_id) {
+        return String(item.user_id);
+      }
+      if (item.user_properties && item.user_properties.user_id) {
+        return String(item.user_properties.user_id);
+      }
+    }
+
+    return null;
+  }
+
   // ===== Config & contexto do script =====
   const currentScript =
     document.currentScript || document.getElementById('bd-nl-script');
@@ -56,7 +84,19 @@
     currentScript?.getAttribute('data-shop-lang')?.toLowerCase() || 'pt';
   const lang = shopLang.slice(0, 2);
   const workerUrl = currentScript?.getAttribute('data-worker-url') || '';
-  const userId = currentScript?.getAttribute('data-user-id') || '';
+
+  function getUserId() {
+    // 1) tentar vir do data-user-id
+    let id = currentScript?.getAttribute('data-user-id') || '';
+
+    // se vier vazio ou placeholder Redicom, tenta GA
+    if (!id || id === '{ID_UTILIZADOR}') {
+      const fromGA = getUserIdFromGA();
+      if (fromGA) id = fromGA;
+    }
+
+    return id || '';
+  }
 
   // Textos
   const TEXTS = {
@@ -104,7 +144,9 @@
       .preorder-badge{
         box-sizing:border-box;
         display:inline-flex; align-items:center; justify-content:center; gap:14px;
-        background:#E30613; border:0; border-radius:0;
+        background:#E30613 !important;
+        border:0 !important;
+        border-radius:0 !important;
         font-family:'Oswald-Regular', Arial, Helvetica, 'Segoe UI', sans-serif;
         font-weight:800; text-transform:uppercase;
         color:#FFFFFF !important; user-select:none;
@@ -284,6 +326,8 @@
     wrap.setAttribute('tabindex', '0');
     wrap.setAttribute('aria-live', 'polite');
     wrap.setAttribute('aria-label', L.badge);
+    wrap.style.background = '#E30613';
+    wrap.style.color = '#FFFFFF';
 
     const text = document.createElement('span');
     text.className = 'preorder-badge__text';
@@ -310,6 +354,8 @@
         original(id, message, trackcmp_url, email);
       }
 
+      const userId = getUserId();
+
       try {
         if (userId) {
           setLS('bd_nl_subscribed_' + userId, '1');
@@ -326,6 +372,8 @@
 
   // ===== Worker: verificar se já existe contacto pelo id_utilizador =====
   async function checkUserExistsIfNeeded() {
+    const userId = getUserId();
+
     if (!userId || !workerUrl) {
       // não temos id ou worker -> não conseguimos validar, mostra badge normal
       return { shouldShowBadge: true };
