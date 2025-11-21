@@ -48,6 +48,82 @@
     } catch (e) {}
   }
 
+  // ===== Contexto do formulário para JSONP =====
+  let bdFormContext = {
+    errorEl: null,
+    successEl: null,
+    submitBtn: null,
+    emailInput: null
+  };
+
+  // Estes helpers vão ser chamados pela AC via JSONP (_show_thank_you / _show_error)
+  function bdHandleAcSuccess(emailFromAc) {
+    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
+    if (!successEl || !submitBtn) return;
+
+    const email =
+      emailFromAc ||
+      (emailInput && emailInput.value ? emailInput.value.trim() : '');
+
+    // marcar subscrito
+    const userId = getUserId();
+    try {
+      if (userId) {
+        setLS('bd_nl_subscribed_' + userId, '1');
+      } else if (email) {
+        setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
+      }
+    } catch (e) {}
+
+    if (errorEl) {
+      errorEl.style.display = 'none';
+    }
+    successEl.textContent = L.success;
+    successEl.style.display = 'block';
+
+    // remover badge com fade
+    const badge = document.querySelector('.preorder-badge');
+    if (badge) {
+      badge.style.transition = 'opacity 0.4s ease';
+      badge.style.opacity = '0';
+      setTimeout(() => badge.remove(), 400);
+    }
+
+    // reativar botão
+    submitBtn.disabled = false;
+
+    // fechar painel passado 2.5s
+    setTimeout(() => {
+      closePanel();
+    }, 2500);
+  }
+
+  function bdHandleAcError(message) {
+    const { errorEl, successEl, submitBtn, emailInput } = bdFormContext;
+    if (!errorEl || !submitBtn) return;
+
+    if (successEl) {
+      successEl.style.display = 'none';
+    }
+    errorEl.textContent = message || L.genericError;
+    errorEl.style.display = 'block';
+
+    if (emailInput) {
+      emailInput.classList.add('_has_error');
+    }
+
+    submitBtn.disabled = false;
+  }
+
+  // ActiveCampaign JSONP callbacks
+  window._show_thank_you = function (id, message, trackcmp_url, email) {
+    bdHandleAcSuccess(email);
+  };
+
+  window._show_error = function (id, message, html) {
+    bdHandleAcError(message || L.genericError);
+  };
+
   // ===== GA: obter user_id do dataLayer (Arguments / arrays / objetos) =====
   function getUserIdFromGA() {
     const dl = window.dataLayer || [];
@@ -56,8 +132,8 @@
       if (!item || typeof item !== 'object') continue;
 
       // Trata Arrays e 'Arguments' da mesma forma:
-      const kind = item[0];     // 'config', 'event', etc.
-      const params = item[2];   // onde está o user_id no config
+      const kind = item[0]; // 'config', 'event', etc.
+      const params = item[2]; // onde está o user_id no config
 
       // Caso 1: gtag('config', 'G-3RMG5XN702', { user_id: '...' })
       if (kind === 'config' && params && params.user_id) {
@@ -145,15 +221,6 @@
   };
 
   const L = TEXTS[lang] || TEXTS.pt;
-
-  // Referências elegíveis para mostrar a campanha
-  const REFERENCIAS_PREORDER = ['IH4119-006']; // podes adicionar mais
-
-  function getReferencia() {
-    const el = document.querySelector('.ref p.small');
-    if (!el) return null;
-    return el.textContent.trim().replace(/^#/, '').split('|')[0].trim();
-  }
 
   // ===== CSS injetado (badge + painel + form) =====
   function ensureStyles() {
@@ -295,7 +362,6 @@
         font-family: 'Metrocity-Medium', Arial, Helvetica, 'Segoe UI', sans-serif;
         font-weight: normal;
         font-size: 12px;
-        line-height: normal;
         letter-spacing: 0.4px;
         text-transform: uppercase;
         border: 1px solid #333;
@@ -303,7 +369,7 @@
         padding: 14px 26px;
         color: #FFF;
         height: 44px;
-    }
+      }
       .bd-nl-submit:disabled{
         opacity:0.6;
         cursor:not-allowed;
@@ -357,123 +423,93 @@
     return { overlay, panel };
   }
 
-function renderFormIntoSlot(slot) {
-  if (!slot || slot.dataset.bdRendered === '1') return;
-  slot.dataset.bdRendered = '1';
+  function renderFormIntoSlot(slot) {
+    if (!slot || slot.dataset.bdRendered === '1') return;
+    slot.dataset.bdRendered = '1';
 
-  slot.innerHTML = `
-    <form id="bd-nl-form" class="bd-nl-form" novalidate>
-      <div class="bd-nl-form-group">
-        <label class="bd-nl-form-label">${L.emailLabel} *</label>
-        <input type="email"
-               id="bd-nl-email"
-               class="bd-nl-form-input"
-               placeholder="${L.emailPlaceholder}">
-        <div class="bd-nl-form-error" id="bd-nl-error" style="display:none;"></div>
-      </div>
+    slot.innerHTML = `
+      <form id="bd-nl-form" class="bd-nl-form" novalidate>
+        <div class="bd-nl-form-group">
+          <label class="bd-nl-form-label">${L.emailLabel} *</label>
+          <input type="email"
+                id="bd-nl-email"
+                class="bd-nl-form-input"
+                placeholder="${L.emailPlaceholder}">
+          <div class="bd-nl-form-error" id="bd-nl-error" style="display:none;"></div>
+        </div>
 
-      <button type="submit" class="bd-nl-submit" id="bd-nl-submit">
-        ${L.submit}
-      </button>
+        <button type="submit" class="bd-nl-submit" id="bd-nl-submit">
+          ${L.submit}
+        </button>
 
-      <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
-    </form>
-  `;
+        <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
+      </form>
+    `;
 
-  const form = slot.querySelector('#bd-nl-form');
-  const emailInput = slot.querySelector('#bd-nl-email');
-  const errorEl = slot.querySelector('#bd-nl-error');
-  const successEl = slot.querySelector('#bd-nl-success');
-  const submitBtn = slot.querySelector('#bd-nl-submit');
+    const form = slot.querySelector('#bd-nl-form');
+    const emailInput = slot.querySelector('#bd-nl-email');
+    const errorEl = slot.querySelector('#bd-nl-error');
+    const successEl = slot.querySelector('#bd-nl-success');
+    const submitBtn = slot.querySelector('#bd-nl-submit');
 
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
+    // guardar contexto global para o JSONP da AC
+    bdFormContext.errorEl = errorEl;
+    bdFormContext.successEl = successEl;
+    bdFormContext.submitBtn = submitBtn;
+    bdFormContext.emailInput = emailInput;
 
-    // reset erros
-    errorEl.style.display = 'none';
-    successEl.style.display = 'none';
-    emailInput.classList.remove('_has_error');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-    const email = emailInput.value.trim();
+      // reset erros
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+      emailInput.classList.remove('_has_error');
 
-    // validações
-    if (!email) {
-      errorEl.textContent = L.requiredError;
-      errorEl.style.display = 'block';
-      emailInput.classList.add('_has_error');
-      return;
-    }
-    const re = /^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i;
-    if (!re.test(email)) {
-      errorEl.textContent = L.emailError;
-      errorEl.style.display = 'block';
-      emailInput.classList.add('_has_error');
-      return;
-    }
+      const email = emailInput.value.trim();
 
-    submitBtn.disabled = true;
-
-    // preparar dados ActiveCampaign
-    const formData = new FormData();
-    formData.append('u', '6');
-    formData.append('f', '6');
-    formData.append('s', '');
-    formData.append('c', '0');
-    formData.append('m', '0');
-    formData.append('act', 'sub');
-    formData.append('v', '2');
-    formData.append('or', '3f05d62f-1319-4e2a-9330-253b98afd0ee');
-    formData.append('email', email);
-
-    // enviar AJAX para ActiveCampaign
-    try {
-      const response = await fetch(
-        'https://bazardesportivo.activehosted.com/proc.php',
-        { method: 'POST', body: formData }
-      );
-
-      const text = await response.text();
-      const isSuccess = text.includes('"success"') || text.includes('Thanks');
-
-      if (isSuccess) {
-        const userId = getUserId();
-        if (userId) {
-          setLS('bd_nl_subscribed_' + userId, '1');
-        } else {
-          setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
-        }
-
-        // Mostrar mensagem
-        successEl.textContent = L.success;
-        successEl.style.display = 'block';
-
-        // Remover badge suavemente
-        const badge = document.querySelector('.preorder-badge');
-        if (badge) {
-          badge.style.transition = 'opacity 0.4s ease';
-          badge.style.opacity = '0';
-          setTimeout(() => badge.remove(), 400);
-        }
-
-        // Fechar painel automaticamente
-        setTimeout(() => {
-          closePanel();
-        }, 2500);
-
-        submitBtn.disabled = false;
+      // validações
+      if (!email) {
+        errorEl.textContent = L.requiredError;
+        errorEl.style.display = 'block';
+        emailInput.classList.add('_has_error');
+        return;
+      }
+      const re = /^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i;
+      if (!re.test(email)) {
+        errorEl.textContent = L.emailError;
+        errorEl.style.display = 'block';
+        emailInput.classList.add('_has_error');
         return;
       }
 
-      throw new Error('Resposta inválida da AC');
+      submitBtn.disabled = true;
 
-    } catch (err) {
-      console.error('[BD NL] AC AJAX error:', err);
-      errorEl.textContent = L.genericError;
-      errorEl.style.display = 'block';
-      submitBtn.disabled = false;
-    }
-  });
-}
+      // construir query para ActiveCampaign (igual ao form 6)
+      const params = new URLSearchParams();
+      params.set('u', '6');
+      params.set('f', '6');
+      params.set('s', '');
+      params.set('c', '0');
+      params.set('m', '0');
+      params.set('act', 'sub');
+      params.set('v', '2');
+      params.set('or', '3f05d62f-1319-4e2a-9330-253b98afd0ee');
+      params.set('email', email);
+      params.set('jsonp', 'true');
+
+      // JSONP: inject script para contornar CORS
+      const script = document.createElement('script');
+      script.src =
+        'https://bazardesportivo.activehosted.com/proc.php?' +
+        params.toString();
+      script.async = true;
+      script.onerror = function () {
+        bdHandleAcError(L.genericError);
+      };
+      document.head.appendChild(script);
+    });
+  }
 
   function openPanel() {
     const { overlay, panel } = ensurePanel();
@@ -620,20 +656,6 @@ function renderFormIntoSlot(slot) {
 
   // ===== Init =====
   async function init() {
-    // -------- GATE ACESSO_AMANHA --------
-    const params = new URLSearchParams(window.location.search);
-    const acessoAmanha = params.get('acesso_amanha');
-    if (acessoAmanha !== '1') {
-      // sem o parâmetro, não faz NADA (Opção B)
-      return;
-    }
-    // -----------------------------------
-
-    const refAtual = getReferencia();
-    if (!refAtual || !REFERENCIAS_PREORDER.includes(refAtual)) {
-      return;
-    }
-
     const workerResult = await checkUserExistsIfNeeded();
 
     if (workerResult.shouldShowBadge) {
