@@ -350,89 +350,123 @@
     return { overlay, panel };
   }
 
-  function renderFormIntoSlot(slot) {
-    if (!slot || slot.dataset.bdRendered === '1') return;
-    slot.dataset.bdRendered = '1';
+function renderFormIntoSlot(slot) {
+  if (!slot || slot.dataset.bdRendered === '1') return;
+  slot.dataset.bdRendered = '1';
 
-    // Formulário simples que envia para a ActiveCampaign (u=6, f=6, etc.)
-    slot.innerHTML = `
-      <form method="POST"
-            action="https://bazardesportivo.activehosted.com/proc.php"
-            id="_form_6_"
-            class="bd-nl-form"
-            novalidate>
-        <input type="hidden" name="u" value="6">
-        <input type="hidden" name="f" value="6">
-        <input type="hidden" name="s" value="">
-        <input type="hidden" name="c" value="0">
-        <input type="hidden" name="m" value="0">
-        <input type="hidden" name="act" value="sub">
-        <input type="hidden" name="v" value="2">
-        <input type="hidden" name="or" value="3f05d62f-1319-4e2a-9330-253b98afd0ee">
+  slot.innerHTML = `
+    <form id="bd-nl-form" class="bd-nl-form" novalidate>
+      <div class="bd-nl-form-group">
+        <label class="bd-nl-form-label">${L.emailLabel} *</label>
+        <input type="email"
+               id="bd-nl-email"
+               class="bd-nl-form-input"
+               placeholder="${L.emailPlaceholder}">
+        <div class="bd-nl-form-error" id="bd-nl-error" style="display:none;"></div>
+      </div>
 
-        <div class="bd-nl-form-group">
-          <label for="bd-nl-email" class="bd-nl-form-label">
-            ${L.emailLabel} *
-          </label>
-          <input type="email"
-                 id="bd-nl-email"
-                 name="email"
-                 class="bd-nl-form-input"
-                 placeholder="${L.emailPlaceholder}">
-          <div class="bd-nl-form-error" id="bd-nl-error" style="display:none;"></div>
-        </div>
+      <button type="submit" class="bd-nl-submit" id="bd-nl-submit">
+        ${L.submit}
+      </button>
 
-        <button type="submit" class="bd-nl-submit" id="bd-nl-submit">
-          ${L.submit}
-        </button>
+      <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
+    </form>
+  `;
 
-        <div class="bd-nl-form-success" id="bd-nl-success" style="display:none;"></div>
-      </form>
-    `;
+  const form = slot.querySelector('#bd-nl-form');
+  const emailInput = slot.querySelector('#bd-nl-email');
+  const errorEl = slot.querySelector('#bd-nl-error');
+  const successEl = slot.querySelector('#bd-nl-success');
+  const submitBtn = slot.querySelector('#bd-nl-submit');
 
-    const form = slot.querySelector('#_form_6_');
-    const emailInput = slot.querySelector('#bd-nl-email');
-    const errorEl = slot.querySelector('#bd-nl-error');
-    const successEl = slot.querySelector('#bd-nl-success');
-    const submitBtn = slot.querySelector('#bd-nl-submit');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-    form.addEventListener('submit', function (e) {
-      // validação mínima no front-end
-      errorEl.style.display = 'none';
-      successEl.style.display = 'none';
-      emailInput.classList.remove('_has_error');
+    // reset erros
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+    emailInput.classList.remove('_has_error');
 
-      const email = emailInput.value.trim();
-      if (!email) {
-        e.preventDefault();
-        errorEl.textContent = L.requiredError;
-        errorEl.style.display = 'block';
-        emailInput.classList.add('_has_error');
-        return;
-      }
-      const emailRegex = /^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i;
-      if (!emailRegex.test(email)) {
-        e.preventDefault();
-        errorEl.textContent = L.emailError;
-        errorEl.style.display = 'block';
-        emailInput.classList.add('_has_error');
-        return;
-      }
+    const email = emailInput.value.trim();
 
-      // Marca já como subscrito no localStorage (antes do redirect)
-      const userId = getUserId();
-      try {
+    // validações
+    if (!email) {
+      errorEl.textContent = L.requiredError;
+      errorEl.style.display = 'block';
+      emailInput.classList.add('_has_error');
+      return;
+    }
+    const re = /^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i;
+    if (!re.test(email)) {
+      errorEl.textContent = L.emailError;
+      errorEl.style.display = 'block';
+      emailInput.classList.add('_has_error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+
+    // preparar dados ActiveCampaign
+    const formData = new FormData();
+    formData.append('u', '6');
+    formData.append('f', '6');
+    formData.append('s', '');
+    formData.append('c', '0');
+    formData.append('m', '0');
+    formData.append('act', 'sub');
+    formData.append('v', '2');
+    formData.append('or', '3f05d62f-1319-4e2a-9330-253b98afd0ee');
+    formData.append('email', email);
+
+    // enviar AJAX para ActiveCampaign
+    try {
+      const response = await fetch(
+        'https://bazardesportivo.activehosted.com/proc.php',
+        { method: 'POST', body: formData }
+      );
+
+      const text = await response.text();
+      const isSuccess = text.includes('"success"') || text.includes('Thanks');
+
+      if (isSuccess) {
+        const userId = getUserId();
         if (userId) {
           setLS('bd_nl_subscribed_' + userId, '1');
         } else {
           setLS('bd_nl_subscribed_email_' + email.toLowerCase(), '1');
         }
-      } catch (err) {}
 
-      // Aqui deixamos o submit normal do form acontecer (vai para a AC)
-      // Se quiseres evitar redirect e fazer AJAX, aí já temos de ir para JSONP/fetch com CORS.
-    });
-  }
+        // Mostrar mensagem
+        successEl.textContent = L.success;
+        successEl.style.display = 'block';
+
+        // Remover badge suavemente
+        const badge = document.querySelector('.preorder-badge');
+        if (badge) {
+          badge.style.transition = 'opacity 0.4s ease';
+          badge.style.opacity = '0';
+          setTimeout(() => badge.remove(), 400);
+        }
+
+        // Fechar painel automaticamente
+        setTimeout(() => {
+          closePanel();
+        }, 2500);
+
+        submitBtn.disabled = false;
+        return;
+      }
+
+      throw new Error('Resposta inválida da AC');
+
+    } catch (err) {
+      console.error('[BD NL] AC AJAX error:', err);
+      errorEl.textContent = L.genericError;
+      errorEl.style.display = 'block';
+      submitBtn.disabled = false;
+    }
+  });
+}
 
   function openPanel() {
     const { overlay, panel } = ensurePanel();
