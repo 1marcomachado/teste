@@ -146,15 +146,6 @@
 
   const L = TEXTS[lang] || TEXTS.pt;
 
-  // Referências elegíveis para mostrar a campanha
-  const REFERENCIAS_PREORDER = ['IH4119-006']; // podes adicionar mais
-
-  function getReferencia() {
-    const el = document.querySelector('.ref p.small');
-    if (!el) return null;
-    return el.textContent.trim().replace(/^#/, '').split('|')[0].trim();
-  }
-
   // ===== CSS injetado (badge + painel + form) =====
   function ensureStyles() {
     if (document.querySelector('style[data-bd-nl]')) return;
@@ -620,20 +611,6 @@ function renderFormIntoSlot(slot) {
 
   // ===== Init =====
   async function init() {
-    // -------- GATE ACESSO_AMANHA --------
-    const params = new URLSearchParams(window.location.search);
-    const acessoAmanha = params.get('acesso_amanha');
-    if (acessoAmanha !== '1') {
-      // sem o parâmetro, não faz NADA (Opção B)
-      return;
-    }
-    // -----------------------------------
-
-    const refAtual = getReferencia();
-    if (!refAtual || !REFERENCIAS_PREORDER.includes(refAtual)) {
-      return;
-    }
-
     const workerResult = await checkUserExistsIfNeeded();
 
     if (workerResult.shouldShowBadge) {
