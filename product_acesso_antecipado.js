@@ -8,11 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
     .toLowerCase();
 
   const acesso_antecpiado_variants = [
-    'Acesso Antecipado',
-    'Early Access',
-    'Acceso anticipado',
-    'Accès anticipé',
-    'Früher Zugriff'
+    '-15% para subscritores',
+    '-15% for subscribers',
+    '-15% para suscriptores'
   ].map(norm);
 
   function hasLastUnitsFlag() {
