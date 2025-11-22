@@ -137,7 +137,7 @@
       submit: 'Enviar',
       requiredError: 'Este campo es obligatorio.',
       emailError: 'Introduce una dirección de correo válida.',
-      genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de nuevo.',
+      genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de novo.',
       success: '¡Gracias! Tu suscripción se ha registrado correctamente.'
     },
     en: {
@@ -166,46 +166,62 @@
 
   async function checkUserExistsIfNeeded() {
     const userId = getUserId();
+    const hasUserId = !!userId;
+    const hasWorker = !!workerUrl;
 
-    if (!userId || !workerUrl) {
-      return { shouldShowBadge: true };
-    }
+    if (hasUserId) {
+      const subscribedKey = 'bd_nl_subscribed_' + userId;
+      const existsKey = 'bd_nl_exists_' + userId;
+      const checkedKey = 'bd_nl_checked_' + userId;
 
-    const subscribedKey = 'bd_nl_subscribed_' + userId;
-    const existsKey = 'bd_nl_exists_' + userId;
-    const checkedKey = 'bd_nl_checked_' + userId;
-
-    if (getLS(subscribedKey) === '1') {
-      return { shouldShowBadge: false, alreadySubscribed: true };
-    }
-
-    if (getLS(existsKey) === '1') {
-      return { shouldShowBadge: false, exists: true };
-    }
-
-    if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
-      return { shouldShowBadge: true };
-    }
-
-    try {
-      const resp = await fetch(workerUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id_utilizador: userId })
-      });
-      const data = await resp.json();
-
-      setLS(checkedKey, '1');
-
-      if (data && data.exists) {
-        setLS(existsKey, '1');
-        return { shouldShowBadge: false, exists: true, contactId: data.contactId };
-      } else {
-        return { shouldShowBadge: true, exists: false };
+      // Já marcou subscrito nesta máquina
+      if (getLS(subscribedKey) === '1') {
+        return { shouldShowBadge: false, alreadySubscribed: true };
       }
-    } catch (e) {
-      return { shouldShowBadge: true, error: true };
+
+      // Worker já confirmou que existe contacto
+      if (getLS(existsKey) === '1') {
+        return { shouldShowBadge: false, exists: true };
+      }
+
+      // Sem worker → não conseguimos ir à AC, mostramos badge normal
+      if (!hasWorker) {
+        return { shouldShowBadge: true };
+      }
+
+      // Já chamámos worker antes e deu "não existe"
+      if (getLS(checkedKey) === '1' && getLS(existsKey) !== '1') {
+        return { shouldShowBadge: true };
+      }
+
+      // Primeira chamada ao worker
+      try {
+        const resp = await fetch(workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_utilizador: userId })
+        });
+        const data = await resp.json();
+
+        setLS(checkedKey, '1');
+
+        if (data && data.exists) {
+          setLS(existsKey, '1');
+          return {
+            shouldShowBadge: false,
+            exists: true,
+            contactId: data.contactId
+          };
+        } else {
+          return { shouldShowBadge: true, exists: false };
+        }
+      } catch (e) {
+        return { shouldShowBadge: true, error: true };
+      }
     }
+
+    // Sem userId → não ligamos LS/worker, mostramos badge normal
+    return { shouldShowBadge: true };
   }
 
   // =========================
@@ -431,28 +447,28 @@
   function applyVoucher() {
     try {
       const form = document.querySelector('#rdc-form-voucher-desktop');
-      if (!form) {
-        return;
-      }
+      if (!form) return;
 
       const el = form.querySelector('input[name="gid"]');
-      if (!el) {
-        return;
-      }
+      if (!el) return;
 
       el.value = '6u7M09eFzQnBUADhG1bq';
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
 
       const btn = form.querySelector('input[type="submit"], button[type="submit"]');
-      if (btn) {
-        btn.click();
-      } else {
-        console.log(LOG_PREFIX, 'Botão submit do voucher não encontrado');
-      }
+      if (btn) btn.click();
     } catch (e) {
       console.warn(LOG_PREFIX, 'Erro ao aplicar voucher:', e);
     }
+  }
+
+  // Verificar se já há voucher AC aplicado no carrinho
+  function hasAcVoucherApplied() {
+    const badge = document.querySelector('.rdc-shop-badge.voucher');
+    if (!badge) return false;
+    const code = (badge.textContent || '').trim().toLowerCase();
+    return code.startsWith('ac');
   }
 
   // Construção do badge (dois modos: subscribe / applied)
@@ -475,7 +491,7 @@
     text.className = 'preorder-badge__text';
 
     if (mode === 'applied') {
-      // já subscrito → barra informativa, não abre painel
+      // já subscrito / voucher aplicado → barra informativa, não abre painel
       wrap.classList.add('preorder-badge--info');
       text.textContent = L.badgeApplied;
       wrap.setAttribute('aria-live', 'polite');
@@ -620,7 +636,7 @@
       if (span) span.textContent = L.badgeApplied;
       badge.classList.add('preorder-badge--info');
       badge.style.cursor = 'default';
-      badge.replaceWith(badge); // truque para remover event listeners
+      badge.replaceWith(badge); // remove listeners
     }
 
     submitBtn.disabled = false;
@@ -664,11 +680,15 @@
   // =========================
 
   async function init() {
+    // 1) Se já houver voucher AC aplicado, só mostra a barra "já subscritor"
+    if (hasAcVoucherApplied()) {
+      await addBadge('applied');
+      return;
+    }
+
+    // 2) Caso contrário, ver LS/worker
     const workerResult = await checkUserExistsIfNeeded();
 
-    // Se já está subscrito / contacto existe:
-    // 1) aplica voucher
-    // 2) mostra barra informativa "já foi aplicado"
     if (
       !workerResult.shouldShowBadge &&
       (workerResult.alreadySubscribed || workerResult.exists)
@@ -678,7 +698,7 @@
       return;
     }
 
-    // Caso contrário → mostrar CTA para subscrever
+    // 3) Não subscrito → mostrar CTA para subscrever
     await addBadge('subscribe');
   }
 
