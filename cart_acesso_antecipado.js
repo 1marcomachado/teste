@@ -110,12 +110,12 @@
 const TEXTS = {
   pt: {
     badge:
-      'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 15% EM TUDO AO SUBSCREVER A NEWSLETTER.',
+      'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 20% EM TUDO AO SUBSCREVER A NEWSLETTER.',
     badgeApplied:
-      'JÁ ÉS SUBSCRITOR! O DESCONTO DE 15% FOI APLICADO A ESTA COMPRA.',
+      'JÁ ÉS SUBSCRITOR! O DESCONTO DE 20% FOI APLICADO A ESTA COMPRA.',
     panelTitle: 'Acede antecipadamente à Black Friday',
     panelSubtitle:
-      'Subscreve a nossa newsletter e usufrui de 15% em tudo.',
+      'Subscreve a nossa newsletter e usufrui de 20% em tudo.',
     emailLabel: 'E-mail',
     emailPlaceholder: 'Introduza o seu e-mail',
     submit: 'Submeter',
@@ -127,12 +127,12 @@ const TEXTS = {
 
   es: {
     badge:
-      '¡ACCESO ANTICIPADO AL BLACK FRIDAY! DISFRUTA DE UN 15% EN TODO AL SUSCRIBIRTE A LA NEWSLETTER.',
+      '¡ACCESO ANTICIPADO AL BLACK FRIDAY! DISFRUTA DE UN 20% EN TODO AL SUSCRIBIRTE A LA NEWSLETTER.',
     badgeApplied:
-      '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 15% SE HA APLICADO A ESTA COMPRA.',
+      '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 20% SE HA APLICADO A ESTA COMPRA.',
     panelTitle: 'Accede anticipadamente al Black Friday',
     panelSubtitle:
-      'Suscríbete a nuestra newsletter y disfruta de un 15% en todo.',
+      'Suscríbete a nuestra newsletter y disfruta de un 20% en todo.',
     emailLabel: 'Correo electrónico',
     emailPlaceholder: 'Introduce tu correo electrónico',
     submit: 'Enviar',
@@ -144,12 +144,12 @@ const TEXTS = {
 
   en: {
     badge:
-      'EARLY ACCESS TO BLACK FRIDAY! ENJOY 15% OFF EVERYTHING BY SUBSCRIBING TO THE NEWSLETTER.',
+      'EARLY ACCESS TO BLACK FRIDAY! ENJOY 20% OFF EVERYTHING BY SUBSCRIBING TO THE NEWSLETTER.',
     badgeApplied:
-      'YOU ARE ALREADY SUBSCRIBED! THE 15% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
+      'YOU ARE ALREADY SUBSCRIBED! THE 20% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
     panelTitle: 'Get early access to Black Friday',
     panelSubtitle:
-      'Subscribe to our newsletter and enjoy 15% off everything.',
+      'Subscribe to our newsletter and enjoy 20% off everything.',
     emailLabel: 'Email',
     emailPlaceholder: 'Enter your email',
     submit: 'Submit',
