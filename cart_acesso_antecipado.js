@@ -107,57 +107,58 @@
   }
 
   // Textos
-  const TEXTS = {
-    pt: {
-      badge:
-        'SUBSCREVE A NOSSA NEWSLETTER E USUFRUI DE 15% EM TUDO! APENAS DIAS 22/11 E 23/11.',
-      badgeApplied:
-        'JÁ ÉS SUBSCRITOR! O DESCONTO DE 15% FOI APLICADO A ESTA COMPRA.',
-      panelTitle: 'Subscreve a nossa newsletter',
-      panelSubtitle:
-        'e usufrui de 15% em tudo! Apenas dias 22/11 e 23/11.',
-      emailLabel: 'E-mail',
-      emailPlaceholder: 'Introduza o seu e-mail',
-      submit: 'Submeter',
-      requiredError: 'Este campo é obrigatório.',
-      emailError: 'Introduza um endereço de e-mail válido.',
-      genericError: 'Lamentamos, mas o envio falhou. Tente novamente.',
-      success: 'Obrigado! A sua subscrição foi registada com sucesso.'
-    },
-    es: {
-      badge:
-        '¡SUSCRÍBETE A NUESTRA NEWSLETTER Y DISFRUTA DE UN 15% EN TODO! SOLO LOS DÍAS 22/11 Y 23/11.',
-      badgeApplied:
-        '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 15% SE HA APLICADO A ESTA COMPRA.',
-      panelTitle: 'Suscríbete a nuestra newsletter',
-      panelSubtitle:
-        'y disfruta de un 15% en todo. Solo los días 22/11 y 23/11.',
-      emailLabel: 'Correo electrónico',
-      emailPlaceholder: 'Introduce tu correo electrónico',
-      submit: 'Enviar',
-      requiredError: 'Este campo es obligatorio.',
-      emailError: 'Introduce una dirección de correo válida.',
-      genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de novo.',
-      success: '¡Gracias! Tu suscripción se ha registrado correctamente.'
-    },
-    en: {
-      badge:
-        'SUBSCRIBE TO OUR NEWSLETTER AND ENJOY 15% OFF EVERYTHING! ONLY ON 22/11 AND 23/11.',
-      badgeApplied:
-        'YOU ARE ALREADY SUBSCRIBED! THE 15% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
-      panelTitle: 'Subscribe to our newsletter',
-      panelSubtitle:
-        'and enjoy 15% off everything. Only on 22/11 and 23/11.',
-      emailLabel: 'Email',
-      emailPlaceholder: 'Enter your email',
-      submit: 'Submit',
-      requiredError: 'This field is required.',
-      emailError: 'Please enter a valid email address.',
-      genericError: 'Sorry, something went wrong. Please try again.',
-      success: 'Thank you! Your subscription has been registered successfully.'
-    }
-  };
+const TEXTS = {
+  pt: {
+    badge:
+      'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 15% EM TUDO AO SUBSCREVER A NEWSLETTER.',
+    badgeApplied:
+      'JÁ ÉS SUBSCRITOR! O DESCONTO DE 15% FOI APLICADO A ESTA COMPRA.',
+    panelTitle: 'Acede antecipadamente à Black Friday',
+    panelSubtitle:
+      'Subscreve a nossa newsletter e usufrui de 15% em tudo.',
+    emailLabel: 'E-mail',
+    emailPlaceholder: 'Introduza o seu e-mail',
+    submit: 'Submeter',
+    requiredError: 'Este campo é obrigatório.',
+    emailError: 'Introduza um endereço de e-mail válido.',
+    genericError: 'Lamentamos, mas o envio falhou. Tente novamente.',
+    success: 'Obrigado! A sua subscrição foi registada com sucesso.'
+  },
 
+  es: {
+    badge:
+      '¡ACCESO ANTICIPADO AL BLACK FRIDAY! DISFRUTA DE UN 15% EN TODO AL SUSCRIBIRTE A LA NEWSLETTER.',
+    badgeApplied:
+      '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 15% SE HA APLICADO A ESTA COMPRA.',
+    panelTitle: 'Accede anticipadamente al Black Friday',
+    panelSubtitle:
+      'Suscríbete a nuestra newsletter y disfruta de un 15% en todo.',
+    emailLabel: 'Correo electrónico',
+    emailPlaceholder: 'Introduce tu correo electrónico',
+    submit: 'Enviar',
+    requiredError: 'Este campo es obligatorio.',
+    emailError: 'Introduce una dirección de correo válida.',
+    genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de nuevo.',
+    success: '¡Gracias! Tu suscripción se ha registrado correctamente.'
+  },
+
+  en: {
+    badge:
+      'EARLY ACCESS TO BLACK FRIDAY! ENJOY 15% OFF EVERYTHING BY SUBSCRIBING TO THE NEWSLETTER.',
+    badgeApplied:
+      'YOU ARE ALREADY SUBSCRIBED! THE 15% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
+    panelTitle: 'Get early access to Black Friday',
+    panelSubtitle:
+      'Subscribe to our newsletter and enjoy 15% off everything.',
+    emailLabel: 'Email',
+    emailPlaceholder: 'Enter your email',
+    submit: 'Submit',
+    requiredError: 'This field is required.',
+    emailError: 'Please enter a valid email address.',
+    genericError: 'Sorry, something went wrong. Please try again.',
+    success: 'Thank you! Your subscription has been registered successfully.'
+  }
+};
   const L = TEXTS[lang] || TEXTS.pt;
 
   // =========================
@@ -452,7 +453,7 @@
       const el = form.querySelector('input[name="gid"]');
       if (!el) return;
 
-      el.value = '6u7M09eFzQnBUADhG1bq';
+      el.value = 'Qc8a0Vh0baqNj33qphd5';
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
 
