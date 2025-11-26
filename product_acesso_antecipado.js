@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const klarnaImgMap = { pt: 'misc43.jpg', es: 'misc42.jpg', en: 'misc44.jpg?v=1' };
     const langPrefix = (shopLang || '').substring(0, 2);
-    const imageName = klarnaImgMap[langPrefix] || 'misc36.jpg';
+    const imageName = klarnaImgMap[langPrefix] || 'misc43.jpg';
 
     klarnaOriginal.innerHTML = `
       <img src="https://www.bzronline.com/downloads/${imageName}" />
