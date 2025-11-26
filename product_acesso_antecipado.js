@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
     .toLowerCase();
 
   const acesso_antecpiado_variants = [
-    '-15% para subscritores',
-    '-15% for subscribers',
-    '-15% para suscriptores'
+    'acesso antecipado -20%',
+    'early access -20%',
+    'acceso anticipado -20%'
   ].map(norm);
 
   function hasLastUnitsFlag() {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     klarnaClone.style.paddingBottom = '10px';
     botaoAlvo.parentNode.insertBefore(klarnaClone, botaoAlvo);
 
-    const klarnaImgMap = { pt: 'misc36.jpg', es: 'misc38.jpg', en: 'misc39.jpg' };
+    const klarnaImgMap = { pt: 'misc43.jpg', es: 'misc42.jpg', en: 'misc44.jpg?v=1' };
     const langPrefix = (shopLang || '').substring(0, 2);
     const imageName = klarnaImgMap[langPrefix] || 'misc36.jpg';
 
