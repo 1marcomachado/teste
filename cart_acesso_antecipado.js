@@ -374,6 +374,7 @@ const TEXTS = {
         padding: 14px 26px;
         color: #FFF;
         height: 44px;
+        width:100%;
       }
       .bd-nl-submit:disabled{
         opacity:0.6;
