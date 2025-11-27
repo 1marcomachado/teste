@@ -127,6 +127,8 @@
   // =========================
   const TEXTS = {
     pt: {
+      badge:
+        'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 20% EM TUDO AO SUBSCREVER A NEWSLETTER.',
       panelTitle: 'Acede antecipadamente à Black Friday',
       panelSubtitle:
         'Subscreve a nossa newsletter e usufrui de 20% em tudo.',
@@ -139,6 +141,8 @@
       success: 'Obrigado! A sua subscrição foi registada com sucesso.'
     },
     es: {
+      badge:
+        '¡ACCESO ANTICIPADO AL BLACK FRIDAY! DISFRUTA DE UN 20% EN TODO AL SUSCRIBIRTE A LA NEWSLETTER.',
       panelTitle: 'Accede anticipadamente al Black Friday',
       panelSubtitle:
         'Suscríbete a nuestra newsletter y disfruta de un 20% en todo.',
@@ -148,9 +152,11 @@
       requiredError: 'Este campo es obligatorio.',
       emailError: 'Introduce una dirección de correo válida.',
       genericError: 'Lo sentimos, el envío ha fallado. Inténtalo de nuevo.',
-      success: '¡Gracias! Tu subscripción se ha registrado correctamente.'
+      success: '¡Gracias! Tu suscripción se ha registrado correctamente.'
     },
     en: {
+      badge:
+        'EARLY ACCESS TO BLACK FRIDAY! ENJOY 20% OFF EVERYTHING BY SUBSCRIBING TO THE NEWSLETTER.',
       panelTitle: 'Get early access to Black Friday',
       panelSubtitle:
         'Subscribe to our newsletter and enjoy 20% off everything.',
@@ -175,7 +181,7 @@
 
     const style = document.createElement('style');
     style.setAttribute('data-bd-nl', '');
-style.textContent = `
+  style.textContent = `
   .bd-nl-overlay{
     position:fixed;inset:0;
     background:rgba(0,0,0,.45);
@@ -289,6 +295,7 @@ style.textContent = `
 
       overlay.addEventListener('click', closePanel);
       panel.querySelector('.bd-nl-close').addEventListener('click', closePanel);
+
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closePanel();
       });
@@ -398,6 +405,8 @@ style.textContent = `
     successEl.style.display = 'block';
     submitBtn.disabled = false;
 
+    document.querySelector('.preorder-badge')?.remove();
+
     setTimeout(closePanel, 2000);
   }
 
@@ -418,20 +427,43 @@ style.textContent = `
   };
 
   // =========================
-  // 6) WORKER AC
+  // 6) BADGE
+  // =========================
+
+  async function addBadge() {
+    ensureStyles();
+
+    const ref =
+      document.querySelector('.rdc-product-afterprice') ||
+      (await waitForEl('.rdc-product-afterprice'));
+
+    if (!ref) return;
+
+    document.querySelectorAll('.preorder-badge').forEach(e => e.remove());
+
+    const el = document.createElement('div');
+    el.className = 'preorder-badge';
+    el.textContent = L.badge;
+    ref.insertAdjacentElement('afterend', el);
+
+    el.addEventListener('click', openPanel);
+  }
+
+  // =========================
+  // 7) WORKER AC
   // =========================
 
   async function checkUserExistsIfNeeded() {
     const userId = getUserId();
-    if (!userId || !workerUrl) return { shouldShowCampaign: true };
+    if (!userId || !workerUrl) return { shouldShowBadge: true };
 
     const subscribedKey = 'bd_nl_subscribed_' + userId;
     const existsKey = 'bd_nl_exists_' + userId;
     const checkedKey = 'bd_nl_checked_' + userId;
 
-    if (getLS(subscribedKey) === '1') return { shouldShowCampaign: false };
-    if (getLS(existsKey) === '1') return { shouldShowCampaign: false };
-    if (getLS(checkedKey) === '1') return { shouldShowCampaign: true };
+    if (getLS(subscribedKey) === '1') return { shouldShowBadge: false };
+    if (getLS(existsKey) === '1') return { shouldShowBadge: false };
+    if (getLS(checkedKey) === '1') return { shouldShowBadge: true };
 
     try {
       const resp = await fetch(workerUrl, {
@@ -445,27 +477,25 @@ style.textContent = `
 
       if (data.exists) {
         setLS(existsKey, '1');
-        return { shouldShowCampaign: false };
+        return { shouldShowBadge: false };
       }
 
-      return { shouldShowCampaign: true };
+      return { shouldShowBadge: true };
     } catch {
-      return { shouldShowCampaign: true };
+      return { shouldShowBadge: true };
     }
   }
 
   // =========================
-  // 7) KLARNA + IMAGEM → abrir painel
+  // 8) KLARNA + IMAGEM → abrir painel
   // =========================
 
-  function enhanceKlarna({ withCampaign }) {
-    // mover blocos
+  function enhanceKlarna() {
     const visual = document.querySelector('[ng-controller="visualPagerBlocksController"]');
     const product = document.querySelector('[ng-controller="productPacksGroupController"]');
 
     if (visual && product && product.parentNode) {
-      const isAfter =
-        visual.compareDocumentPosition(product) & Node.DOCUMENT_POSITION_FOLLOWING;
+      const isAfter = visual.compareDocumentPosition(product) & Node.DOCUMENT_POSITION_FOLLOWING;
       if (!isAfter) product.parentNode.insertBefore(visual, product);
     }
 
@@ -485,22 +515,16 @@ style.textContent = `
     klarnaClone.style.paddingBottom = '10px';
     botaoAlvo.parentNode.insertBefore(klarnaClone, botaoAlvo);
 
-    // só mostra banner/click se a campanha estiver ativa para este user
-    if (!withCampaign) return;
-
     const imgMap = { pt: 'misc43.jpg', es: 'misc42.jpg', en: 'misc44.jpg?v=1' };
     const file = imgMap[lang] || imgMap.pt;
 
-    klarnaOriginal.innerHTML =
-      `<img src="https://www.bzronline.com/downloads/${file}" />`;
-
+    klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${file}" />`;
     klarnaOriginal.style.cursor = 'pointer';
     klarnaOriginal.setAttribute('role', 'button');
     klarnaOriginal.setAttribute('tabindex', '0');
 
     const handler = e => {
-      if (e.type === 'click' ||
-        (e.type === 'keydown' && ['Enter', ' '].includes(e.key))) {
+      if (e.type === 'click' || (e.type === 'keydown' && ['Enter', ' '].includes(e.key))) {
         e.preventDefault();
         openPanel();
       }
@@ -511,22 +535,22 @@ style.textContent = `
   }
 
   // =========================
-  // 8) INIT
+  // 9) INIT
   // =========================
 
   async function init() {
-    // só ativa se o produto tiver flag de acesso antecipado
+    // só ativa se flag "-20%"
     if (!hasEarlyAccessFlag()) return;
 
+    // verifica AC
     const workerRes = await checkUserExistsIfNeeded();
-    const withCampaign = workerRes.shouldShowCampaign !== false;
+    if (workerRes.shouldShowBadge) await addBadge();
 
-    // move klarna e, se aplicável, substitui pela imagem + click
-    enhanceKlarna({ withCampaign });
+    // Klarna + imagem clicável
+    enhanceKlarna();
   }
 
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', init);
-  else
-    init();
+  else init();
 })();
