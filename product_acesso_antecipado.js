@@ -195,13 +195,20 @@
 
   /* DESKTOP PANEL – slide from right */
   .bd-nl-panel{
-    position:fixed;top:0;right:0;
-    width:100%;max-width:420px;height:100%;
-    background:#fff;
-    transform:translateX(100%);
-    transition:transform .25s ease;
-    z-index:9999;
-    display:flex;flex-direction:column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .3);
+    transform: translateX(100%);
+    transition: transform .25s ease;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, 'Segoe UI', sans-serif;
   }
   .bd-nl-panel.is-open{
     transform:translateX(0);
