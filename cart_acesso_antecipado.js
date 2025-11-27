@@ -112,7 +112,7 @@ const TEXTS = {
     badge:
       'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 20% EM TUDO AO SUBSCREVER A NEWSLETTER.',
     badgeApplied:
-      'JÁ ÉS SUBSCRITOR! TENS -20% DESCONTO. EXCEPTO PRODUTOS ESCLUÍDOS DE PROMOÇÃO.',
+      'JÁ ÉS SUBSCRITOR! TENS -20% DESCONTO. EXCEPTO PRODUTOS EXCLUÍDOS DE PROMOÇÃO.',
     panelTitle: 'Acede antecipadamente à Black Friday',
     panelSubtitle:
       'Subscreve a nossa newsletter e usufrui de 20% em tudo.',
