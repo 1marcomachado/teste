@@ -112,7 +112,7 @@ const TEXTS = {
     badge:
       'ACESSO ANTECIPADO À BLACK FRIDAY! USUFRUI DE 20% EM TUDO AO SUBSCREVER A NEWSLETTER.',
     badgeApplied:
-      'JÁ ÉS SUBSCRITOR! O DESCONTO DE 20% FOI APLICADO A ESTA COMPRA.',
+      'JÁ ÉS SUBSCRITOR! TENS -20% DESCONTO. EXCEPTO PRODUTOS ESCLUÍDOS DE PROMOÇÃO.',
     panelTitle: 'Acede antecipadamente à Black Friday',
     panelSubtitle:
       'Subscreve a nossa newsletter e usufrui de 20% em tudo.',
@@ -129,7 +129,7 @@ const TEXTS = {
     badge:
       '¡ACCESO ANTICIPADO AL BLACK FRIDAY! DISFRUTA DE UN 20% EN TODO AL SUSCRIBIRTE A LA NEWSLETTER.',
     badgeApplied:
-      '¡YA ERES SUSCRIPTOR! EL DESCUENTO DEL 20% SE HA APLICADO A ESTA COMPRA.',
+      '¡YA ERES SUSCRIPTOR! TIENES UN 20% DE DESCUENTO, EXCEPTO EN PRODUCTOS EXCLUIDOS DE LA PROMOCIÓN.',
     panelTitle: 'Accede anticipadamente al Black Friday',
     panelSubtitle:
       'Suscríbete a nuestra newsletter y disfruta de un 20% en todo.',
@@ -146,7 +146,7 @@ const TEXTS = {
     badge:
       'EARLY ACCESS TO BLACK FRIDAY! ENJOY 20% OFF EVERYTHING BY SUBSCRIBING TO THE NEWSLETTER.',
     badgeApplied:
-      'YOU ARE ALREADY SUBSCRIBED! THE 20% DISCOUNT HAS BEEN APPLIED TO THIS ORDER.',
+      'YOU’RE ALREADY A SUBSCRIBER! YOU HAVE A 20% DISCOUNT, EXCEPT ON PRODUCTS EXCLUDED FROM THE PROMOTION.',
     panelTitle: 'Get early access to Black Friday',
     panelSubtitle:
       'Subscribe to our newsletter and enjoy 20% off everything.',
