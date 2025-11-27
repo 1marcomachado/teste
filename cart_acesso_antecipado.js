@@ -274,6 +274,7 @@ const TEXTS = {
         z-index:9999;
         display:flex; flex-direction:column;
         font-family:Arial, Helvetica, 'Segoe UI', sans-serif;
+        color: #000;
       }
       .bd-nl-panel.is-open{
         transform:translateX(0);
