@@ -1,3 +1,11 @@
+function isPortugalShopLang() {
+  const script = document.querySelector('script[data-shop-lang]');
+  const shopLang = script?.getAttribute('data-shop-lang');
+
+  // Mostrar se for PT ou se não estiver definido
+  return !shopLang || shopLang.toLowerCase() === 'pt';
+}
+
 // 1) LISTA DE POSTAIS
 const produtos = [
   {"id":"399014","reference":"POSTAL-N-POSTAL","name":"Postal de Natal O Postal","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859583_6b93822f6a186c7fcccb458b63d6ae57.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-o-postal_p399014.html"},
@@ -10,7 +18,7 @@ const produtos = [
 ];
 
 // 2) CSS do card (mantém igual)
-if ($('#mm-sugestoes-style').length === 0) {
+if ($('#mm-sugestoes-style').length === 0 && isPortugalShopLang()) {
   $('head').append(`
     <style id="mm-sugestoes-style">
       #mm-sugestoes {
