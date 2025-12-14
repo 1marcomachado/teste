@@ -6,6 +6,9 @@ function isPortugalShopLang() {
   return !shopLang || shopLang.toLowerCase() === 'pt';
 }
 
+if (!window.location.href.includes('checkout')) return;
+if (!isPortugalShopLang()) return;
+
 // 1) LISTA DE POSTAIS
 const produtos = [
   {"id":"399014","reference":"POSTAL-N-POSTAL","name":"Postal de Natal O Postal","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859583_6b93822f6a186c7fcccb458b63d6ae57.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-o-postal_p399014.html"},
@@ -18,7 +21,7 @@ const produtos = [
 ];
 
 // 2) CSS do card (mantém igual)
-if ($('#mm-sugestoes-style').length === 0 && isPortugalShopLang()) {
+if ($('#mm-sugestoes-style').length === 0 && isPortugalShopLang() && isCheckoutPage()) {
   $('head').append(`
     <style id="mm-sugestoes-style">
       #mm-sugestoes {
@@ -33,6 +36,7 @@ if ($('#mm-sugestoes-style').length === 0 && isPortugalShopLang()) {
         text-decoration: none;
         color: #111;
         margin: 14px 0 16px 0;
+        text-align: left;
       }
       #mm-sugestoes .mm-left img{
         width: 86px; height: 86px; object-fit: cover; border: 1px solid #eee;
@@ -46,8 +50,7 @@ if ($('#mm-sugestoes-style').length === 0 && isPortugalShopLang()) {
       #mm-sugestoes .mm-btn{
         margin-left:auto; background:#111; color:#fff; border-radius:16px;
         padding:14px 18px; font-weight:800; text-transform:uppercase;
-        font-size:14px; line-height:1.1; display:inline-flex;
-        align-items:center; gap:8px; white-space:nowrap; text-align:center;
+        font-size:14px; line-height:1.1; display:inline-flex; gap:8px; white-space:nowrap;
       }
       #mm-sugestoes .mm-btn .plus{ font-size:18px; font-weight:900; margin-top:-1px; }
       @media(max-width: 520px){
