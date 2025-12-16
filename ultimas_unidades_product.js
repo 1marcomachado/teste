@@ -29,7 +29,7 @@
     .replace(/\s+/g,' ').trim().toLowerCase();
 
   const LAST_UNITS_VARIANTS = [
-    'Últimas unidades', 'Ultimas unidades', '¡Últimas unidades!', 'Last units', 'LAST UNITS'
+    'Últimas unidades', 'Ultimas unidades', '¡Últimas unidades!', 'Last units', 'LAST UNITS', 'Últimas oportunidades', 'Last opportunities', 'Últimas oportunidades'
   ].map(norm);
 
   function hasLastUnitsFlag(){
