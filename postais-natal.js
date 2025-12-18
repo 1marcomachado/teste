@@ -12,13 +12,13 @@ if (!isPortugalShopLang()) return;
 
 // 1) LISTA DE POSTAIS
 const produtos = [
-  {"id":"399014","reference":"POSTAL-N-POSTAL","name":"Postal de Natal O Postal","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859583_6b93822f6a186c7fcccb458b63d6ae57.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-o-postal_p399014.html"},
-  {"id":"399013","reference":"POSTAL-N-GATO","name":"Postal de Natal Gato","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859512_a625059e9b48d7b17aef6fff0a0d49d7.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-gato_p399013.html"},
-  {"id":"399015","reference":"POSTAL-N-VINHO","name":"Postal de Natal Hold My Wine","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859462_e514dd138247195efb8ac9d8cc450a35.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-hold-my-wine_p399015.html"},
-  {"id":"399011","reference":"POSTAL-N-AVISO","name":"Postal de Natal Aviso","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859650_10447c2c15d7cbda8efea2cec3394fc2.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-aviso_p399011.html"},
-  {"id":"399012","reference":"POSTAL-N-CAO","name":"Postal de Natal Cão","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859327_66e99a2c76328a7e52ad1bedea2bff79.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-cao_p399012.html"},
-  {"id":"399009","reference":"POSTAL-N-PAINATAL","name":"Postal de Natal Pai Natal","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859229_3a2a4949274425f25c1cd167bbee1f2f.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-pai-natal_p399009.html"},
-  {"id":"399010","reference":"POSTAL-N-SI","name":"Postal de Natal Siiiii CR7","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859715_31ba4facfb820978e0d87cbfd8e1dd6d.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-siiiii-cr7_p399010.html"}
+  {"id":"399014","reference":"POSTAL-N-POSTAL","name":"Postal de Natal O Postal","frase":"Chega o natal e levas outra vez com o postal.","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859583_6b93822f6a186c7fcccb458b63d6ae57.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-o-postal_p399014.html"},
+  {"id":"399013","reference":"POSTAL-N-GATO","name":"Postal de Natal Gato","frase":"Se não gostares da prenda, pelo menos finge, ok?","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859512_a625059e9b48d7b17aef6fff0a0d49d7.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-gato_p399013.html"},
+  {"id":"399015","reference":"POSTAL-N-VINHO","name":"Postal de Natal Hold My Wine","frase":"HOHO Hold my wine","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859462_e514dd138247195efb8ac9d8cc450a35.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-hold-my-wine_p399015.html"},
+  {"id":"399011","reference":"POSTAL-N-AVISO","name":"Postal de Natal Aviso","frase":"Aviso: Este presente pode causar inveja entre familiares","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859650_10447c2c15d7cbda8efea2cec3394fc2.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-aviso_p399011.html"},
+  {"id":"399012","reference":"POSTAL-N-CAO","name":"Postal de Natal Cão","frase":"Mais um natal a fingir que foste bonzinho","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859327_66e99a2c76328a7e52ad1bedea2bff79.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-cao_p399012.html"},
+  {"id":"399009","reference":"POSTAL-N-PAINATAL","name":"Postal de Natal Pai Natal","frase":"Mais um natal a fingir que foste bonzinho","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859229_3a2a4949274425f25c1cd167bbee1f2f.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-pai-natal_p399009.html"},
+  {"id":"399010","reference":"POSTAL-N-SI","name":"Postal de Natal Siiiii CR7","frase":"Feliz natal para Siiiiiiiiiiii","price":"2,00","image":"https://1565619539.rsc.cdn77.org/temp/1764859715_31ba4facfb820978e0d87cbfd8e1dd6d.jpg","url":"https://www.bzronline.com/pt/unissexo/acessorios/postal-de-natal-siiiii-cr7_p399010.html"}
 ];
 
 // 2) CSS do card (mantém igual)
@@ -62,7 +62,42 @@ if ($('#mm-sugestoes-style').length === 0) {
         #mm-sugestoes .mm-btn{ padding:12px 14px; border-radius:14px; font-size:12px; }
       }
       .rdc-hr-divider {border-top: none !important;}
+
+      /* ===== MODAL SIMPLES (imagem em grande) ===== */
+      #mm-image-modal{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+      }
+      #mm-image-modal img{
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 14px;
+      }
+      #mm-image-modal .mm-close{
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        font-size: 36px;
+        color: #fff;
+        cursor: pointer;
+        line-height: 1;
+      }
     </style>
+  `);
+}
+
+/* ===== HTML da MODAL (uma vez) ===== */
+if ($('#mm-image-modal').length === 0) {
+  $('body').append(`
+    <div id="mm-image-modal">
+      <span class="mm-close">&times;</span>
+      <img src="" alt="">
+    </div>
   `);
 }
 
@@ -162,10 +197,11 @@ $(document).on('click', '#mm-sugestoes', function(e) {
       <div class="product-item">
         <div class="clearfix">
           <div class="product-item-image productMask">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${product.image}" alt="${product.name}" class="mm-open-image" style="cursor:zoom-in;">
           </div>
           <div class="product-item-desc desc">
             <p class="featuredH5 list-nav-title product-item-name name">${product.name}</p>
+            <p class="product-item-variants variants">"${product.frase}"</p>
             <p class="product-item-ref">Ref: ${product.reference} | Único</p>
             <p class="product-item-variants variants">
               <span></span>
@@ -186,6 +222,21 @@ $(document).on('click', '#mm-sugestoes', function(e) {
 
   if (typeof open_product_right_barCatalog === 'function') open_product_right_barCatalog();
   else console.warn("[BZR] open_product_right_barCatalog() não encontrada.");
+});
+
+/* ===== MODAL: abrir imagem em grande ===== */
+$(document).on('click', '.mm-open-image', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const src = $(this).attr('src');
+  $('#mm-image-modal img').attr('src', src);
+  $('#mm-image-modal').fadeIn(200);
+});
+
+/* ===== MODAL: fechar ===== */
+$(document).on('click', '#mm-image-modal, #mm-image-modal .mm-close', function(e) {
+  e.preventDefault();
+  $('#mm-image-modal').fadeOut(200);
 });
 
 // 9) Ação do botão "Adicionar"
