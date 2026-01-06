@@ -18,8 +18,51 @@
       if (k.toLowerCase() === "id" && /^\d+$/.test(v)) return v;
     }
     const path = u.pathname + (u.search || "") + (u.hash || "");
-    const m = path.match(/(?:[_-](\d+)|(\d+)[_-])(?:\.html|$|\?|\/)/i);
+    const m = path.match(/(?:[_-](\\d+)|(\d+)[_-])(?:\.html|$|\?|\/)/i);
     return m ? (m[1] || m[2]) : null;
+  }
+
+  // NOVO: Retorna texto limpo do <a>
+  function getLinkText(a) {
+    if (!a || !a.textContent) return "";
+    return a.textContent.trim().toLowerCase();
+  }
+
+  // NOVO: Encontra <li> por qualquer critério (id, text, index, partialText)
+  function findLiByCriteria(container, criteria) {
+    // 1. Por ID (prioridade máxima)
+    if (criteria.id) {
+      const li = findDesktopLiById(container, criteria.id);
+      if (li) return li;
+    }
+    
+    // 2. Por texto exato
+    if (criteria.text) {
+      const topLis = container.querySelectorAll(".column-menu > ul > li a[href]");
+      for (const a of topLis) {
+        if (getLinkText(a) === criteria.text.toLowerCase()) {
+          return a.closest("li");
+        }
+      }
+    }
+    
+    // 3. Por índice/posição (começa em 0)
+    if (typeof criteria.index === "number" && criteria.index >= 0) {
+      const topLis = container.querySelectorAll(".column-menu > ul > li");
+      return Array.from(topLis)[criteria.index] || null;
+    }
+    
+    // 4. Por texto parcial (contém)
+    if (criteria.partialText) {
+      const topLis = container.querySelectorAll(".column-menu > ul > li a[href]");
+      for (const a of topLis) {
+        if (getLinkText(a).includes(criteria.partialText.toLowerCase())) {
+          return a.closest("li");
+        }
+      }
+    }
+    
+    return null;
   }
 
   const hexToRgb = (hex) => {
@@ -66,7 +109,7 @@
     }
     return { r: Math.round(r*255), g: Math.round(g*255), b: Math.round(b*255) };
   };
-  // Escurece em HSL
+  
   const darken = (hex, percent = 12) => {
     const rgb = hexToRgb(hex);
     if (!rgb) return hex;
@@ -75,7 +118,7 @@
     const {r,g,b} = hslToRgb(h, s, Math.max(0, l*(1-p)));
     return rgbToHex(r,g,b);
   };
-  // Escolhe preto/branco para contraste
+  
   const idealTextOn = (hex) => {
     const rgb = hexToRgb(hex);
     if (!rgb) return "#000";
@@ -84,7 +127,6 @@
     return L > 0.6 ? "#000" : "#fff";
   };
 
-  // ===== Estilo do <li> alvo =====
   function paintLi(li, bg, color) {
     if (!li) return null;
 
@@ -114,7 +156,6 @@
     return { li, a, bg, color: textColor };
   }
 
-  // Hover só no alvo via JS
   function attachTargetHover(target) {
     if (!target) return;
     const { li, a, bg, color } = target;
@@ -144,14 +185,23 @@
     li.dataset.hoverBound = "1";
   }
 
-  // ====== CONFIG ======
+  // ====== CONFIG ATUALIZADA com texto/index ======
   const menusConfig = {
-    "1871": {
+    /* "1871": {
+      links: [
+        { id: "2100", bg: "#38D430", color: "#000" },                  // Por ID
+        { text: "Compras", bg: "#ffa43e", color: "#232222" },          // Por texto exato
+        { index: 2, bg: "#f61616", color: "#232222" },                 // Por posição (3º item)
+        { partialText: "verde", bg: "#0B6623", color: "#FFFFFF" }      // Por texto parcial
+      ]
+    },*/
+     "1871": {
       links: [
         { id: "2100", bg: "#38D430", color: "#000" },    
         { id: "3171", bg: "#ffa43e", color: "#232222" },  
         { id: "2962", bg: "#f61616", color: "#232222" },
-        { id: "2025", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "2025", bg: "#0B6623", color: "#FFFFFF" },
+        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
       ]
     },
     "435": {
@@ -159,7 +209,8 @@
         { id: "475",  bg: "#ECECEC", color: "#333" },    
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
+        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
       ]
     },
     "436": {
@@ -167,7 +218,8 @@
         { id: "538",  bg: "#ECECEC", color: "#333" },
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
+        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
       ]
     },
     "437": {
@@ -175,17 +227,20 @@
         { id: "600",  bg: "#ECECEC", color: "#333" },
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
+        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
       ]
     }
   };
 
-  // ====== MOBILE ======
+  // ====== MOBILE (apenas ID por enquanto) ======
   const mobileConfig = {};
   for (const key in menusConfig) {
     const { links = [] } = menusConfig[key];
-    for (const { id, bg, color } of links) {
-      mobileConfig[String(id)] = { bg, color };
+    for (const criteria of links) {
+      if (criteria.id) {
+        mobileConfig[String(criteria.id)] = { bg: criteria.bg, color: criteria.color };
+      }
     }
   }
 
@@ -205,7 +260,7 @@
     });
   }
 
-  // ====== DESKTOP ======
+  // MANTER: findDesktopLiById (usado pelo novo findLiByCriteria)
   function findDesktopLiById(container, idLink){
     const topLis = container.querySelectorAll(".column-menu > ul > li");
     for (const li of topLis) {
@@ -221,6 +276,7 @@
     return null;
   }
 
+  // ====== DESKTOP ATUALIZADO ======
   function styleDesktopMenus(root = document) {
     Object.entries(menusConfig).forEach(([menuId, cfg]) => {
       const container = root.querySelector(`[attr-id-hover="${menuId}"]`);
@@ -230,9 +286,12 @@
         Array.from(container.querySelectorAll('.column-menu > ul > li[data-styled="1"]'))
       );
 
-      for (const { id, bg, color } of (cfg.links || [])) {
-        const li = findDesktopLiById(container, id);
+      for (const criteria of (cfg.links || [])) {
+        const li = findLiByCriteria(container, criteria);
         if (!li || alreadyStyled.has(li)) continue;
+        
+        const bg = criteria.bg;
+        const color = criteria.color;
         const t = paintLi(li, bg, color);
         attachTargetHover(t);
       }
