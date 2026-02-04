@@ -23,9 +23,9 @@
 
   function getLanguageName(code) {
     const langNames = {
-      'pt': 'Português',
-      'es': 'Español',
-      'en': 'English'
+      'pt': 'pt',
+      'es': 'es',
+      'en': 'en'
     };
     return langNames[code] || 'Português';
   }
