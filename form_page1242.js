@@ -1,7 +1,18 @@
 (function () {
   // ===== Detecção automática de idioma e país =====
   function detectLanguage() {
+    const select = document.getElementById('lg');
+  
+    // 1️⃣ prioridade → idioma escolhido no select
+    if (select) {
+      const selected = select.options[select.selectedIndex];
+      const lang = selected?.dataset?.name;
+      if (lang) return lang;
+    }
+  
+    // 2️⃣ fallback → browser
     const browserLang = navigator.language || navigator.userLanguage;
+  
     if (browserLang.startsWith('pt')) return 'pt';
     if (browserLang.startsWith('es')) return 'es';
     return 'en';
