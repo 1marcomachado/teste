@@ -1,16 +1,8 @@
 (function() {
-  // Proteção contra execução múltipla
-  if (window.topInfoBarInitialized) {
-    return;
-  }
-  window.topInfoBarInitialized = true;
+  'use strict';
+  
+  if (window.topInfoBarInitialized) return;
 
-  // Remover elementos existentes (caso existam)
-  document.querySelectorAll('.top-info-bar').forEach(el => el.remove());
-  document.querySelectorAll('.menu-mobile ul.menu-inst li.top-link').forEach(el => el.remove());
-  document.querySelectorAll('style[data-top-info-bar]').forEach(el => el.remove());
-
-  // Configuração de idiomas e links
   const config = {
     pt: {
       links: [
@@ -38,105 +30,60 @@
     }
   };
 
-  // Detectar idioma atual
-  const langMatch = window.location.pathname.match(/\/(pt|en|es)\//);
-  const currentLang = langMatch ? langMatch[1] : 'pt';
-  const links = config[currentLang].links;
+  function initTopInfoBar() {
+    try {
+      window.topInfoBarInitialized = true;
 
-  // Injetar CSS (com data-attribute para identificação)
-  const style = document.createElement('style');
-  style.setAttribute('data-top-info-bar', 'true');
-  style.textContent = `
-    .top-info-bar {
-      background-color: #ebebeb;
-      padding: 12px 76px 12px 40px;
-      font-family: 'Metrocity-Book', Arial, Helvetica, 'Segoe UI', sans-serif;
-      font-size: 9px;
-      letter-spacing: 0.2px;
-      line-height: 9px;
-      color: #333;
-      text-transform: uppercase;
-      border-bottom: 1px solid #ddd;
-    }
-    .top-info-bar .container { text-align: right; }
-    .top-info-bar a {
-      color: #333;
-      text-decoration: none;
-      padding: 0 8px;
-      font-weight: 400;
-    }
-    .top-info-bar a:hover { text-decoration: underline; }
-    .top-info-bar .separator {
-      color: #666;
-      padding: 0 3px;
-    }
-    .top-info-bar .btn-member {
-      background-color: #000;
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 3px;
-      margin-left: 8px;
-    }
-    .top-info-bar .btn-member:hover { background-color: #333; text-decoration: none; }
-    
-    @media (max-width: 768px) {
-      .top-info-bar { display: none !important; }
-    }
-    
-    .menu-mobile ul.menu-inst li.top-link { list-style: none; }
-    .menu-mobile ul.menu-inst li.top-link a {
-      display: block;
-      color: #333;
-      text-decoration: none;
-      font-size: 1em;
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-    .menu-mobile ul.menu-inst li.top-link a:hover { background-color: #f9f9f9; }
-    .menu-mobile ul.menu-inst li.top-link.member a {
-      display: inline-block;
-      background-color: #000;
-      color: #fff;
-      margin: 8px 12px 8px 45px;
-      padding: 8px 8px 8px 8px;
-      font-weight: 600;
-      border: none;
-      border-radius: 4px;
-      letter-spacing: 0.3px;
-    }
-    .menu-mobile ul.menu-inst li.top-link.member a:hover { background-color: #333; }
-  `;
-  document.head.appendChild(style);
+      document.querySelectorAll('.top-info-bar, .menu-mobile ul.menu-inst li.top-link, style[data-top-info-bar]').forEach(el => el.remove());
 
-  // Criar barra desktop
-  const topBar = document.createElement('div');
-  topBar.className = 'top-info-bar';
-  
-  // Gerar HTML dos links dinamicamente
-  const desktopLinksHTML = links.map((link, index) => {
-    const separator = index < links.length - 1 ? '<span class="separator">|</span>' : '';
-    const linkClass = link.class === 'member' ? 'btn-member' : '';
-    return `<a href="${link.url}" class="${linkClass}">${link.text}</a>${separator}`;
-  }).join('');
-  
-  topBar.innerHTML = `<div class="container">${desktopLinksHTML}</div>`;
+      const langMatch = window.location.pathname.match(/\/(pt|en|es)\//);
+      const currentLang = langMatch ? langMatch[1] : 'pt';
+      const links = config[currentLang]?.links || config.pt.links;
 
-  // Inserir no header desktop
-  const header = document.querySelector('header');
-  if (header) header.insertBefore(topBar, header.firstChild);
+      // Injetar CSS (incluindo margem dobrada)
+      const style = document.createElement('style');
+      style.setAttribute('data-top-info-bar', 'true');
+      style.textContent = `.top-info-bar{background-color:#ebebeb;padding:12px 76px 12px 40px;font-family:'Metrocity-Book',Arial,Helvetica,'Segoe UI',sans-serif;font-size:9px;letter-spacing:.2px;line-height:9px;color:#333;text-transform:uppercase;border-bottom:1px solid #ddd}.top-info-bar .container{text-align:right}.top-info-bar a{color:#333;text-decoration:none;padding:0 8px;font-weight:400}.top-info-bar a:hover{text-decoration:underline}.top-info-bar .separator{color:#666;padding:0 3px}.top-info-bar .btn-member{background-color:#000;color:#fff;padding:4px 12px;border-radius:3px;margin-left:8px}.top-info-bar .btn-member:hover{background-color:#333;text-decoration:none}@media (max-width:768px){.top-info-bar{display:none!important}}.menu-mobile ul.menu-inst li.top-link{list-style:none}.menu-mobile ul.menu-inst li.top-link a{display:block;color:#333;text-decoration:none;font-size:1em;text-transform:uppercase;font-weight:400}.menu-mobile ul.menu-inst li.top-link a:hover{background-color:#f9f9f9}.menu-mobile ul.menu-inst li.top-link.member a{display:inline-block;background-color:#000;color:#fff;margin:8px 12px 8px 45px;padding:8px;font-weight:600;border:none;border-radius:4px;letter-spacing:.3px}.menu-mobile ul.menu-inst li.top-link.member a:hover{background-color:#333}@media screen and (min-width:1200px){body:not(.bannerWelcomeGiftVisible).headerCampaignVisible.headerCampaignVisibleTopHeader:not(.unpinned) #header,body:not(.bannerWelcomeGiftVisible):not(.rdc-underHeader-active).headerCampaignVisible.headerCampaignVisibleBottomHeader #main:not(.search),body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible) #main,body.tablet.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible) #account-menu-sales,body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible):not(.unpinned) .menu-mobile-1 #menu,body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible):not(.unpinned) .menu-mobile-2,body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible):not(.unpinned) .menu-mobile-3 #menu,body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible):not(.unpinned) .menu-mobile-5,body.headerCampaignVisible.headerCampaignVisibleTopHeader:not(.bannerWelcomeGiftVisible):not(.unpinned) #containerSite-mask{margin-top:72px!important}}`;
+      document.head.appendChild(style);
 
-  // Inserir links no menu mobile
-  const menuInst = document.querySelector('.menu-mobile ul.menu-inst');
-  if (menuInst) {
-    const langLi = menuInst.querySelector('li.lang');
-    if (langLi) {
-      // Inserir em ordem reversa para manter a sequência correta
-      [...links].reverse().forEach(link => {
-        const li = document.createElement('li');
-        li.className = `top-link ${link.class}`;
-        li.innerHTML = `<a href="${link.url}">${link.text}</a>`;
-        langLi.insertAdjacentElement('afterend', li);
-      });
+      const desktopLinksHTML = links.map((link, i) => 
+        `<a href="${link.url}" class="${link.class === 'member' ? 'btn-member' : ''}">${link.text}</a>${i < links.length - 1 ? '<span class="separator">|</span>' : ''}`
+      ).join('');
+      
+      const topBar = document.createElement('div');
+      topBar.className = 'top-info-bar';
+      topBar.innerHTML = `<div class="container">${desktopLinksHTML}</div>`;
+
+      const header = document.querySelector('header');
+      if (header) header.insertBefore(topBar, header.firstChild);
+
+      const menuInst = document.querySelector('.menu-mobile ul.menu-inst');
+      const langLi = menuInst?.querySelector('li.lang');
+      
+      if (langLi) {
+        [...links].reverse().forEach(link => {
+          const li = document.createElement('li');
+          li.className = `top-link ${link.class}`;
+          li.innerHTML = `<a href="${link.url}">${link.text}</a>`;
+          langLi.insertAdjacentElement('afterend', li);
+        });
+      }
+    } catch (error) {
+      console.error('Top Info Bar error:', error);
     }
+  }
+
+  function tryInit(attempts = 0) {
+    if (document.querySelector('header')) {
+      initTopInfoBar();
+    } else if (attempts < 50) {
+      setTimeout(() => tryInit(attempts + 1), 100);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInit, { once: true });
+  } else {
+    tryInit();
   }
 })();
