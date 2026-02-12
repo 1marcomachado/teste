@@ -51,9 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
     klarnaClone.style.paddingBottom = '10px';
     botaoAlvo.parentNode.insertBefore(klarnaClone, botaoAlvo);
 
-    const klarnaImgMap = { pt: 'misc35.jpg', es: 'misc35.jpg', en: 'misc35.jpg' };
+    const klarnaImgMap = { pt: 'misc45.jpg', es: 'misc46.jpg', en: 'misc47.jpg' };
     const langPrefix = (shopLang || '').substring(0, 2);
-    const imageName = klarnaImgMap[langPrefix] || 'misc35.jpg';
+    const imageName = klarnaImgMap[langPrefix] || 'misc45.jpg';
 
     // botão vai no ORIGINAL
     klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="meuBotaoPacks" style="cursor:pointer;" alt="Ver packs" />`;
