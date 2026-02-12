@@ -1,6 +1,6 @@
+const script = document.currentScript;
+const shopLang = script?.getAttribute('data-shop-lang');
 document.addEventListener('DOMContentLoaded', function () {
-  const script = document.currentScript;
-  const shopLang = script?.getAttribute('data-shop-lang');
   const flagElement = document.querySelector('.rdc-packs-maingrid');
   if (!flagElement) return;
 
