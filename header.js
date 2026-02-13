@@ -57,7 +57,33 @@
       topBar.innerHTML = `<div class="container">${desktopLinksHTML}</div>`;
 
       const header = document.querySelector('header');
-      if (header) header.insertBefore(topBar, header.firstChild);
+      if (header) {
+      header.insertBefore(topBar, header.firstChild);
+      requestAnimationFrame(() => {
+        const barHeight = topBar.offsetHeight;
+        document.documentElement.style.setProperty('--notification-bar-height', `${barHeight}px`);
+        
+        const adjustStyle = document.createElement('style');
+        adjustStyle.setAttribute('data-top-bar-adjust', 'true');
+        adjustStyle.textContent = `
+          .submenu-visible ~ #main {
+            padding-top: calc(115px + ${barHeight}px) !important;
+          }
+          .shipping-info-visible.submenu-visible ~ #main {
+            padding-top: calc(130px + ${barHeight}px) !important;
+          }
+          @media screen and (min-width: 768px) {
+            #main {
+              padding-top: calc(154px + ${barHeight}px) !important;
+            }
+            .shipping-info-visible.submenu-visible ~ #main {
+              padding-top: calc(180px + ${barHeight}px) !important;
+            }
+          }
+        `;
+        document.head.appendChild(adjustStyle);
+      });
+      }
 
       const menuInst = document.querySelector('.menu-mobile ul.menu-inst');
       const langLi = menuInst?.querySelector('li.lang');
