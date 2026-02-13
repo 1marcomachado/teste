@@ -12,13 +12,13 @@
     if (/^(mailto:|tel:|javascript:|#)/i.test(s)) return null;
     const u = safeUrl(s);
     if (!u) return null;
-
+  
     // ?id=123 (case-insensitive)
     for (const [k, v] of u.searchParams.entries()) {
-      if (k.toLowerCase() === "id" && /^\d+$/.test(v)) return v;
+      if (k.toLowerCase() === "id" && /^\d+$/.test(v)) return v;  // ← Corrigido
     }
     const path = u.pathname + (u.search || "") + (u.hash || "");
-    const m = path.match(/(?:[_-](\\d+)|(\d+)[_-])(?:\.html|$|\?|\/)/i);
+    const m = path.match(/(?:[_-](\d+)|(\d+)[_-])(?:\.html|$|\?|\/)/i);  // ← Corrigido
     return m ? (m[1] || m[2]) : null;
   }
 
@@ -200,8 +200,7 @@
         { id: "2100", bg: "#38D430", color: "#000" },    
         { id: "3171", bg: "#ffa43e", color: "#232222" },  
         { id: "2962", bg: "#f61616", color: "#232222" },
-        { id: "2025", bg: "#0B6623", color: "#FFFFFF" },
-        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
+        { id: "2025", bg: "#0B6623", color: "#FFFFFF" } 
       ]
     },
     "435": {
@@ -209,8 +208,7 @@
         { id: "475",  bg: "#ECECEC", color: "#333" },    
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
-        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" } 
       ]
     },
     "436": {
@@ -218,8 +216,7 @@
         { id: "538",  bg: "#ECECEC", color: "#333" },
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
-        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" }  
       ]
     },
     "437": {
@@ -227,8 +224,7 @@
         { id: "600",  bg: "#ECECEC", color: "#333" },
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
-        { index: 0, bg: "#ff2c00", color: "#FFFFFF" }  
+        { id: "1112", bg: "#0B6623", color: "#FFFFFF" }
       ]
     }
   };
