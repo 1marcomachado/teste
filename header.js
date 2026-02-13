@@ -41,7 +41,7 @@
       const links = config[currentLang]?.links || config.pt.links;
 
       // Modificar a variável CSS diretamente
-      document.documentElement.style.setProperty('--notification-bar-height', '72px');
+      //document.documentElement.style.setProperty('--notification-bar-height', '72px');
 
       const style = document.createElement('style');
       style.setAttribute('data-top-info-bar', 'true');
