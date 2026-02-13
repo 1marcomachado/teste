@@ -70,7 +70,7 @@
             #main {
               padding-top: calc(154px + ${barHeight}px) !important;
             }
-            #main .home {
+            #main.home {
               padding-top: calc(80px + ${barHeight}px) !important;
             }
             .shipping-info-visible.submenu-visible ~ #main {
