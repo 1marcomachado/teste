@@ -66,12 +66,6 @@
         const adjustStyle = document.createElement('style');
         adjustStyle.setAttribute('data-top-bar-adjust', 'true');
         adjustStyle.textContent = `
-          .submenu-visible ~ #main {
-            padding-top: calc(115px + ${barHeight}px) !important;
-          }
-          .shipping-info-visible.submenu-visible ~ #main {
-            padding-top: calc(130px + ${barHeight}px) !important;
-          }
           @media screen and (min-width: 768px) {
             #main {
               padding-top: calc(154px + ${barHeight}px) !important;
