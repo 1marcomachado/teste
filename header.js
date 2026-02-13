@@ -77,7 +77,7 @@
               padding-top: calc(154px + ${barHeight}px) !important;
             }
             .shipping-info-visible.submenu-visible ~ #main {
-              padding-top: calc(180px + ${barHeight}px) !important;
+              padding-top: calc(150px + ${barHeight}px) !important;
             }
           }
         `;
