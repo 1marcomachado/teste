@@ -68,9 +68,6 @@
         adjustStyle.textContent = `
           @media screen and (min-width: 768px) {
             #main {
-              padding-top: calc(154px + ${barHeight}px) !important;
-            }
-            #main.home {
               padding-top: calc(80px + ${barHeight}px) !important;
             }
             .shipping-info-visible.submenu-visible ~ #main {
