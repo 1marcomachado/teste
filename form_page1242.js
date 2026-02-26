@@ -732,7 +732,7 @@
   function init() {
     createModal();
 
-    const triggerLinks = document.querySelectorAll('a[href="#abrir-formulario"]');
+    const triggerLinks = document.querySelectorAll('a[href="#abrir-formulario"], [url="#abrir-formulario"], [data-open="newsletter"]');
     
     if (triggerLinks.length > 0) {
       triggerLinks.forEach(function(link) {
