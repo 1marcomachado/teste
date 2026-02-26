@@ -3,14 +3,12 @@
   function detectLanguage() {
     const select = document.getElementById('lg');
   
-    // 1️⃣ prioridade → idioma escolhido no select
     if (select) {
       const selected = select.options[select.selectedIndex];
       const lang = selected?.dataset?.name;
       if (lang) return lang;
     }
   
-    // 2️⃣ fallback → browser
     const browserLang = navigator.language || navigator.userLanguage;
   
     if (browserLang.startsWith('pt')) return 'pt';
@@ -472,6 +470,7 @@
 
           <input type="hidden" id="nl-country" value="${autoCountry}">
           <input type="hidden" id="nl-language" value="${autoLanguage}">
+          <input type="hidden" id="nl-campanha" value="">
 
           <button type="submit" class="nl-submit" id="nl-submit">
             ${L.submit}
@@ -514,14 +513,12 @@
 
   // ===== Criar iframe e form hidden para evitar CORS =====
   function createHiddenForm() {
-    // Criar iframe hidden
     const iframeName = 'nl_iframe_' + Math.random().toString(36).slice(2);
     const iframe = document.createElement('iframe');
     iframe.name = iframeName;
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
 
-    // Criar form hidden que submete para o iframe
     const hiddenForm = document.createElement('form');
     hiddenForm.id = 'nl-hidden-form';
     hiddenForm.action = 'https://bazardesportivo.activehosted.com/proc.php';
@@ -655,10 +652,8 @@
 
       submitBtn.disabled = true;
 
-      // Limpar form hidden
       hiddenForm.innerHTML = '';
 
-      // Adicionar campos obrigatórios do ActiveCampaign
       addHiddenInput(hiddenForm, 'u', '10');
       addHiddenInput(hiddenForm, 'f', '10');
       addHiddenInput(hiddenForm, 's', '');
@@ -668,7 +663,6 @@
       addHiddenInput(hiddenForm, 'v', '2');
       addHiddenInput(hiddenForm, 'or', '664b28e2-3077-44f1-bcc2-881db902ebd4');
       
-      // Adicionar dados do formulário
       addHiddenInput(hiddenForm, 'fullname', fullname);
       addHiddenInput(hiddenForm, 'email', email);
       
@@ -685,7 +679,13 @@
       addHiddenInput(hiddenForm, 'field[11]', countryInput.value);
       addHiddenInput(hiddenForm, 'field[12]', languageInput.value);
 
-      // Adicionar UTM parameters
+      // ===== Campanha =====
+      const campanha = document.getElementById('nl-campanha').value;
+      if (campanha) {
+        addHiddenInput(hiddenForm, 'field[14]', campanha);
+      }
+
+      // ===== UTM parameters =====
       const urlParams = new URLSearchParams(window.location.search);
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(param => {
         const value = urlParams.get(param);
@@ -694,7 +694,6 @@
         }
       });
 
-      // Listener para quando o iframe carregar (submit concluído)
       const onLoad = function() {
         iframe.removeEventListener('load', onLoad);
         submitBtn.disabled = false;
@@ -710,16 +709,19 @@
 
       iframe.addEventListener('load', onLoad);
 
-      // Submeter form hidden
       hiddenForm.submit();
     });
   }
 
   // ===== Abrir Modal =====
-  function openModal() {
+  function openModal(campanha) {
     const overlay = document.getElementById('nl-overlay');
     
     if (overlay) {
+      // Preenche o campo hidden com a campanha extraída do href
+      const campanhaInput = document.getElementById('nl-campanha');
+      if (campanhaInput) campanhaInput.value = campanha || '';
+
       overlay.classList.add('is-open');
       
       setTimeout(() => {
@@ -732,21 +734,24 @@
   function init() {
     createModal();
 
-    const triggerLinks = document.querySelectorAll('a[href="#abrir-formulario"]');
-    
-    if (triggerLinks.length > 0) {
-      triggerLinks.forEach(function(link) {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          openModal();
-        });
-      });
-      
-      console.log('Newsletter modal: ' + triggerLinks.length + ' botao(es) encontrado(s)');
-      console.log('Idioma detectado:', lang, '| País:', autoCountry, '| Idioma nome:', autoLanguage);
-    } else {
-      console.warn('Nenhum link com href="#abrir-formulario" encontrado');
-    }
+    // Event delegation: apanha <a href^="#abrir-formulario"> e <div url^="#abrir-formulario">
+    document.addEventListener('click', function(e) {
+      const trigger = e.target.closest(
+        'a[href^="#abrir-formulario"], [url^="#abrir-formulario"]'
+      );
+
+      if (trigger) {
+        e.preventDefault();
+
+        // Extrai o sufixo da campanha: "#abrir-formulario-natal" → "natal"
+        const raw = trigger.getAttribute('href') || trigger.getAttribute('url') || '';
+        const campanha = raw.replace('#abrir-formulario', '').replace(/^-/, '').trim();
+
+        openModal(campanha);
+      }
+    });
+
+    console.log('Newsletter modal iniciada | Idioma:', lang, '| País:', autoCountry);
   }
 
   if (document.readyState === 'loading') {
