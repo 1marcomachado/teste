@@ -40,9 +40,6 @@
       const currentLang = langMatch ? langMatch[1] : 'pt';
       const links = config[currentLang]?.links || config.pt.links;
 
-      // Modificar a variável CSS diretamente
-      document.documentElement.style.setProperty('--notification-bar-height', '72px');
-
       const style = document.createElement('style');
       style.setAttribute('data-top-info-bar', 'true');
       style.textContent = `.top-info-bar{background-color:#ebebeb;padding:12px 76px 12px 40px;font-family:'Metrocity-Book',Arial,Helvetica,'Segoe UI',sans-serif;font-size:9px;letter-spacing:.2px;line-height:9px;color:#333;text-transform:uppercase;border-bottom:1px solid #ddd}.top-info-bar .container{text-align:right}.top-info-bar a{color:#333;text-decoration:none;padding:0 8px;font-weight:400}.top-info-bar a:hover{text-decoration:underline}.top-info-bar .separator{color:#666;padding:0 3px}.top-info-bar .btn-member{background-color:#000;color:#fff;padding:4px 12px;border-radius:3px;margin-left:8px}.top-info-bar .btn-member:hover{background-color:#333;text-decoration:none}@media (max-width:768px){.top-info-bar{display:none!important}}.menu-mobile ul.menu-inst li.top-link{list-style:none}.menu-mobile ul.menu-inst li.top-link a{display:block;color:#333;text-decoration:none;font-size:1em;text-transform:uppercase;font-weight:400}.menu-mobile ul.menu-inst li.top-link a:hover{background-color:#f9f9f9}.menu-mobile ul.menu-inst li.top-link.member a{display:inline-block;background-color:#000;color:#fff;margin:8px 12px 8px 45px;padding:8px;font-weight:600;border:none;border-radius:4px;letter-spacing:.3px}.menu-mobile ul.menu-inst li.top-link.member a:hover{background-color:#333}`;
@@ -58,25 +55,36 @@
 
       const header = document.querySelector('header');
       if (header) {
-      header.insertBefore(topBar, header.firstChild);
-      requestAnimationFrame(() => {
-        const barHeight = topBar.offsetHeight;
-        document.documentElement.style.setProperty('--notification-bar-height', `${barHeight}px`);
-        
+        header.insertBefore(topBar, header.firstChild);
+
+        // CSS usa variável CSS dinâmica em vez de valor fixo
         const adjustStyle = document.createElement('style');
         adjustStyle.setAttribute('data-top-bar-adjust', 'true');
         adjustStyle.textContent = `
-          @media screen and (min-width: 768px) {
+          @media screen and (min-width: 769px) {
             #main {
-              padding-top: calc(80px + ${barHeight}px) !important;
+              padding-top: calc(80px + var(--notification-bar-height, 0px)) !important;
             }
             .shipping-info-visible.submenu-visible ~ #main {
-              padding-top: calc(150px + ${barHeight}px) !important;
+              padding-top: calc(150px + var(--notification-bar-height, 0px)) !important;
             }
           }
         `;
         document.head.appendChild(adjustStyle);
-      });
+
+        // Função que sincroniza a altura real da barra com a variável CSS
+        // offsetHeight devolve 0 quando display:none (mobile) — comportamento correto
+        function syncBarHeight() {
+          const barHeight = topBar.offsetHeight;
+          document.documentElement.style.setProperty('--notification-bar-height', `${barHeight}px`);
+        }
+
+        // Sincroniza após o primeiro render
+        requestAnimationFrame(syncBarHeight);
+
+        // Sincroniza sempre que a barra mudar de tamanho (resize, zoom, orientação)
+        const ro = new ResizeObserver(syncBarHeight);
+        ro.observe(topBar);
       }
 
       const menuInst = document.querySelector('.menu-mobile ul.menu-inst');
