@@ -2,7 +2,7 @@
   'use strict';
 
   // Sai imediatamente se for a página de checkout
-  if (window.location.pathname === '/checkout') return;
+  if (window.location.pathname.startsWith('/checkout')) return;
 
   if (window.topInfoBarInitialized) return;
 
