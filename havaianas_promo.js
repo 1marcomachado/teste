@@ -2,26 +2,62 @@
   if (window.__mmHavaianasPromoInit) return;
   window.__mmHavaianasPromoInit = true;
 
-  // Deteção de idioma via lang do <html>
-  function isPortugalShopLang() {
-    const lang = document.documentElement.getAttribute('lang');
-    if (!lang) {
-      const script = document.querySelector('script[data-shop-lang]');
-      const shopLang = script?.getAttribute('data-shop-lang');
-      return !shopLang || shopLang.toLowerCase() === 'pt';
-    }
-    return lang.toLowerCase().startsWith('pt');
+  // Deteção de idioma do site (PT, ES ou EN)
+  function getShopLanguage() {
+    const lang = document.documentElement.getAttribute('lang') || '';
+    if (lang.toLowerCase().startsWith('es')) return 'es';
+    if (lang.toLowerCase().startsWith('en')) return 'en';
+    if (lang.toLowerCase().startsWith('pt')) return 'pt';
+    
+    const url = window.location.href;
+    if (url.includes('/es/')) return 'es';
+    if (url.includes('/en/')) return 'en';
+    
+    const script = document.querySelector('script[data-shop-lang]');
+    const shopLang = script?.getAttribute('data-shop-lang') || '';
+    if (shopLang.toLowerCase().startsWith('es')) return 'es';
+    if (shopLang.toLowerCase().startsWith('en')) return 'en';
+    
+    return 'pt';
   }
 
-  if (!window.location.href.includes('checkout')) return;
-  if (!isPortugalShopLang()) return;
+  const lang = getShopLanguage();
+
+  // Dicionário de Traduções para os 3 Idiomas
+  const translations = {
+    pt: {
+      title: "RECEBE UMA BOLSA HAVAIANAS GRÁTIS",
+      unlockedTitle: "OFERTA DESBLOQUEADA!",
+      subtitle0: "Adiciona <strong>2 artigos Havaianas</strong> ao carrinho para desbloqueares esta oferta.",
+      subtitle1: "Adiciona mais <strong>1 artigo Havaianas</strong> ao carrinho para desbloqueares esta oferta.",
+      subtitleUnlocked: "Oferta desbloqueada! Tens direito à tua Bolsa Havaianas Grátis.",
+      addBtn: "ADICIONAR"
+    },
+    es: {
+      title: "LLÉVATE UNA BOLSA HAVAIANAS GRATIS",
+      unlockedTitle: "¡OFERTA DESBLOQUEADA!",
+      subtitle0: "Añade <strong>2 artículos de Havaianas</strong> al carrito para desbloquear esta oferta.",
+      subtitle1: "Añade <strong>1 artículo más de Havaianas</strong> al carrito para desbloquear esta oferta.",
+      subtitleUnlocked: "¡Oferta desbloqueada! Tienes direito a tu Bolsa Havaianas Gratis.",
+      addBtn: "AÑADIR"
+    },
+    en: {
+      title: "GET A FREE HAVAIANAS BAG",
+      unlockedTitle: "OFFER UNLOCKED!",
+      subtitle0: "Add <strong>2 Havaianas items</strong> to the cart to unlock this offer.",
+      subtitle1: "Add <strong>1 more Havaianas item</strong> to the cart to unlock this offer.",
+      subtitleUnlocked: "Offer unlocked! You are eligible for your Free Havaianas Bag.",
+      addBtn: "ADD"
+    }
+  };
+
+  const t = translations[lang] || translations.pt;
 
   // Imagem da Bolsa da Campanha fornecida
   const bagImage = "https://1565619539.rsc.cdn77.org/images/block1_14362.jpg";
-  const campaignUrl = "/pt/2-artigos-havaianas-=-1-bolsa-gratis_3282.html";
 
-  // Catálogo completo de 174 produtos Havaianas para fallback 100% aleatório e instantâneo
-  const fallbackProducts = [
+  // Catálogo completo de 174 produtos Havaianas embutido para carregamento instantâneo
+  const rawProducts = [
   {
     "id": "409806",
     "name": "Saco de Praia Havaianas XL Print Frutado",
@@ -1415,95 +1451,148 @@
     "directAdd": false
   }
 ];
+  
+  // Reescrever links dos produtos em tempo de execução para corresponder ao idioma atual
+  const campaignProducts = rawProducts.map(p => {
+    let rewrittenUrl = p.url;
+    if (lang !== 'pt') {
+      rewrittenUrl = rewrittenUrl.replace(/\/pt\//i, '/' + lang + '/');
+    }
+    return {
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      url: rewrittenUrl,
+      directAdd: p.directAdd
+    };
+  });
 
-  // CSS DO CARD
+  // CSS DO CARD (Checkout e Mini-Cart)
   if ($('#mm-promo-card-style').length === 0) {
     $('head').append(`
       <style id="mm-promo-card-style">
+        /* --- ESTILOS DO CARD DO CHECKOUT --- */
         #mm-promo-card {
           width: 100%; border: 1px solid #e6e6e6; border-radius: 8px; background: #fff;
           padding: 24px; margin: 0 0 25px 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
           font-family: 'Roboto', 'RobotoCondensed', sans-serif; text-align: left; box-sizing: border-box;
         }
-        .mm-promo-header { display: flex; align-items: center; gap: 20px; }
-        .mm-promo-header.has-products { margin-bottom: 24px; }
-        .mm-promo-icon-wrap {
+        #mm-promo-card .mm-promo-header { display: flex; align-items: center; gap: 20px; }
+        #mm-promo-card .mm-promo-header.has-products { margin-bottom: 24px; }
+        #mm-promo-card .mm-promo-icon-wrap {
           width: 80px; height: 80px; border: 1px solid #e6e6e6; border-radius: 6px;
           overflow: hidden; display: flex; align-items: center; justify-content: center;
           background: #fff; flex-shrink: 0;
         }
-        .mm-promo-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .mm-promo-info { flex-grow: 1; }
-        .mm-promo-title { font-size: 16px; font-weight: 800; text-transform: uppercase; color: #111; line-height: 1.25; letter-spacing: 0.2px; }
-        .mm-promo-subtitle { font-size: 13px; color: #666; margin-top: 4px; line-height: 1.3; }
-        .mm-progress-container { width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px; margin-top: 12px; overflow: hidden; }
-        .mm-progress-bar { height: 100%; background: linear-gradient(90deg, #4ebf4e, #66bb6a); border-radius: 3px; transition: width 0.6s ease-in-out; }
+        #mm-promo-card .mm-promo-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        #mm-promo-card .mm-promo-info { flex-grow: 1; }
+        #mm-promo-card .mm-promo-title { font-size: 16px; font-weight: 800; text-transform: uppercase; color: #111; line-height: 1.25; letter-spacing: 0.2px; }
+        #mm-promo-card .mm-promo-subtitle { font-size: 13px; color: #666; margin-top: 4px; line-height: 1.3; }
+        #mm-promo-card .mm-progress-container { width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px; margin-top: 12px; overflow: hidden; }
+        #mm-promo-card .mm-progress-bar { height: 100%; background: linear-gradient(90deg, #4ebf4e, #66bb6a); border-radius: 3px; transition: width 0.6s ease-in-out; }
         
-        /* Grelha de produtos: Layout Horizontal */
-        .mm-products-grid { display: flex; gap: 16px; width: 100%; }
-        .mm-product-card {
+        #mm-promo-card .mm-products-grid { display: flex; gap: 16px; width: 100%; }
+        #mm-promo-card .mm-product-card {
           flex: 1; display: flex; align-items: center; justify-content: space-between;
           border: 1px solid #e6e6e6; border-radius: 6px; padding: 12px; background: #fff;
           text-decoration: none; color: #111; box-sizing: border-box; min-width: 0;
           transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .mm-product-card:hover { border-color: #bbb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        
-        .mm-product-left {
-          width: 54px; height: 54px; display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0;
-        }
-        .mm-product-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        
-        .mm-product-mid { flex-grow: 1; padding: 0 12px; min-width: 0; }
-        .mm-product-brand { font-size: 9px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 0.4px; margin-bottom: 2px; }
-        .mm-product-name {
+        #mm-promo-card .mm-product-card:hover { border-color: #bbb; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        #mm-promo-card .mm-product-left { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #mm-promo-card .mm-product-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        #mm-promo-card .mm-product-mid { flex-grow: 1; padding: 0 12px; min-width: 0; }
+        #mm-promo-card .mm-product-brand { font-size: 9px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 0.4px; margin-bottom: 2px; }
+        #mm-promo-card .mm-product-name {
           font-size: 11px; font-weight: 500; color: #111; line-height: 1.3;
           height: 28px; overflow: hidden; text-overflow: ellipsis;
-          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-          margin-bottom: 2px;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 2px;
         }
-        .mm-product-price { font-size: 12px; font-weight: 700; color: #111; }
-        
-        .mm-product-right { flex-shrink: 0; }
-        .mm-product-add-btn {
+        #mm-promo-card .mm-product-price { font-size: 12px; font-weight: 700; color: #111; }
+        #mm-promo-card .mm-product-right { flex-shrink: 0; }
+        #mm-promo-card .mm-product-add-btn {
           background: #fff; border: 1px solid #cccccc; border-radius: 4px; padding: 8px 12px;
           font-size: 10px; font-weight: 700; text-transform: uppercase; color: #111;
           cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px;
         }
-        .mm-product-add-btn:hover { background: #111; color: #fff; border-color: #111; }
-        .mm-dots { display: none; }
+        #mm-promo-card .mm-product-add-btn:hover { background: #111; color: #fff; border-color: #111; }
+        #mm-promo-card .mm-dots { display: none; }
         
         @media(max-width: 768px){
           #mm-promo-card { margin: 10px auto; width: calc(100% - 20px); padding: 16px; }
-          .mm-promo-header { gap: 12px; }
-          .mm-promo-header.has-products { margin-bottom: 16px; }
-          .mm-promo-icon-wrap { width: 64px; height: 64px; }
-          .mm-promo-title { font-size: 14px; }
-          .mm-promo-subtitle { font-size: 11px; }
+          #mm-promo-card .mm-promo-header { gap: 12px; }
+          #mm-promo-card .mm-promo-header.has-products { margin-bottom: 16px; }
+          #mm-promo-card .mm-promo-icon-wrap { width: 64px; height: 64px; }
+          #mm-promo-card .mm-promo-title { font-size: 14px; }
+          #mm-promo-card .mm-promo-subtitle { font-size: 11px; }
           
-          .mm-products-grid { display: flex; overflow: hidden; position: relative; width: 100%; gap: 0; }
-          .mm-product-card { display: none; width: 100%; flex-shrink: 0; padding: 10px; border: 1px solid #e6e6e6; }
-          .mm-product-card.active { display: flex; }
-          .mm-dots { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 14px; }
-          .mm-dot {
-            width: 16px; height: 16px; background: transparent; cursor: pointer;
-            display: inline-block; padding: 4px; box-sizing: border-box;
-          }
-          .mm-dot::after {
-            content: ''; display: block; width: 8px; height: 8px; border-radius: 50%;
-            background: #e0e0e0; transition: background 0.2s;
-          }
-          .mm-dot.active::after {
-            background: #111;
-          }
+          #mm-promo-card .mm-products-grid { display: flex; overflow: hidden; position: relative; width: 100%; gap: 0; }
+          #mm-promo-card .mm-product-card { display: none; width: 100%; flex-shrink: 0; padding: 10px; border: 1px solid #e6e6e6; }
+          #mm-promo-card .mm-product-card.active { display: flex; }
+          #mm-promo-card .mm-dots { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 14px; }
+          #mm-promo-card .mm-dot { width: 16px; height: 16px; background: transparent; cursor: pointer; display: inline-block; padding: 4px; box-sizing: border-box; }
+          #mm-promo-card .mm-dot::after { content: ''; display: block; width: 8px; height: 8px; border-radius: 50%; background: #e0e0e0; transition: background 0.2s; }
+          #mm-promo-card .mm-dot.active::after { background: #111; }
         }
-        .rdc-hr-divider { border-top: none !important; }
+
+        /* --- ESTILOS DO CARD DO MINI-CART --- */
+        #mm-minicart-promo-card {
+          width: 100%; border: 1px solid #e6e6e6; border-radius: 8px; background: #fff;
+          padding: 16px; margin: 15px 0 20px 0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+          font-family: 'Roboto', 'RobotoCondensed', sans-serif; text-align: left; box-sizing: border-box;
+        }
+        #mm-minicart-promo-card .mm-promo-header { display: flex; align-items: center; gap: 14px; }
+        #mm-minicart-promo-card .mm-promo-header.has-products { margin-bottom: 16px; }
+        #mm-minicart-promo-card .mm-promo-icon-wrap {
+          width: 60px; height: 60px; border: 1px solid #e6e6e6; border-radius: 6px;
+          overflow: hidden; display: flex; align-items: center; justify-content: center;
+          background: #fff; flex-shrink: 0;
+        }
+        #mm-minicart-promo-card .mm-promo-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        #mm-minicart-promo-card .mm-promo-info { flex-grow: 1; min-width: 0; }
+        #mm-minicart-promo-card .mm-promo-title { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #111; line-height: 1.2; letter-spacing: 0.1px; }
+        #mm-minicart-promo-card .mm-promo-subtitle { font-size: 11px; color: #666; margin-top: 3px; line-height: 1.25; }
+        #mm-minicart-promo-card .mm-progress-container { width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        #mm-minicart-promo-card .mm-progress-bar { height: 100%; background: linear-gradient(90deg, #4ebf4e, #66bb6a); border-radius: 3px; transition: width 0.6s ease-in-out; }
+        
+        #mm-minicart-promo-card .mm-products-grid { display: flex; overflow: hidden; position: relative; width: 100%; gap: 0; }
+        #mm-minicart-promo-card .mm-product-card {
+          display: none; width: 100%; flex-shrink: 0; align-items: center; justify-content: space-between;
+          border: 1px solid #e6e6e6; border-radius: 6px; padding: 10px; background: #fff; box-sizing: border-box;
+          text-decoration: none; color: #111;
+        }
+        #mm-minicart-promo-card .mm-product-card.active { display: flex; }
+        #mm-minicart-promo-card .mm-product-left { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #mm-minicart-promo-card .mm-product-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        #mm-minicart-promo-card .mm-product-mid { flex-grow: 1; padding: 0 10px; min-width: 0; }
+        #mm-minicart-promo-card .mm-product-brand { font-size: 9px; text-transform: uppercase; color: #888; font-weight: 700; margin-bottom: 2px; }
+        #mm-minicart-promo-card .mm-product-name {
+          font-size: 10px; font-weight: 500; color: #111; line-height: 1.25;
+          height: 25px; overflow: hidden; text-overflow: ellipsis;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+        #mm-minicart-promo-card .mm-product-price { font-size: 11px; font-weight: 700; color: #111; margin-top: 2px; }
+        #mm-minicart-promo-card .mm-product-right { flex-shrink: 0; }
+        #mm-minicart-promo-card .mm-product-add-btn {
+          background: #fff; border: 1px solid #cccccc; border-radius: 4px; padding: 6px 10px;
+          font-size: 9px; font-weight: 700; text-transform: uppercase; color: #111; cursor: pointer; transition: all 0.2s;
+        }
+        #mm-minicart-promo-card .mm-product-add-btn:hover { background: #111; color: #fff; border-color: #111; }
+        
+        #mm-minicart-promo-card .mm-dots { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 10px; }
+        #mm-minicart-promo-card .mm-dot {
+          width: 16px; height: 16px; background: transparent; cursor: pointer; display: inline-block; padding: 4px; box-sizing: border-box;
+        }
+        #mm-minicart-promo-card .mm-dot::after {
+          content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: #e0e0e0; transition: background 0.2s;
+        }
+        #mm-minicart-promo-card .mm-dot.active::after { background: #111; }
       </style>
     `);
   }
 
-  // Obter IDs dos produtos atualmente no carrinho
+  // Obter IDs dos produtos no carrinho
   function getCartProductIds() {
     const ids = [];
     if (window.dataLayer) {
@@ -1524,6 +1613,15 @@
         }
       }
     }
+    
+    $('#rdc-mini-cart .rdc-mini-cart-product').each(function() {
+      const href = $(this).find('a').attr('href') || '';
+      const match = href.match(/item_(\d+)\.html/) || href.match(/_p(\d+)\.html/);
+      if (match) {
+        ids.push(match[1]);
+      }
+    });
+
     $('.rdc-shop-prd').each(function() {
       const href = $(this).find('a').attr('href') || '';
       const match = href.match(/item_(\d+)\.html/) || href.match(/_p(\d+)\.html/);
@@ -1531,6 +1629,7 @@
         ids.push(match[1]);
       }
     });
+
     return ids;
   }
 
@@ -1538,6 +1637,7 @@
   function getHavaianasCount() {
     let count = 0;
     if (window.dataLayer) {
+      let dlCount = 0;
       for (let i = 0; i < window.dataLayer.length; i++) {
         const entry = window.dataLayer[i];
         if (entry && entry.ecommerce) {
@@ -1548,13 +1648,26 @@
               const brand = p.brand || p.item_brand || '';
               const name = p.name || p.item_name || '';
               if (brand.toLowerCase() === 'havaianas' || name.toLowerCase().includes('havaianas')) {
-                count += parseInt(p.quantity || 1, 10);
+                dlCount += parseInt(p.quantity || 1, 10);
               }
             });
-            if (count > 0) return count;
           }
         }
       }
+      if (dlCount > 0) return dlCount;
+    }
+
+    if ($('#rdc-mini-cart:visible').length > 0) {
+      $('#rdc-mini-cart .rdc-mini-cart-product').each(function () {
+        const title = $(this).find('.rdc-mini-cart-product-name_title').text();
+        const brand = $(this).find('.rdc-mini-cart-product-brand').text();
+        if (brand.toLowerCase().includes('havaianas') || title.toLowerCase().includes('havaianas')) {
+          const qtdText = $(this).find('.rdc-mini-cart-product-name_qtd').text() || '1';
+          const qty = parseInt(qtdText.replace('x', '').trim(), 10) || 1;
+          count += qty;
+        }
+      });
+      return count;
     }
 
     const $desktopRows = $('.rdc-shop-prd.hidden-xs');
@@ -1578,109 +1691,22 @@
     return count;
   }
 
-  // EXTRAÇÃO DINÂMICA
-  function fetchCampaignProducts(callback) {
-    $.ajax({
-      url: campaignUrl,
-      type: 'GET',
-      timeout: 5000,
-      success: function (htmlString) {
-        try {
-          const startJson = htmlString.indexOf('"@type":"ItemList"');
-          if (startJson === -1) {
-            callback([]); return;
-          }
-
-          let jsonStart = htmlString.lastIndexOf('{', startJson);
-          let jsonEnd = htmlString.indexOf('</script>', jsonStart);
-          let jsonStr = htmlString.substring(jsonStart, jsonEnd).trim();
-          let itemList = JSON.parse(jsonStr);
-
-          if (!itemList || !itemList.itemListElement) {
-            callback([]); return;
-          }
-
-          const parsedProducts = [];
-          itemList.itemListElement.forEach(item => {
-            const url = item.url;
-            let id = '';
-            const match = url.match(/_p(\d+)\.html/);
-            if (match) id = match[1];
-
-            if (!id) return;
-
-            let image = item.image.url || item.image; 
-            let pos = htmlString.indexOf(`_p${id}.html`);
-            while (pos !== -1) {
-              const imgIdx = htmlString.indexOf('<img', pos);
-              if (imgIdx !== -1 && imgIdx - pos < 300) {
-                const srcStart = htmlString.indexOf('src="', imgIdx) + 5;
-                const srcEnd = htmlString.indexOf('"', srcStart);
-                let imgUrl = htmlString.substring(srcStart, srcEnd);
-                if (imgUrl) {
-                  if (imgUrl.startsWith('/') && !imgUrl.startsWith('//')) {
-                    imgUrl = 'https://www.bzronline.com' + imgUrl;
-                  }
-                  image = imgUrl;
-                  break;
-                }
-              }
-              pos = htmlString.indexOf(`_p${id}.html`, pos + 1);
-            }
-
-            let price = '19,99 €';
-            const urlIndex = htmlString.lastIndexOf(`_p${id}.html`);
-            if (urlIndex !== -1) {
-              const priceIndex = htmlString.indexOf('class="current"', urlIndex);
-              if (priceIndex !== -1 && priceIndex - urlIndex < 2000) {
-                const start = htmlString.indexOf('>', priceIndex) + 1;
-                const end = htmlString.indexOf('</p>', start);
-                price = htmlString.substring(start, end).trim().replace(/&euro;/g, '€').replace(/\s+/g, ' ');
-              }
-            }
-
-            const isDirect = item.name.toLowerCase().includes('bag') || 
-                             item.name.toLowerCase().includes('necessaire') || 
-                             item.name.toLowerCase().includes('mala') ||
-                             item.name.toLowerCase().includes('saco');
-
-            parsedProducts.push({
-              id: id,
-              name: item.name,
-              image: image,
-              price: price,
-              url: url.split('?')[0],
-              directAdd: isDirect
-            });
-          });
-
-          callback(parsedProducts);
-        } catch (err) {
-          callback([]);
-        }
-      },
-      error: function () {
-        callback([]);
-      }
-    });
-  }
-
-  // RENDER CARD
-  function renderPromoCard(products) {
+  // RENDER CARD NO CHECKOUT
+  function renderCheckoutCard(products) {
     $('#mm-promo-card').remove();
     const count = getHavaianasCount();
     let percentage = count === 0 ? 0 : (count === 1 ? 50 : 100);
     let isUnlocked = count >= 2;
     let subtitleText = count === 0 
-      ? 'Adiciona <strong>2 artigos Havaianas</strong> ao carrinho para desbloqueares esta oferta.'
-      : (count === 1 ? 'Adiciona mais <strong>1 artigo Havaianas</strong> ao carrinho para desbloqueares esta oferta.' : 'Oferta desbloqueada! Tens direito à tua Bolsa Havaianas Grátis.');
+      ? t.subtitle0
+      : (count === 1 ? t.subtitle1 : t.subtitleUnlocked);
 
     let cardHtml = `
       <div id="mm-promo-card">
         <div class="mm-promo-header ${isUnlocked ? '' : 'has-products'}">
           <div class="mm-promo-icon-wrap"><img src="${bagImage}" alt="Bolsa Havaianas"></div>
           <div class="mm-promo-info">
-            <div class="mm-promo-title">${isUnlocked ? 'OFERTA DESBLOQUEADA!' : 'RECEBE UMA BOLSA HAVAIANAS GRÁTIS'}</div>
+            <div class="mm-promo-title">${isUnlocked ? t.unlockedTitle : t.title}</div>
             <div class="mm-promo-subtitle">${subtitleText}</div>
             <div class="mm-progress-container"><div class="mm-progress-bar" style="width: ${percentage}%;"></div></div>
           </div>
@@ -1700,7 +1726,7 @@
               <div class="mm-product-price">${p.price}</div>
             </div>
             <div class="mm-product-right">
-              <button class="mm-product-add-btn" data-id="${p.id}" data-url="${p.url}" data-direct="${p.directAdd}">ADICIONAR</button>
+              <button class="mm-product-add-btn" data-id="${p.id}" data-url="${p.url}" data-direct="${p.directAdd}">${t.addBtn}</button>
             </div>
           </div>
         `;
@@ -1710,88 +1736,210 @@
     cardHtml += `</div>`;
 
     const $list = $('.wrapper-shoppingbag-product-list');
-    function placeCard() {
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      const $card = $('#mm-promo-card');
-      if ($list.length === 0) return;
+    if ($list.length === 0) return;
 
-      if ($card.length === 0) {
-        if (isMobile) {
-          $list.after(cardHtml);
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      $list.after(cardHtml);
+    } else {
+      $list.prepend(cardHtml);
+    }
+  }
+
+  // ATUALIZA PROGRESSO DO MINI-CART
+  function updateMiniCartProgress() {
+    const $existing = $('#mm-minicart-promo-card');
+    if ($existing.length === 0) return;
+
+    const count = getHavaianasCount();
+    let percentage = count === 0 ? 0 : (count === 1 ? 50 : 100);
+    let isUnlocked = count >= 2;
+    let subtitleText = count === 0 
+      ? t.subtitle0
+      : (count === 1 ? t.subtitle1 : t.subtitleUnlocked);
+
+    const $bar = $existing.find('.mm-progress-bar');
+    if ($bar.length > 0) {
+      const newWidth = percentage + '%';
+      if ($bar.css('width') !== newWidth) {
+        $bar.css('width', newWidth);
+        $existing.find('.mm-promo-subtitle').html(subtitleText);
+        $existing.find('.mm-promo-title').text(isUnlocked ? t.unlockedTitle : t.title);
+        if (isUnlocked) {
+          $existing.find('.mm-products-grid, .mm-dots').hide();
+          $existing.find('.mm-promo-header').removeClass('has-products');
         } else {
-          $list.prepend(cardHtml);
-        }
-      } else {
-        if (isMobile) {
-          if ($list.next('#mm-promo-card').length === 0) {
-            $list.after($card);
-          }
-        } else {
-          if ($list.children('#mm-promo-card').length === 0 || $list.children().first().attr('id') !== 'mm-promo-card') {
-            $list.prepend($card);
-          }
+          $existing.find('.mm-products-grid, .mm-dots').show();
+          $existing.find('.mm-promo-header').addClass('has-products');
         }
       }
     }
-
-    placeCard();
-    window.removeEventListener('resize', placeCard);
-    window.addEventListener('resize', placeCard);
   }
 
+  // RENDER CARD NO MINI-CART
+  let isInjectingMiniCart = false;
+  function injectMiniCartPromo(products) {
+    if (isInjectingMiniCart) return;
+
+    const $miniCart = $('#rdc-mini-cart');
+    const $productsList = $miniCart.find('.rdc-mini-cart-products');
+    if ($productsList.length === 0) return;
+
+    isInjectingMiniCart = true;
+    miniCartObserver.disconnect();
+
+    const count = getHavaianasCount();
+    let percentage = count === 0 ? 0 : (count === 1 ? 50 : 100);
+    let isUnlocked = count >= 2;
+    let subtitleText = count === 0 
+      ? t.subtitle0
+      : (count === 1 ? t.subtitle1 : t.subtitleUnlocked);
+
+    let cardHtml = `
+      <div id="mm-minicart-promo-card">
+        <div class="mm-promo-header ${isUnlocked ? '' : 'has-products'}">
+          <div class="mm-promo-icon-wrap"><img src="${bagImage}" alt="Bolsa Havaianas"></div>
+          <div class="mm-promo-info">
+            <div class="mm-promo-title">${isUnlocked ? t.unlockedTitle : t.title}</div>
+            <div class="mm-promo-subtitle">${subtitleText}</div>
+            <div class="mm-progress-container"><div class="mm-progress-bar" style="width: ${percentage}%;"></div></div>
+          </div>
+        </div>
+    `;
+
+    if (!isUnlocked && products.length > 0) {
+      cardHtml += `<div class="mm-products-grid">`;
+      products.forEach((p, idx) => {
+        const active = idx === 0 ? 'active' : '';
+        cardHtml += `
+          <div class="mm-product-card ${active}" data-index="${idx}">
+            <div class="mm-product-left"><img src="${p.image}" alt="${p.name}"></div>
+            <div class="mm-product-mid">
+              <div class="mm-product-brand">Havaianas</div>
+              <div class="mm-product-name" title="${p.name}">${p.name}</div>
+              <div class="mm-product-price">${p.price}</div>
+            </div>
+            <div class="mm-product-right">
+              <button class="mm-product-add-btn" data-id="${p.id}" data-url="${p.url}" data-direct="${p.directAdd}">${t.addBtn}</button>
+            </div>
+          </div>
+        `;
+      });
+      cardHtml += `</div><div class="mm-dots"><div class="mm-dot active" data-index="0"></div><div class="mm-dot" data-index="1"></div><div class="mm-dot" data-index="2"></div></div>`;
+    }
+    cardHtml += `</div>`;
+
+    // INJETA DIRETAMENTE NA DIV APÓS O ÚLTIMO PRODUTO
+    const $lastProduct = $productsList.find('.rdc-mini-cart-product').last();
+    if ($lastProduct.length > 0) {
+      $lastProduct.after(cardHtml);
+    } else {
+      $productsList.append(cardHtml);
+    }
+
+    const miniCartEl = document.getElementById('rdc-mini-cart');
+    if (miniCartEl) {
+      miniCartObserver.observe(miniCartEl, { childList: true, subtree: true });
+    }
+    isInjectingMiniCart = false;
+  }
+
+  // MutationObserver local do mini-cart original (que dava o "flash" e re-injetava localmente)
+  const miniCartObserver = new MutationObserver(function () {
+    if ($('#rdc-mini-cart:visible').length > 0) {
+      injectMiniCartPromo(shuffledProducts);
+    }
+  });
+
   function initPromo() {
+    if (sessionStorage.getItem('mm_reopen_cart') === 'true') {
+      sessionStorage.removeItem('mm_reopen_cart');
+      let tries = 0;
+      const interval = setInterval(function () {
+        tries++;
+        const $btn = $('[href="#rdc-mini-cart"]');
+        if ($btn.length > 0 || tries >= 50) {
+          clearInterval(interval);
+          $btn.trigger('click');
+        }
+      }, 100);
+    }
+
     const cartProductIds = getCartProductIds();
     
-    fetchCampaignProducts(function (dynamicProducts) {
-      let finalProducts = dynamicProducts.length > 0 ? dynamicProducts : fallbackProducts;
-      
-      // FILTRAR PRODUTOS QUE JÁ ESTÃO NO CARRINHO
-      finalProducts = finalProducts.filter(p => !cartProductIds.includes(p.id) && p.name && p.image);
-      
-      // Baralhar e selecionar 3 aleatórios
-      const shuffled = finalProducts.sort(() => 0.5 - Math.random());
-      renderPromoCard(shuffled.slice(0, 3));
-    });
+    // FILTRAR PRODUTOS QUE JÁ ESTÃO NO CARRINHO
+    let availableProducts = campaignProducts.filter(p => !cartProductIds.includes(p.id) && p.name && p.image);
+    if (availableProducts.length === 0) {
+      availableProducts = campaignProducts;
+    }
+
+    // Baralhar e selecionar 3
+    shuffledProducts = availableProducts.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    // Se for a página de Checkout, renderiza
+    if (window.location.href.includes('checkout')) {
+      renderCheckoutCard(shuffledProducts);
+    }
+
+    // Iniciar MutationObserver no elemento do mini-cart
+    const miniCartEl = document.getElementById('rdc-mini-cart');
+    if (miniCartEl) {
+      miniCartObserver.observe(miniCartEl, { childList: true, subtree: true });
+      if ($('#rdc-mini-cart:visible').length > 0) {
+        injectMiniCartPromo(shuffledProducts);
+      }
+    }
   }
 
   (function retryInit() {
     let tries = 0; const maxTries = 50;
     const interval = setInterval(function () {
       tries++;
-      const hasList = $('.wrapper-shoppingbag-product-list').length > 0;
+      const hasList = $('.wrapper-shoppingbag-product-list').length > 0 || $('#rdc-mini-cart').length > 0;
       if (hasList || tries >= maxTries) {
-        clearInterval(interval); initPromo();
+        clearInterval(interval);
+        initPromo();
       }
     }, 100);
   })();
 
-  // Controlos de slide
+  // Controlos do carrossel (Dots)
   $(document).on('click', '.mm-dot', function (e) {
     e.preventDefault();
     e.stopPropagation();
     const idx = $(this).attr('data-index');
-    const $card = $(this).closest('#mm-promo-card');
+    const $card = $(this).closest('#mm-promo-card, #mm-minicart-promo-card');
     $card.find('.mm-product-card').removeClass('active');
     $card.find('.mm-product-card[data-index="' + idx + '"]').addClass('active');
     $card.find('.mm-dot').removeClass('active');
     $(this).addClass('active');
   });
 
+  // Ação de clique em adicionar com endpoint relativo
   $(document).on('click', '.mm-product-add-btn', function (e) {
     e.preventDefault();
     const isDirect = $(this).attr('data-direct') === 'true';
     const productId = $(this).attr('data-id');
-    const productUrl = $(this).attr('data-url');
 
     if (isDirect && productId) {
-      const url = `https://www.bzronline.com/api/api.php/addToBasket/816/0/${productId}/1/1`;
+      const pageId = typeof JSVars !== 'undefined' && JSVars.product && JSVars.product.id ? JSVars.product.id : '5';
+      const pageCount = typeof JSVars !== 'undefined' && JSVars.product && JSVars.product.pageCount ? JSVars.product.pageCount : '1';
+      const url = `/api/api.php/addToBasket/${pageId}/0/${productId}/1/${pageCount}`;
+      
+      if (!window.location.href.includes('checkout')) {
+        sessionStorage.setItem('mm_reopen_cart', 'true');
+      }
+
       $.ajax({
         url: url, type: 'GET',
         success: function () { location.reload(); },
         error: function () { alert("Sem stock!"); }
       });
-    } else if (productUrl) {
-      window.location.href = productUrl;
+    } else {
+      const productUrl = $(this).attr('data-url');
+      if (productUrl) {
+        window.location.href = productUrl;
+      }
     }
   });
 })();
