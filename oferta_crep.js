@@ -1,3 +1,4 @@
+(function() {
 const script = document.currentScript;
 document.addEventListener('DOMContentLoaded', function () {
   // ==========================================
@@ -60,3 +61,4 @@ document.addEventListener('DOMContentLoaded', function () {
     klarnaOriginal.innerHTML = `<img src="https://www.bzronline.com/downloads/${imageName}" id="ofertacrep" alt="${altText}" />`;
   }
 });
+})();
