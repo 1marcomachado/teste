@@ -201,7 +201,8 @@
         { id: "3305", bg: "#38D430", color: "#000" },  
         { id: "3171", bg: "#ffa43e", color: "#232222" },  
         { id: "2962", bg: "#f61616", color: "#232222" },
-        { id: "2025", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "2025", bg: "#0B6623", color: "#FFFFFF" },
+        { id: "3312", bg: "#0B6623", color: "#FFFFFF" }
       ]
     },
     "435": {
@@ -209,7 +210,7 @@
         { id: "475",  bg: "#ECECEC", color: "#333" },    
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
-        { id: "1112", bg: "#0B6623", color: "#FFFFFF" } 
+        { id: "1112", bg: "#ECECEC", color: "#333" } 
       ]
     },
     "436": {
