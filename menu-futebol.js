@@ -211,7 +211,7 @@
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
         { id: "1112", bg: "#ECECEC", color: "#333" },
-        { id: "3317", bg: "#DCE6EB", color: "#3F4A50" }
+        { id: "3317", bg: "#DCE6EB", color: "#333333" }
       ]
     },
     "436": {
@@ -220,7 +220,7 @@
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
         { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
-        { id: "3316", bg: "#DCE6EB", color: "#3F4A50" }
+        { id: "3316", bg: "#DCE6EB", color: "#333333" }
       ]
     },
     "437": {
@@ -229,7 +229,7 @@
         { id: "3172", bg: "#ffa43e", color: "#232222" },
         { id: "1087", bg: "#f61616", color: "#232222" },
         { id: "1112", bg: "#0B6623", color: "#FFFFFF" },
-        { id: "3315", bg: "#DCE6EB", color: "#3F4A50" }
+        { id: "3315", bg: "#DCE6EB", color: "#333333" }
       ]
     }
   };
