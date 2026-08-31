@@ -1,6 +1,12 @@
 (function () {
   "use strict";
 
+  if (window.__menuStylerInitialized__) {
+    console.warn("Menu styler já inicializado. Chame __menuStylerDestroy__() antes.");
+    return;
+  }
+  window.__menuStylerInitialized__ = true;
+
   const safeUrl = (href) => {
     try { return new URL(href, document.baseURI); } catch { return null; }
   };
