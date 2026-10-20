@@ -36,7 +36,7 @@
       }).catch(()=>{});
     }
 
-    const AUTO_CLOSE_MS = 8000;          
+    const AUTO_CLOSE_MS = 15000;          
     const OFFSET_TOP_PCT = 45;           
     const OFFSET_TOP_PCT_MOBILE = 50;    
     const ORDER = ['purchase','cart','view'];
