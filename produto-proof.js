@@ -221,7 +221,7 @@
 
   // ===== ÚLTIMAS UNIDADES =====
   const norm = s => (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
-  const LAST_UNITS_VARIANTS = ['Últimas unidades','Ultimas unidades','¡Últimas unidades!','Last units','LAST UNITS'].map(norm);
+  const LAST_UNITS_VARIANTS = ['Últimas unidades','Ultimas unidades','¡Últimas unidades!','Last units','LAST UNITS', 'Últimos Tamanhos', 'Last Sizes', 'Últimos tamaños'].map(norm);
   const hasLastUnitsFlag = () =>
     [...document.querySelectorAll('.product-info .flags .flag')].some(el => LAST_UNITS_VARIANTS.includes(norm(el.textContent)));
 
