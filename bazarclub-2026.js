@@ -459,6 +459,7 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
         }
         document.documentElement.classList.add('bc-top-announcement');
       }
+      window.dispatchEvent(new CustomEvent('bazarclub:announcement-ready'));
     }
     else console.warn('[BAZARclub] Local da barra não encontrado.');
   }
@@ -483,7 +484,12 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
     const day=Number(date.slice(-2));
     return day>=1 && day<=25 ? 'warmup' : day===26 ? 'early' : day>=27 && day<=29 ? 'blackfriday' : day===30 ? 'final' : null;
   }
-  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join}:null;}
+  const announcements={
+    pt:['BLACK FRIDAY AQUECIMENTO · OS MEMBROS BAZARCLUB COMPRAM A 26','BLACK FRIDAY PARA MEMBROS · HOJE ACESSO ANTECIPADO + 5€ EXTRA','BLACK FRIDAY · 5€ EXTRA ACUMULÁVEIS COM OS DESCONTOS'],
+    en:['BLACK FRIDAY WARM-UP · BAZARCLUB MEMBERS SHOP ON THE 26TH','BLACK FRIDAY FOR MEMBERS · EARLY ACCESS TODAY + AN EXTRA €5','BLACK FRIDAY · AN EXTRA €5 YOU CAN COMBINE WITH DISCOUNTS'],
+    es:['CALENTAMIENTO BLACK FRIDAY · LOS MIEMBROS BAZARCLUB COMPRAN EL 26','BLACK FRIDAY PARA MIEMBROS · HOY ACCESO ANTICIPADO + 5€ EXTRA','BLACK FRIDAY · 5€ EXTRA ACUMULABLES CON LOS DESCUENTOS']
+  };
+  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
   function install(w){
     const d=w.document,config=w.BazarClubFormConfig||{};
     if(!config.campaignBar || d.querySelector('[data-bazarclub-campaign-bar]'))return;
@@ -507,9 +513,11 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
       const value=message(simulated||lisbonDate(new Date()),config.language,member);
       bar.hidden=!value;if(!value)return;
       bar.dataset.phase=value.phase;text.textContent=value.text;cta.textContent=value.cta;
+      d.querySelectorAll('[data-bazarclub-announcement] button[data-bazarclub-open]').forEach(button=>{button.lastElementChild.textContent=value.announcement;});
       link.href=member && config.campaignUrl ? config.campaignUrl : '#abrir-bf-lateral';
     }
     w.addEventListener('bazarclub:membership',e=>{member=e.detail?.subscribed===true;render();});
+    w.addEventListener('bazarclub:announcement-ready',render);
     render();
     // Atualizar fases também quando a página fica aberta à meia-noite.
     w.setInterval(render,30000);d.addEventListener('visibilitychange',render);
