@@ -224,7 +224,8 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     if (ok) {
       status('A confirmar a tua adesão…');
       busy=true;
-      checkMembership({email,requestWelcome:true}).then(data=>{
+      // O formulário AC já inicia a sequência; a consulta apenas confirma a adesão.
+      checkMembership({email}).then(data=>{
         dialog.querySelector('.bc-form').reset();
         showResult(data.subscribed ? 'new' : 'pending');
       }).catch(()=>status('O pedido foi enviado, mas ainda não conseguimos verificar a adesão. Verifica o teu email e usa “Já sou membro” para tentar novamente.')).finally(()=>{busy=false;});
