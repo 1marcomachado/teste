@@ -224,7 +224,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     if (ok) {
       status('A confirmar a tua adesão…');
       busy=true;
-      checkMembership({email}).then(data=>{
+      checkMembership({email,requestWelcome:true}).then(data=>{
         dialog.querySelector('.bc-form').reset();
         showResult(data.subscribed ? 'new' : 'pending');
       }).catch(()=>status('O pedido foi enviado, mas ainda não conseguimos verificar a adesão. Verifica o teu email e usa “Já sou membro” para tentar novamente.')).finally(()=>{busy=false;});
@@ -348,7 +348,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       const button=form.querySelector('button'); button.disabled=true; busy=true; status('A verificar a tua adesão…');
       try {
         if (config.preview) { if(config.reviewMode)status('A verificação estará disponível quando a campanha for ativada.');else showResult('member'); return; }
-        const data=await checkMembership({email:form.elements.email.value.trim()});
+        const data=await checkMembership({email:form.elements.email.value.trim(),requestWelcome:true});
         if (data.subscribed) { form.reset(); showResult('member'); }
         else status('Não encontrámos uma subscrição ativa com este email. Podes aderir no separador “Ainda não sou membro”.');
       } catch { status('Não foi possível verificar a adesão. Tenta novamente.'); }
@@ -361,9 +361,8 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       const values = Object.fromEntries(new FormData(form));
       values.consent = form.elements.consent.checked;
       const country = document.querySelector('#country option:checked');
-      const language = document.querySelector('#lg option:checked');
       let params;
-      try { params = payload(values, {country:country?.getAttribute('data-code') || country?.value, language:language?.getAttribute('data-name') || language?.value || country?.getAttribute('data-lg') || {pt:'Português',en:'English',es:'Español'}[lang], search:location.search}); }
+      try { params = payload(values, {country:country?.getAttribute('data-code') || country?.value, language:lang, search:location.search}); }
       catch (err) { status(err.message); return; }
       if (config.preview) { if(config.reviewMode)status('A adesão estará disponível quando a campanha for ativada.');else {form.reset();showResult('new');} return; }
       busy = true; form.querySelector('[type="submit"]').disabled = true; form.setAttribute('aria-busy','true'); status('A enviar a tua adesão…');
