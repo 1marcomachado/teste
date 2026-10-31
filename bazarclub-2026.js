@@ -467,7 +467,7 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
       select.addEventListener('change',()=>simulate(select.value));input.addEventListener('change',()=>simulate(input.value));
       const languageLabel=d.createElement('label');languageLabel.textContent=tr.language+' ';
       const languageSelect=d.createElement('select');for(const [value,label]of [['pt','PT'],['en','EN'],['es','ES']]){const option=d.createElement('option');option.value=value;option.textContent=label;languageSelect.appendChild(option);}languageSelect.value=config.language||'pt';languageLabel.appendChild(languageSelect);controls.appendChild(languageLabel);
-      languageSelect.addEventListener('change',()=>{const url=new URL(w.location.href);url.searchParams.set('bf-lang',languageSelect.value);url.searchParams.set('bf-date',simulated);w.location.assign(url.href);});
+      languageSelect.addEventListener('change',()=>{const url=new URL(w.location.href);url.searchParams.set('bf-lang',languageSelect.value);url.searchParams.set('bf-date',simulated);if(['www.bzronline.com','bzronline.com'].includes(url.hostname)){url.searchParams.set('nocache','1');url.searchParams.set('redicom','1');url.searchParams.set('preview','1');}w.location.assign(url.href);});
       bar.insertAdjacentElement('afterend',controls);
     }
   }
