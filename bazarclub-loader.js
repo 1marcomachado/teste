@@ -6,7 +6,7 @@
   if(document.querySelector('script[data-bazarclub-distribution]'))return;
   const script=document.createElement('script');
   script.dataset.bazarclubDistribution='2026';
-  script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@881c2293b9ad4d9200bc5bc980f97bea0207837b/bazarclub-2026.js';
+  script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@4fac01f0853ac098d38ff9de4b84fb052cb6eff4/bazarclub-2026.js';
   document.head.appendChild(script);
 })();
 
