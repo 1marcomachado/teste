@@ -135,7 +135,12 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
     for (const k of ['utm_source','utm_medium','utm_campaign','utm_term','utm_content']) if (query.get(k)) p.set(k, query.get(k));
     return p;
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = {payload};
+  function clearValidity(target, fields) {
+    if(typeof target.setCustomValidity!=='function')return;
+    target.setCustomValidity('');
+    if(target.type==='radio')for(const field of fields)if(field!==target && field.type==='radio' && field.name===target.name)field.setCustomValidity('');
+  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = {payload,clearValidity};
   if (typeof document === 'undefined' || window.BazarClubForm) return;
   const config = {workerUrl:'https://bzrac.peboys.workers.dev/membership/check',...(window.BazarClubFormConfig || {})};
   if (document.currentScript?.dataset.userId) config.userId=document.currentScript.dataset.userId;
@@ -285,8 +290,9 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
     if(!config.privacyUrl && nativePrivacy)dialog.querySelector('.bc-consent a').href=nativePrivacy.href;
     if(!config.termsUrl && nativeTerms)dialog.querySelector('.bc-foot a').href=nativeTerms.href;
     dialog.addEventListener('invalid',e=>{e.target.setCustomValidity(tr(e.target.type==='date' && !e.target.validity.valueMissing ? 'Revê a data de nascimento.' : e.target.validity.typeMismatch ? 'Introduz um email válido.' : 'Preenche este campo.'));},true);
-    dialog.addEventListener('input',e=>{if(e.target.setCustomValidity)e.target.setCustomValidity('');});
-    dialog.addEventListener('change',e=>{if(e.target.setCustomValidity)e.target.setCustomValidity('');});
+    const clearFieldValidity=e=>clearValidity(e.target,dialog.querySelectorAll('input[type=radio]'));
+    dialog.addEventListener('input',clearFieldValidity);
+    dialog.addEventListener('change',clearFieldValidity);
     dialog.querySelector('[name="dob"]').max = new Date().toLocaleDateString('sv-SE');
     dialog.querySelector('.bc-close').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', e => {
