@@ -420,12 +420,12 @@ window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),language:lang,an
     if (target) {
       if(config.announcementReplace) target.replaceChildren(bar); else target.prepend(bar);
       if(target.id==='header') {
-        const nativeHeight=config.hideNativeAnnouncement && nativeBar ? nativeBar.getBoundingClientRect().height : 0;
         if(config.hideNativeAnnouncement && nativeBar)nativeBar.classList.add('bc-native-notification-hidden');
         const main=document.querySelector('#main');
         if(main) {
-          const nativeMargin=getComputedStyle(main).marginTop;
-          main.style.setProperty('margin-top',`calc(${nativeMargin} + ${bar.offsetHeight-nativeHeight}px)`,'important');
+          const alignMain=()=>main.style.setProperty('margin-top',Math.max(0,target.getBoundingClientRect().height-parseFloat(getComputedStyle(main).paddingTop))+'px','important');
+          alignMain();
+          new ResizeObserver(alignMain).observe(target);
         }
         document.documentElement.classList.add('bc-top-announcement');
       }
