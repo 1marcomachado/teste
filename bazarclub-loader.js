@@ -1,12 +1,32 @@
-/* Principal: ativação exclusivamente por ?bf-demo=1. Dev: teste normal. */
+/* Arranque automático: 1 de novembro de 2026, 00:00 Portugal. */
+(function(root){
+  'use strict';
+  const start=Date.parse('2026-11-01T00:00:00Z'),end=Date.parse('2026-12-01T00:00:00Z');
+  function activation(host,search,now=Date.now()){
+    const main=['www.bzronline.com','bzronline.com'].includes(host),dev=host==='bzronline-dev.redicom.work';
+    const params=new URLSearchParams(search),review=main && params.get('bf-demo')==='1';
+    const live=main && now>=start && now<end;
+    // Teste real autorizado antes do arranque; o link normal da Rita continua sem envios.
+    const liveTest=review && now<start && params.get('bf-live-test')==='1';
+    return {allowed:dev||review||live,live,review,preview:review&&!liveTest,liveTest,nextActivation:main&&now<start?start:null,start,end};
+  }
+  if(typeof module!=='undefined' && module.exports)module.exports={activation};
+  if(root)root.BazarClubActivation=activation;
+})(typeof window!=='undefined'?window:null);
+
 (function(){
-  const dev=location.hostname==='bzronline-dev.redicom.work';
-  const demo=['www.bzronline.com','bzronline.com'].includes(location.hostname)&&new URLSearchParams(location.search).get('bf-demo')==='1';
-  if(!dev&&!demo)return;
-  if(document.querySelector('script[data-bazarclub-distribution]'))return;
-  const script=document.createElement('script');
-  script.dataset.bazarclubDistribution='2026';
-  script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@363b42d96e193c957d1c6903e9d82063e69762c1/bazarclub-2026.js';
-  document.head.appendChild(script);
+  let timer;
+  function load(){
+    clearTimeout(timer);
+    const state=window.BazarClubActivation(location.hostname,location.search);
+    if(document.querySelector('script[data-bazarclub-distribution]'))return;
+    if(!state.allowed){
+      if(state.nextActivation)timer=setTimeout(load,Math.min(Math.max(0,state.nextActivation-Date.now()),2147483647));
+      return;
+    }
+    const script=document.createElement('script');script.dataset.bazarclubDistribution='2026';
+    script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@d2035083e5c372da569862f6d3850f9cbd06997a/bazarclub-2026.js';document.head.appendChild(script);
+  }
+  load();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});
 })();
 
