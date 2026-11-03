@@ -485,11 +485,28 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
         const main=document.querySelector('#main');
         if(main) {
           // O submenu absoluto da Redicom fica fora da altura do cabeçalho.
-          const alignMain=()=>main.style.setProperty('margin-top',Math.max(0,headerHeight(target)-(parseFloat(getComputedStyle(main).paddingTop)||0))+'px','important');
+          const alignMain=()=>{
+            const margin=Math.max(0,headerHeight(target)-(parseFloat(getComputedStyle(main).paddingTop)||0))+'px';
+            if(main.style.getPropertyValue('margin-top')!==margin || main.style.getPropertyPriority('margin-top')!=='important')main.style.setProperty('margin-top',margin,'important');
+          };
+          let alignmentFrame=0;
+          const scheduleAlignment=()=>{
+            if(alignmentFrame)return;
+            alignmentFrame=requestAnimationFrame(()=>{alignmentFrame=0;alignMain();});
+          };
           alignMain();
-          const headerObserver=new ResizeObserver(alignMain);
+          const headerObserver=new ResizeObserver(scheduleAlignment);
           headerObserver.observe(target);
+          headerObserver.observe(main,{box:'border-box'});
           target.querySelectorAll('nav.menu > ul > li > .submenu').forEach(menu=>headerObserver.observe(menu));
+          // A Redicom pode alterar classes, margens e padding depois de montar a barra.
+          const layoutObserver=new MutationObserver(scheduleAlignment);
+          layoutObserver.observe(main,{attributes:true,attributeFilter:['class','style']});
+          layoutObserver.observe(document.body,{attributes:true,attributeFilter:['class','style']});
+          layoutObserver.observe(target,{attributes:true,attributeFilter:['class','style'],childList:true,subtree:true});
+          window.addEventListener('load',scheduleAlignment,{once:true});
+          window.addEventListener('pageshow',scheduleAlignment);
+          window.addEventListener('resize',scheduleAlignment,{passive:true});
         }
         document.documentElement.classList.add('bc-top-announcement');
       }
