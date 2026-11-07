@@ -25,7 +25,7 @@
       return;
     }
     const script=document.createElement('script');script.dataset.bazarclubDistribution='2026';
-    script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@adb1316b499ea8c6e2e1568fd292869c50c1bcfb/bazarclub-2026.js';document.head.appendChild(script);
+    script.src='https://cdn.jsdelivr.net/gh/1marcomachado/teste@9720c54022c754b0fe705c64187f18fba2e9ec13/bazarclub-2026.js';document.head.appendChild(script);
   }
   load();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});
 })();
