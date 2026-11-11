@@ -96,7 +96,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
 const originalConfig=window.BazarClubFormConfig||{};
 let nativeUserId=originalConfig.userId || '';
 if(!nativeUserId && !demo)for(const entry of window.dataLayer||[]){const id=entry?.user_id || entry?.user_properties?.user_id || (entry?.[0]==='config' && entry?.[2]?.user_id);if(id && !/[{}]/.test(String(id)))nativeUserId=String(id);}
-window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,announcement:true,announcementTarget:'#header',announcementReplace:false,hideNativeAnnouncement:true,useNativeShipping:true,replaceNewsletterLink:true,campaignBar:true,campaignBarTarget:'#main',campaignBarPlacement:'prepend',clubLogo:new URL('74f3863aba1807ce1bb718a3859357d6.png',root).href,campaignImage:image('desktop'),campaignImageMobile:image('mobile'),campaignImageSide:image('side'),assetData:Object.fromEntries(["27fd35683d78d84fcdfaf8210f4c3d90.png","3d4b1fd25f95056265f009b9eb76bdcc.png","44b74a0c9f480d3bef17d84790eb9edf.png","4b14242983f2fd1d1be93f3ea553e672.png","f2f7fb52b9cc797862f6ef2553ca9538.png"].map(n=>[n,new URL(n,root).href])),preview:activationState.preview,demoControls:false,...(demo?{reviewMode:true,productPreview,productClubLogo:new URL('83298af6331a206e81540b0912dd9510.png',root).href,autoPopupTest:!productPreview,userId:''}:{})};
+window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,announcement:true,announcementTarget:'#header',announcementReplace:false,hideNativeAnnouncement:true,useNativeShipping:true,replaceNewsletterLink:true,campaignBar:true,campaignBarTarget:'#main',campaignBarPlacement:'prepend',clubLogo:new URL('74f3863aba1807ce1bb718a3859357d6.png',root).href,campaignArtBase:new URL('campaign-art-2026/',root).href,campaignImage:image('desktop'),campaignImageMobile:image('mobile'),campaignImageSide:image('side'),assetData:Object.fromEntries(["27fd35683d78d84fcdfaf8210f4c3d90.png","3d4b1fd25f95056265f009b9eb76bdcc.png","44b74a0c9f480d3bef17d84790eb9edf.png","4b14242983f2fd1d1be93f3ea553e672.png","f2f7fb52b9cc797862f6ef2553ca9538.png"].map(n=>[n,new URL(n,root).href])),preview:activationState.preview,demoControls:false,...(demo?{reviewMode:true,productPreview,productClubLogo:new URL('83298af6331a206e81540b0912dd9510.png',root).href,autoPopupTest:!productPreview,userId:''}:{})};
 (function () {
   'use strict';
   const modes={'#abrir-bf-lateral':'side','#abrir-bf-popup':'popup'};
@@ -157,6 +157,9 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
 
 (function () {
   'use strict';
+  function campaignArtPhase(date, preview) {
+    return date==='2026-11-25' ? '25' : date==='2026-11-26' ? (preview ? '26' : '') : ['2026-11-27','2026-11-28','2026-11-29'].includes(date) ? '27-29' : date==='2026-11-30' ? '30' : '';
+  }
   function payload(values, context = {}) {
     if (!values.fullname.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) throw new Error('Preenche o nome e um email válido.');
     if (!['Homem', 'Mulher'].includes(values.gender) || !['Moda', 'Desporto', 'Ambos'].includes(values.preference) || !values.consent) throw new Error('Seleciona as preferências e aceita o consentimento.');
@@ -183,7 +186,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     }
     return bottom-rect.top;
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = {payload,clearValidity,headerHeight};
+  if (typeof module !== 'undefined' && module.exports) module.exports = {payload,clearValidity,headerHeight,campaignArtPhase};
   if (typeof document === 'undefined' || window.BazarClubForm) return;
   const config = {workerUrl:'https://bzrac.peboys.workers.dev/membership/check',...(window.BazarClubFormConfig || {})};
   if (document.currentScript?.dataset.userId) config.userId=document.currentScript.dataset.userId;
@@ -418,7 +421,9 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
   function updateCampaign(mode) {
     const campaign = dialog.querySelector('.bc-campaign');
     const date=campaignDate();
-    if(date>'2026-11-26'){
+    const artPhase=config.campaignArtBase ? campaignArtPhase(date,config.preview===true) : '';
+    const phaseImage=variant=>new URL('bazarclub-'+artPhase+'-'+lang+'-'+variant+'.png',config.campaignArtBase).href;
+    if(date>'2026-11-26' && !artPhase){
       if(campaign.classList.contains('bc-artwork')){
         campaign.replaceChildren(...campaignText.cloneNode(true).childNodes);
         campaign.classList.remove('bc-artwork');
@@ -435,15 +440,17 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       return Promise.resolve();
     }
     const variant = mode === 'side' ? 'side' : 'desktop';
-    if (campaign.dataset.variant === variant) return artworkReady;
-    campaign.dataset.variant = variant;
+    const artKey=variant+':'+artPhase;
+    if (campaign.dataset.variant === artKey) return artworkReady;
+    campaign.dataset.variant = artKey;
     const picture = document.createElement('picture');
     const source = document.createElement('source');
     source.media = mode==='side' ? '(max-width: 0px)' : '(max-width: 800px)';
-    source.srcset = config.campaignImageMobile || config.campaignImage || new URL('bazarclub-'+lang+'-mobile.png', assetBase).href;
+    source.srcset = artPhase ? phaseImage('mobile') : config.campaignImageMobile || config.campaignImage || new URL('bazarclub-'+lang+'-mobile.png', assetBase).href;
     const img = document.createElement('img');
     img.className = 'bc-campaign-image';
     img.alt = config.campaignImageAlt || tr('BAZARclub. A 26 de novembro: acesso antecipado +5€ extra acumuláveis com os descontos da Black Friday. 5€ extra em compras a partir de 119,90 €.');
+    if(artPhase==='27-29' || artPhase==='30')img.alt=tr('BLACK FRIDAY')+'. '+tr('+5€ extra para membros')+'. '+tr('*5€ extra em compras a partir de 119,90 €.');
     img.width = variant === 'side' ? 840 : 600;
     img.height = variant === 'side' ? 900 : 1280;
     picture.append(source, img);
@@ -459,7 +466,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       };
       const timeout=setTimeout(()=>finish(false),5000);
       img.onload=()=>finish(true);img.onerror=()=>finish(false);
-      img.src = (variant === 'side' ? config.campaignImageSide : '') || config.campaignImage || new URL('bazarclub-'+lang+'-' + variant + '.png', assetBase).href;
+      img.src = artPhase ? phaseImage(variant) : (variant === 'side' ? config.campaignImageSide : '') || config.campaignImage || new URL('bazarclub-'+lang+'-' + variant + '.png', assetBase).href;
     });
     return artworkReady;
   }
