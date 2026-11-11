@@ -629,7 +629,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const heading=d.createElement('div');
     heading.className='bc-product-preview-heading';
     const title=d.createElement('strong');
-    title.textContent=t.benefits;
+    title.textContent=currentPhase==='final' ? ({pt:'Vantagens de membro',en:'Member benefits',es:'Ventajas de miembro'}[language] || 'Vantagens de membro') : t.benefits;
     if(config.productClubLogo){
       const logo=d.createElement('img');
       logo.src=config.productClubLogo;
@@ -648,7 +648,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       }
       const extra=d.createElement('span');
       extra.className='bc-product-extra';
-      extra.textContent=t.extra;
+      extra.textContent=currentPhase==='early' ? t.extra.replace(/^\+\s*/,'') : t.extra;
       badges.appendChild(extra);
       if(currentPhase==='blackfriday'){
         const offer=d.createElement('strong');
