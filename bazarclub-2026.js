@@ -601,10 +601,12 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
   function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:key==='final'?({pt:'DIA EXTRA · BLACK FRIDAY, SÓ HOJE',en:'EXTRA DAY · BLACK FRIDAY, TODAY ONLY',es:'DÍA EXTRA · BLACK FRIDAY, SOLO HOY'}[lang]||'DIA EXTRA · BLACK FRIDAY, SÓ HOJE'):(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
   function installProductPreview(d,config,date) {
     const currentPhase=phase(date || '');
+    const eve=date==='2026-11-25';
+    const early=eve || currentPhase==='early';
     const info=d.querySelector('#main.product #fixedDiv .product-info');
     const price=info?.querySelector('.price');
     const name=info?.querySelector('.name');
-    if(!price || !name || !['early','blackfriday','final'].includes(currentPhase))return;
+    if(!price || !name || !(eve || ['early','blackfriday','final'].includes(currentPhase)))return;
 
     const language=config.language || 'pt';
     const labels={
@@ -616,7 +618,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const flags=d.createElement('div');
     flags.className='bc-product-flags';
     const flag=d.createElement('span');
-    flag.textContent=currentPhase==='early' ? t.today : 'Black Friday';
+    flag.textContent=early ? t.today : 'Black Friday';
     flags.appendChild(flag);
     if(currentPhase==='blackfriday' || currentPhase==='final'){
       const extra=d.createElement('span');
@@ -632,7 +634,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const heading=d.createElement('div');
     heading.className='bc-product-preview-heading';
     const title=d.createElement('strong');
-    title.textContent=t.benefits;
+    title.textContent=eve ? ({pt:'Acesso antecipado amanhã',en:'Early access tomorrow',es:'Acceso anticipado mañana'}[language] || 'Acesso antecipado amanhã') : t.benefits;
     if(config.productClubLogo){
       const logo=d.createElement('img');
       logo.src=config.productClubLogo;
@@ -641,17 +643,17 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     }
     heading.appendChild(title);
     card.appendChild(heading);
-    if(['early','blackfriday','final'].includes(currentPhase)){
+    if(eve || ['early','blackfriday','final'].includes(currentPhase)){
       const badges=d.createElement('div');
       badges.className='bc-product-benefits';
-      if(currentPhase==='early'){
-        const early=d.createElement('span');
-        early.textContent=t.early;
-        badges.append(early,d.createTextNode(' + '));
+      if(early){
+        const earlyBadge=d.createElement('span');
+        earlyBadge.textContent=t.early;
+        badges.append(earlyBadge,d.createTextNode(' + '));
       }
       const extra=d.createElement('span');
       extra.className='bc-product-extra';
-      extra.textContent=currentPhase==='early' ? t.extra.replace(/^\+\s*/,'') : t.extra;
+      extra.textContent=early ? t.extra.replace(/^\+\s*/,'') : t.extra;
       badges.appendChild(extra);
       if(currentPhase==='blackfriday' || currentPhase==='final'){
         const offer=d.createElement('strong');
