@@ -241,13 +241,11 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     dialog.querySelector('#bc-new').hidden=true;
     dialog.querySelector('#bc-member').hidden=true;
     result.hidden=false;
-    result.querySelector('h2').textContent=tr(config.preview ? (member ? 'VERIFICAÇÃO SIMULADA' : 'ADESÃO SIMULADA') : member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
+    result.querySelector('h2').textContent=tr(member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
     const date=campaignDate();
     const benefit=campaignBenefit(date);
     const voucher=date<='2026-11-30' ? tr('O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.') : '';
-    result.querySelector('.bc-result-copy').textContent=config.preview
-      ? tr('Teste concluído. Nenhum dado foi enviado.')
-      : active
+    result.querySelector('.bc-result-copy').textContent=active
         ? [tr(member ? 'Já te reconhecemos como membro. ' : 'A tua adesão está confirmada. ').trim(),benefit,voucher,tr('Vamos reconhecer a tua adesão neste dispositivo.')].filter(Boolean).join(' ')
         : tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
     status('');
