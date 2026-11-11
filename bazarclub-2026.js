@@ -39,14 +39,19 @@ const root=new URL('.',document.currentScript.src);
     ['Verificar adesão','Check membership','Comprobar suscripción'],['Continuar a comprar','Continue shopping','Seguir comprando'],['Usar outro email','Use another email','Usar otro correo electrónico'],
     ['BEM-VINDO DE VOLTA!','WELCOME BACK!','¡TE DAMOS LA BIENVENIDA DE NUEVO!'],['BEM-VINDO AO BAZARCLUB!','WELCOME TO BAZARCLUB!','¡TE DAMOS LA BIENVENIDA A BAZARCLUB!'],['FALTA CONFIRMAR A TUA ADESÃO','PLEASE CONFIRM YOUR SUBSCRIPTION','FALTA CONFIRMAR TU SUSCRIPCIÓN'],
     ['Já te reconhecemos como membro. ','We recognise you as a member. ','Ya te reconocemos como miembro. '],['A tua adesão está confirmada. ','Your membership is confirmed. ','Tu suscripción está confirmada. '],
-    ['No dia 26 de novembro vais ter acesso antecipado + 5€ extra acumuláveis com os descontos da Black Friday. Vamos reconhecer a tua adesão neste dispositivo.','On 26 November, get early access + an extra €5 that can be combined with Black Friday discounts. We’ll remember your membership on this device.','El 26 de noviembre tendrás acceso anticipado + 5€ extra acumulables con los descuentos del Black Friday. Recordaremos tu suscripción en este dispositivo.'],
+    ['A 26 de novembro, tens acesso antecipado à Black Friday.','On 26 November, you get early access to Black Friday.','El 26 de noviembre tienes acceso anticipado al Black Friday.'],
+    ['Hoje tens acesso antecipado à Black Friday.','You have early access to Black Friday today.','Hoy tienes acceso anticipado al Black Friday.'],
+    ['O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 29 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 29 de noviembre en compras a partir de 119,90 €.'],
+    ['Vamos reconhecer a tua adesão neste dispositivo.','We’ll remember your membership on this device.','Recordaremos tu suscripción en este dispositivo.'],
+    ['Pré-visualização. Os formulários simulam a adesão e a verificação.','Preview. The forms simulate sign-up and membership verification.','Vista previa. Los formularios simulan la suscripción y la verificación.'],
+    ['ADESÃO SIMULADA','SIGN-UP SIMULATED','SUSCRIPCIÓN SIMULADA'],
+    ['VERIFICAÇÃO SIMULADA','VERIFICATION SIMULATED','VERIFICACIÓN SIMULADA'],
+    ['Teste concluído. Nenhum dado foi enviado.','Test complete. No data was sent.','Prueba completada. No se ha enviado ningún dato.'],
     ['Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.','We’ve received your request. If you receive a confirmation email, follow its instructions to complete your subscription. Benefits become available once your subscription is active.','Hemos recibido tu solicitud. Si recibes un correo de confirmación, sigue las instrucciones para completar tu suscripción. Las ventajas estarán disponibles cuando la suscripción esté activa.'],
     ['Demonstração — nenhum dado será enviado.','Demo — no data will be sent.','Demostración — no se enviará ningún dato.'],
     ['Preenche o nome e um email válido.','Enter your name and a valid email address.','Introduce tu nombre y un correo electrónico válido.'],
     ['Seleciona as preferências e aceita o consentimento.','Select your preferences and give your consent.','Selecciona tus preferencias y acepta el consentimiento.'],['Revê a data de nascimento.','Check your date of birth.','Revisa la fecha de nacimiento.'],
     ['A verificar a tua adesão…','Checking your membership…','Comprobando tu suscripción…'],['A confirmar a tua adesão…','Confirming your membership…','Confirmando tu suscripción…'],['A enviar a tua adesão…','Sending your subscription…','Enviando tu suscripción…'],
-    ['A adesão estará disponível quando a campanha for ativada.','Sign-up will be available when the campaign launches.','La inscripción estará disponible cuando se active la campaña.'],
-    ['A verificação estará disponível quando a campanha for ativada.','Membership verification will be available when the campaign launches.','La verificación estará disponible cuando se active la campaña.'],
     ['Não foi possível verificar a adesão. Tenta novamente.','We couldn’t check your membership. Please try again.','No hemos podido comprobar tu suscripción. Inténtalo de nuevo.'],
     ['Não encontrámos uma subscrição ativa com este email. Podes aderir no separador “Ainda não sou membro”.','We couldn’t find an active subscription for this email. You can join under “I’m not a member yet”.','No encontramos una suscripción activa con este correo. Puedes unirte en la pestaña “Aún no soy miembro”.'],
     ['Não foi possível concluir a adesão. Revê os dados e tenta novamente.','We couldn’t complete your subscription. Check your details and try again.','No hemos podido completar tu suscripción. Revisa los datos e inténtalo de nuevo.'],
@@ -55,7 +60,11 @@ const root=new URL('.',document.currentScript.src);
     ['Não foi possível confirmar o envio. Verifica a ligação e o teu email antes de tentares novamente.','We couldn’t confirm the submission. Check your connection and email before trying again.','No hemos podido confirmar el envío. Comprueba la conexión y tu correo antes de volver a intentarlo.'],
     ['Preenche este campo.','Please fill in this field.','Completa este campo.'],['Introduz um email válido.','Enter a valid email address.','Introduce un correo electrónico válido.'],
     ['A 26 DE NOVEMBRO','ON 26 NOVEMBER','EL 26 DE NOVIEMBRE'],['ACESSO','EARLY','ACCESO'],['ANTECIPADO','ACCESS','ANTICIPADO'],
+    ['27 A 29 DE NOVEMBRO','27–29 NOVEMBER','DEL 27 AL 29 DE NOVIEMBRE'],['30 DE NOVEMBRO','30 NOVEMBER','30 DE NOVIEMBRE'],
+    ['Torna-te membro e aproveita 5€ extra acumuláveis com os descontos da Black Friday.','Become a member and get an extra €5 you can combine with Black Friday discounts.','Hazte miembro y consigue 5€ extra acumulables con los descuentos del Black Friday.'],
+    ['Torna-te membro para receber as novidades e ofertas do BAZARclub.','Become a member to receive BAZARclub news and offers.','Hazte miembro para recibir las novedades y ofertas de BAZARclub.'],
     ['Torna-te membro e garante, na Black Friday, acesso antecipado + 5€ extra acumuláveis com os descontos.','Join now for early access + an extra €5 that can be combined with Black Friday discounts.','Hazte miembro y consigue acceso anticipado + 5€ extra acumulables con los descuentos del Black Friday.'],
+    ['5€ EXTRA','EXTRA €5','5€ EXTRA'],
     ['*5€ extra em compras a partir de 119,90 €.','*Extra €5 on purchases of €119.90 or more.','*5€ extra en compras a partir de 119,90 €.'],
     ['BAZARclub. A 26 de novembro: acesso antecipado +5€ extra acumuláveis com os descontos da Black Friday. 5€ extra em compras a partir de 119,90 €.','BAZARclub. On 26 November: early access + an extra €5 that can be combined with Black Friday discounts. Extra €5 on purchases of €119.90 or more.','BAZARclub. El 26 de noviembre: acceso anticipado +5€ extra acumulables con los descuentos del Black Friday. 5€ extra en compras a partir de 119,90 €.'],
     ['Informações: envios, trocas e pagamentos','Shipping, returns and payment information','Información: envíos, cambios y pagos'],
@@ -179,6 +188,16 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
   const i18n=window.BazarClubI18n;
   const lang=i18n?.language(config.language || document.currentScript?.dataset.shopLang || location.pathname.split('/')[1] || document.documentElement.lang) || 'pt';
   const tr=i18n?.create(lang) || (text=>text);
+  function campaignDate() {
+    const date=new URLSearchParams(location.search).get('bf-date');
+    if(config.preview && /^2026-11-(0[1-9]|[12][0-9]|30)$/.test(date || ''))return date;
+    return new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
+  }
+  function campaignBenefit(date) {
+    if(date<'2026-11-26')return tr('A 26 de novembro, tens acesso antecipado à Black Friday.');
+    if(date==='2026-11-26')return tr('Hoje tens acesso antecipado à Black Friday.');
+    return '';
+  }
   const assetBase = new URL('assets/', document.currentScript?.src || location.href);
   const fonts=document.createElement('link'); fonts.rel='stylesheet'; fonts.href='https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Montserrat:wght@400;500;600;700&display=swap';
   const fontsReady=new Promise(resolve=>{
@@ -188,7 +207,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     fonts.onerror=done;
   });
   document.head.appendChild(fonts);
-  let dialog, opener, busy = false, pending = null, recognized = false, selectTab, artworkReady=Promise.resolve(), openRequest=0;
+  let dialog, campaignText, opener, busy = false, pending = null, recognized = false, selectTab, artworkReady=Promise.resolve(), openRequest=0;
   const storageKey='bazarclub-recognition-2026';
   const userId=String(config.userId || '').trim();
   const validUserId=userId && !/[{}]/.test(userId);
@@ -220,8 +239,15 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     dialog.querySelector('#bc-new').hidden=true;
     dialog.querySelector('#bc-member').hidden=true;
     result.hidden=false;
-    result.querySelector('h2').textContent=tr(member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
-    result.querySelector('.bc-result-copy').textContent=active ? tr(member ? 'Já te reconhecemos como membro. ' : 'A tua adesão está confirmada. ')+tr('No dia 26 de novembro vais ter acesso antecipado + 5€ extra acumuláveis com os descontos da Black Friday. Vamos reconhecer a tua adesão neste dispositivo.') : tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
+    result.querySelector('h2').textContent=tr(config.preview ? (member ? 'VERIFICAÇÃO SIMULADA' : 'ADESÃO SIMULADA') : member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
+    const date=campaignDate();
+    const benefit=campaignBenefit(date);
+    const voucher=date<='2026-11-29' ? tr('O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.') : '';
+    result.querySelector('.bc-result-copy').textContent=config.preview
+      ? tr('Teste concluído. Nenhum dado foi enviado.')
+      : active
+        ? [tr(member ? 'Já te reconhecemos como membro. ' : 'A tua adesão está confirmada. ').trim(),benefit,voucher,tr('Vamos reconhecer a tua adesão neste dispositivo.')].filter(Boolean).join(' ')
+        : tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
     status('');
     result.querySelector('h2').focus();
   }
@@ -312,11 +338,12 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
         </section>
       </div>`;
     document.body.appendChild(dialog);
-    if(config.preview && !config.reviewMode){const note=document.createElement('p');note.className='bc-demo-notice';note.textContent='Demonstração — nenhum dado será enviado.';dialog.querySelector('.bc-content').prepend(note);}
+    if(config.preview){const note=document.createElement('p');note.className='bc-demo-notice';note.textContent='Pré-visualização. Os formulários simulam a adesão e a verificação.';dialog.querySelector('.bc-content').prepend(note);}
     dialog.querySelector('.bc-date').textContent = config.campaignLabel || 'A 26 DE NOVEMBRO';
     dialog.querySelector('.bc-conditions').textContent = config.conditionsText || '*5€ extra em compras a partir de 119,90 €.';
     dialog.lang=lang;
     i18n?.localize(dialog,tr);
+    campaignText=dialog.querySelector('.bc-campaign').cloneNode(true);
     if(config.privacyUrl)dialog.querySelector('.bc-consent a').href=config.privacyUrl;
     const nativePrivacy=document.querySelector('footer a[href*="_666.html"]');
     const nativeTerms=document.querySelector('footer a[href*="_663.html"]');
@@ -361,7 +388,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       const form=e.currentTarget; if (!form.reportValidity()) return;
       const button=form.querySelector('button'); button.disabled=true; busy=true; status('A verificar a tua adesão…');
       try {
-        if (config.preview) { if(config.reviewMode)status('A verificação estará disponível quando a campanha for ativada.');else showResult('member'); return; }
+        if (config.preview) { form.reset(); showResult('member'); return; }
         const data=await checkMembership({email:form.elements.email.value.trim(),requestWelcome:true});
         if (data.subscribed) { form.reset(); showResult('member'); }
         else status('Não encontrámos uma subscrição ativa com este email. Podes aderir no separador “Ainda não sou membro”.');
@@ -378,7 +405,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       let params;
       try { params = payload(values, {country:country?.getAttribute('data-code') || country?.value, language:lang, search:location.search}); }
       catch (err) { status(err.message); return; }
-      if (config.preview) { if(config.reviewMode)status('A adesão estará disponível quando a campanha for ativada.');else {form.reset();showResult('new');} return; }
+      if (config.preview) { form.reset(); showResult('new'); return; }
       busy = true; form.querySelector('[type="submit"]').disabled = true; form.setAttribute('aria-busy','true'); status('A enviar a tua adesão…');
       const script = document.createElement('script');
       pending = {script,email:values.email.trim(), timer:setTimeout(() => finish(false, 'Não recebemos confirmação do envio. Verifica o teu email antes de tentares novamente.'), 20000)};
@@ -390,6 +417,22 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
   }
   function updateCampaign(mode) {
     const campaign = dialog.querySelector('.bc-campaign');
+    const date=campaignDate();
+    if(date>'2026-11-26'){
+      if(campaign.classList.contains('bc-artwork')){
+        campaign.replaceChildren(...campaignText.cloneNode(true).childNodes);
+        campaign.classList.remove('bc-artwork');
+        delete campaign.dataset.variant;
+      }
+      const extra=date<='2026-11-29';
+      campaign.querySelector('.bc-date').textContent=tr(extra ? '27 A 29 DE NOVEMBRO' : '30 DE NOVEMBRO');
+      campaign.querySelector('.bc-date').hidden=date>'2026-11-30';
+      campaign.querySelector('h2').textContent='BLACK FRIDAY';
+      campaign.querySelector('.bc-extra').hidden=!extra;
+      campaign.querySelector('.bc-conditions').hidden=!extra;
+      campaign.querySelector('p').textContent=tr(extra ? 'Torna-te membro e aproveita 5€ extra acumuláveis com os descontos da Black Friday.' : 'Torna-te membro para receber as novidades e ofertas do BAZARclub.');
+      return Promise.resolve();
+    }
     const variant = mode === 'side' ? 'side' : 'desktop';
     if (campaign.dataset.variant === variant) return artworkReady;
     campaign.dataset.variant = variant;
@@ -534,9 +577,9 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
 (function(){
   'use strict';
   const copy={
-    pt:{label:'Campanha BAZARclub',join:'Torna-te membro aqui',member:'Vê as tuas vantagens',warmup:'acesso antecipado a 26 de novembro + 5€ extra acumuláveis.',eve:'acesso antecipado já amanhã + 5€ extra acumuláveis.',early:'acesso antecipado hoje + 5€ extra acumuláveis.',blackfriday:'Black Friday + 5€ extra acumuláveis com os descontos.',final:'Black Friday: aproveita os descontos + 5€ extra acumuláveis.',demo:'Demonstração · textos das fases propostos para revisão',phase:'Fase da campanha',language:'Idioma',date:'Data simulada',phases:['1 a 25 novembro','26 novembro','27 a 29 novembro','30 novembro']},
-    en:{label:'BAZARclub campaign',join:'Become a member here',member:'See your benefits',warmup:'early access on 26 November + an extra €5 you can combine with discounts.',eve:'early access starts tomorrow + an extra €5 you can combine with discounts.',early:'early access today + an extra €5 you can combine with discounts.',blackfriday:'Black Friday + an extra €5 you can combine with discounts.',final:'Black Friday: enjoy the discounts + an extra €5.',demo:'Demo · proposed campaign messages for review',phase:'Campaign phase',language:'Language',date:'Simulated date',phases:['1–25 November','26 November','27–29 November','30 November']},
-    es:{label:'Campaña BAZARclub',join:'Hazte miembro aquí',member:'Consulta tus ventajas',warmup:'acceso anticipado el 26 de noviembre + 5€ extra acumulables.',eve:'acceso anticipado mañana + 5€ extra acumulables.',early:'acceso anticipado hoy + 5€ extra acumulables.',blackfriday:'Black Friday + 5€ extra acumulables con los descuentos.',final:'Black Friday: disfruta de los descuentos + 5€ extra acumulables.',demo:'Demostración · textos de las fases propuestos para revisión',phase:'Fase de la campaña',language:'Idioma',date:'Fecha simulada',phases:['1–25 de noviembre','26 de noviembre','27–29 de noviembre','30 de noviembre']}
+    pt:{label:'Campanha BAZARclub',join:'Torna-te membro aqui',member:'Vê as tuas vantagens',warmup:'acesso antecipado a 26 de novembro + 5€ extra acumuláveis.',eve:'acesso antecipado já amanhã + 5€ extra acumuláveis.',early:'acesso antecipado hoje + 5€ extra acumuláveis.',blackfriday:'Black Friday + 5€ extra acumuláveis com os descontos.',final:'Black Friday',demo:'Demonstração · textos das fases propostos para revisão',phase:'Fase da campanha',language:'Idioma',date:'Data simulada',phases:['1 a 25 novembro','26 novembro','27 a 29 novembro','30 novembro']},
+    en:{label:'BAZARclub campaign',join:'Become a member here',member:'See your benefits',warmup:'early access on 26 November + an extra €5 you can combine with discounts.',eve:'early access starts tomorrow + an extra €5 you can combine with discounts.',early:'early access today + an extra €5 you can combine with discounts.',blackfriday:'Black Friday + an extra €5 you can combine with discounts.',final:'Black Friday',demo:'Demo · proposed campaign messages for review',phase:'Campaign phase',language:'Language',date:'Simulated date',phases:['1–25 November','26 November','27–29 November','30 November']},
+    es:{label:'Campaña BAZARclub',join:'Hazte miembro aquí',member:'Consulta tus ventajas',warmup:'acceso anticipado el 26 de noviembre + 5€ extra acumulables.',eve:'acceso anticipado mañana + 5€ extra acumulables.',early:'acceso anticipado hoy + 5€ extra acumulables.',blackfriday:'Black Friday + 5€ extra acumulables con los descuentos.',final:'Black Friday',demo:'Demostración · textos de las fases propuestos para revisión',phase:'Fase de la campaña',language:'Idioma',date:'Fecha simulada',phases:['1–25 de noviembre','26 de noviembre','27–29 de noviembre','30 de noviembre']}
   };
   function lisbonDate(date=new Date()){
     const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
@@ -552,7 +595,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     en:['BLACK FRIDAY WARM-UP · BAZARclub members shop earlier this Black Friday','BLACK FRIDAY FOR MEMBERS · EARLY ACCESS TODAY + AN EXTRA €5','BLACK FRIDAY · AN EXTRA €5 YOU CAN COMBINE WITH DISCOUNTS'],
     es:['CALENTAMIENTO BLACK FRIDAY · Los miembros BAZARclub compran antes este Black Friday','BLACK FRIDAY PARA MIEMBROS · HOY ACCESO ANTICIPADO + 5€ EXTRA','BLACK FRIDAY · 5€ EXTRA ACUMULABLES CON LOS DESCUENTOS']
   };
-  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
+  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:key==='final'?'BLACK FRIDAY':(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
   function installProductPreview(d,config,date) {
     const currentPhase=phase(date || '');
     const info=d.querySelector('#main.product #fixedDiv .product-info');
@@ -649,9 +692,8 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     function render(){
       const value=message(simulated||lisbonDate(new Date()),config.language,member);
       bar.hidden=!value;if(!value)return;
-      const finalProductPreview=config.productPreview && value.phase==='final';
-      bar.dataset.phase=value.phase;text.textContent=finalProductPreview?'Black Friday':value.text;cta.textContent=value.cta;
-      d.querySelectorAll('[data-bazarclub-announcement] button[data-bazarclub-open]').forEach(button=>{button.lastElementChild.textContent=finalProductPreview?'BLACK FRIDAY':value.announcement;});
+      bar.dataset.phase=value.phase;text.textContent=value.text;cta.textContent=value.cta;
+      d.querySelectorAll('[data-bazarclub-announcement] button[data-bazarclub-open]').forEach(button=>{button.lastElementChild.textContent=value.announcement;});
       link.href=member && config.campaignUrl ? config.campaignUrl : '#abrir-bf-lateral';
     }
     w.addEventListener('bazarclub:membership',e=>{member=e.detail?.subscribed===true;render();});
