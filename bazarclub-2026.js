@@ -22,6 +22,8 @@ if(window.BazarClubForm)return;
 const root=new URL('.',document.currentScript.src);
 (function(){
   const rows=[
+    ['Dia extra · só hoje','Extra day · today only','Día extra · solo hoy'],
+    ['+5€ extra para membros','An extra €5 for members','+5€ extra para miembros'],
     ['Adesão ao BAZARclub','Join BAZARclub','Únete a BAZARclub'],
     ['Adesão','Membership','Suscripción'],['Fechar','Close','Cerrar'],
     ['Ainda não sou membro',"I’m not a member yet",'Aún no soy miembro'],['Já sou membro',"I’m already a member",'Ya soy miembro'],
@@ -41,7 +43,7 @@ const root=new URL('.',document.currentScript.src);
     ['Já te reconhecemos como membro. ','We recognise you as a member. ','Ya te reconocemos como miembro. '],['A tua adesão está confirmada. ','Your membership is confirmed. ','Tu suscripción está confirmada. '],
     ['A 26 de novembro, tens acesso antecipado à Black Friday.','On 26 November, you get early access to Black Friday.','El 26 de noviembre tienes acceso anticipado al Black Friday.'],
     ['Hoje tens acesso antecipado à Black Friday.','You have early access to Black Friday today.','Hoy tienes acceso anticipado al Black Friday.'],
-    ['O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 29 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 29 de noviembre en compras a partir de 119,90 €.'],
+    ['O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 29 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 30 de noviembre en compras a partir de 119,90 €.'],
     ['Vamos reconhecer a tua adesão neste dispositivo.','We’ll remember your membership on this device.','Recordaremos tu suscripción en este dispositivo.'],
     ['Pré-visualização. Os formulários simulam a adesão e a verificação.','Preview. The forms simulate sign-up and membership verification.','Vista previa. Los formularios simulan la suscripción y la verificación.'],
     ['ADESÃO SIMULADA','SIGN-UP SIMULATED','SUSCRIPCIÓN SIMULADA'],
@@ -242,7 +244,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     result.querySelector('h2').textContent=tr(config.preview ? (member ? 'VERIFICAÇÃO SIMULADA' : 'ADESÃO SIMULADA') : member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
     const date=campaignDate();
     const benefit=campaignBenefit(date);
-    const voucher=date<='2026-11-29' ? tr('O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.') : '';
+    const voucher=date<='2026-11-30' ? tr('O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.') : '';
     result.querySelector('.bc-result-copy').textContent=config.preview
       ? tr('Teste concluído. Nenhum dado foi enviado.')
       : active
@@ -424,11 +426,12 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
         campaign.classList.remove('bc-artwork');
         delete campaign.dataset.variant;
       }
-      const extra=date<='2026-11-29';
-      campaign.querySelector('.bc-date').textContent=tr(extra ? '27 A 29 DE NOVEMBRO' : '30 DE NOVEMBRO');
+      const extra=date<='2026-11-30';
+      campaign.querySelector('.bc-date').textContent=tr(date==='2026-11-30' ? 'Dia extra · só hoje' : '27 A 29 DE NOVEMBRO');
       campaign.querySelector('.bc-date').hidden=date>'2026-11-30';
-      campaign.querySelector('h2').textContent='BLACK FRIDAY';
+      campaign.querySelector('h2').textContent=tr('BLACK FRIDAY');
       campaign.querySelector('.bc-extra').hidden=!extra;
+      campaign.querySelector('.bc-extra').textContent=tr('+5€ extra para membros');
       campaign.querySelector('.bc-conditions').hidden=!extra;
       campaign.querySelector('p').textContent=tr(extra ? 'Torna-te membro e aproveita 5€ extra acumuláveis com os descontos da Black Friday.' : 'Torna-te membro para receber as novidades e ofertas do BAZARclub.');
       return Promise.resolve();
@@ -577,9 +580,9 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
 (function(){
   'use strict';
   const copy={
-    pt:{label:'Campanha BAZARclub',join:'Torna-te membro aqui',member:'Vê as tuas vantagens',warmup:'acesso antecipado a 26 de novembro + 5€ extra acumuláveis.',eve:'acesso antecipado já amanhã + 5€ extra acumuláveis.',early:'acesso antecipado hoje + 5€ extra acumuláveis.',blackfriday:'Black Friday + 5€ extra acumuláveis com os descontos.',final:'Black Friday',demo:'Demonstração · textos das fases propostos para revisão',phase:'Fase da campanha',language:'Idioma',date:'Data simulada',phases:['1 a 25 novembro','26 novembro','27 a 29 novembro','30 novembro']},
-    en:{label:'BAZARclub campaign',join:'Become a member here',member:'See your benefits',warmup:'early access on 26 November + an extra €5 you can combine with discounts.',eve:'early access starts tomorrow + an extra €5 you can combine with discounts.',early:'early access today + an extra €5 you can combine with discounts.',blackfriday:'Black Friday + an extra €5 you can combine with discounts.',final:'Black Friday',demo:'Demo · proposed campaign messages for review',phase:'Campaign phase',language:'Language',date:'Simulated date',phases:['1–25 November','26 November','27–29 November','30 November']},
-    es:{label:'Campaña BAZARclub',join:'Hazte miembro aquí',member:'Consulta tus ventajas',warmup:'acceso anticipado el 26 de noviembre + 5€ extra acumulables.',eve:'acceso anticipado mañana + 5€ extra acumulables.',early:'acceso anticipado hoy + 5€ extra acumulables.',blackfriday:'Black Friday + 5€ extra acumulables con los descuentos.',final:'Black Friday',demo:'Demostración · textos de las fases propuestos para revisión',phase:'Fase de la campaña',language:'Idioma',date:'Fecha simulada',phases:['1–25 de noviembre','26 de noviembre','27–29 de noviembre','30 de noviembre']}
+    pt:{label:'Campanha BAZARclub',join:'Torna-te membro aqui',member:'Vê as tuas vantagens',warmup:'acesso antecipado a 26 de novembro + 5€ extra acumuláveis.',eve:'acesso antecipado já amanhã + 5€ extra acumuláveis.',early:'acesso antecipado hoje + 5€ extra acumuláveis.',blackfriday:'+5€ extra para membros, acumuláveis com o desconto da Black Friday.',final:'Dia extra: mais um dia de Black Friday, só hoje. +5€ extra para membros.',demo:'Demonstração · textos das fases propostos para revisão',phase:'Fase da campanha',language:'Idioma',date:'Data simulada',phases:['1 a 25 novembro','26 novembro','27 a 29 novembro','30 novembro']},
+    en:{label:'BAZARclub campaign',join:'Become a member here',member:'See your benefits',warmup:'early access on 26 November + an extra €5 you can combine with discounts.',eve:'early access starts tomorrow + an extra €5 you can combine with discounts.',early:'early access today + an extra €5 you can combine with discounts.',blackfriday:'An extra €5 for members, combinable with the Black Friday discount.',final:'Extra day: one more day of Black Friday, today only. An extra €5 for members.',demo:'Demo · proposed campaign messages for review',phase:'Campaign phase',language:'Language',date:'Simulated date',phases:['1–25 November','26 November','27–29 November','30 November']},
+    es:{label:'Campaña BAZARclub',join:'Hazte miembro aquí',member:'Consulta tus ventajas',warmup:'acceso anticipado el 26 de noviembre + 5€ extra acumulables.',eve:'acceso anticipado mañana + 5€ extra acumulables.',early:'acceso anticipado hoy + 5€ extra acumulables.',blackfriday:'+5€ extra para miembros, acumulables con el descuento del Black Friday.',final:'Día extra: un día más de Black Friday, solo hoy. +5€ extra para miembros.',demo:'Demostración · textos de las fases propuestos para revisión',phase:'Fase de la campaña',language:'Idioma',date:'Fecha simulada',phases:['1–25 de noviembre','26 de noviembre','27–29 de noviembre','30 de noviembre']}
   };
   function lisbonDate(date=new Date()){
     const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
@@ -591,11 +594,11 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     return day>=1 && day<=25 ? 'warmup' : day===26 ? 'early' : day>=27 && day<=29 ? 'blackfriday' : day===30 ? 'final' : null;
   }
   const announcements={
-    pt:['BLACK FRIDAY AQUECIMENTO · Os membros BAZARclub compram mais cedo esta Black Friday','BLACK FRIDAY PARA MEMBROS · HOJE ACESSO ANTECIPADO + 5€ EXTRA','BLACK FRIDAY · 5€ EXTRA ACUMULÁVEIS COM OS DESCONTOS'],
-    en:['BLACK FRIDAY WARM-UP · BAZARclub members shop earlier this Black Friday','BLACK FRIDAY FOR MEMBERS · EARLY ACCESS TODAY + AN EXTRA €5','BLACK FRIDAY · AN EXTRA €5 YOU CAN COMBINE WITH DISCOUNTS'],
-    es:['CALENTAMIENTO BLACK FRIDAY · Los miembros BAZARclub compran antes este Black Friday','BLACK FRIDAY PARA MIEMBROS · HOY ACCESO ANTICIPADO + 5€ EXTRA','BLACK FRIDAY · 5€ EXTRA ACUMULABLES CON LOS DESCUENTOS']
+    pt:['BLACK FRIDAY AQUECIMENTO · Os membros BAZARclub compram mais cedo esta Black Friday','BLACK FRIDAY PARA MEMBROS · HOJE ACESSO ANTECIPADO + 5€ EXTRA','BLACK FRIDAY · ATÉ DOMINGO'],
+    en:['BLACK FRIDAY WARM-UP · BAZARclub members shop earlier this Black Friday','BLACK FRIDAY FOR MEMBERS · EARLY ACCESS TODAY + AN EXTRA €5','BLACK FRIDAY · UNTIL SUNDAY'],
+    es:['CALENTAMIENTO BLACK FRIDAY · Los miembros BAZARclub compran antes este Black Friday','BLACK FRIDAY PARA MIEMBROS · HOY ACCESO ANTICIPADO + 5€ EXTRA','BLACK FRIDAY · HASTA EL DOMINGO']
   };
-  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:key==='final'?'BLACK FRIDAY':(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
+  function message(date,lang='pt',member=false){const key=phase(date),t=copy[lang]||copy.pt;return key?{phase:key,text:t[date==='2026-11-25'?'eve':key],cta:member?t.member:t.join,announcement:key==='final'?({pt:'DIA EXTRA · BLACK FRIDAY, SÓ HOJE',en:'EXTRA DAY · BLACK FRIDAY, TODAY ONLY',es:'DÍA EXTRA · BLACK FRIDAY, SOLO HOY'}[lang]||'DIA EXTRA · BLACK FRIDAY, SÓ HOJE'):(announcements[lang]||announcements.pt)[key==='warmup'?0:key==='early'?1:2]}:null;}
   function installProductPreview(d,config,date) {
     const currentPhase=phase(date || '');
     const info=d.querySelector('#main.product #fixedDiv .product-info');
@@ -615,7 +618,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const flag=d.createElement('span');
     flag.textContent=currentPhase==='early' ? t.today : 'Black Friday';
     flags.appendChild(flag);
-    if(currentPhase==='blackfriday'){
+    if(currentPhase==='blackfriday' || currentPhase==='final'){
       const extra=d.createElement('span');
       extra.textContent=t.memberExtra;
       flags.appendChild(extra);
@@ -629,7 +632,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const heading=d.createElement('div');
     heading.className='bc-product-preview-heading';
     const title=d.createElement('strong');
-    title.textContent=currentPhase==='final' ? ({pt:'Vantagens de membro',en:'Member benefits',es:'Ventajas de miembro'}[language] || 'Vantagens de membro') : t.benefits;
+    title.textContent=t.benefits;
     if(config.productClubLogo){
       const logo=d.createElement('img');
       logo.src=config.productClubLogo;
@@ -638,7 +641,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     }
     heading.appendChild(title);
     card.appendChild(heading);
-    if(currentPhase!=='final'){
+    if(['early','blackfriday','final'].includes(currentPhase)){
       const badges=d.createElement('div');
       badges.className='bc-product-benefits';
       if(currentPhase==='early'){
@@ -650,7 +653,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       extra.className='bc-product-extra';
       extra.textContent=currentPhase==='early' ? t.extra.replace(/^\+\s*/,'') : t.extra;
       badges.appendChild(extra);
-      if(currentPhase==='blackfriday'){
+      if(currentPhase==='blackfriday' || currentPhase==='final'){
         const offer=d.createElement('strong');
         offer.textContent=t.offer;
         badges.appendChild(offer);
