@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - '.github/workflows/bazarclub-dev-catalogue.yml'
+      - 'bazarclub-recommendations/sync-dev-catalogue.mjs'
 permissions:
   contents: write
 concurrency:
