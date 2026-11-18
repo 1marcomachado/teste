@@ -1,0 +1,30 @@
+name: BAZARclub dev catalogue
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    paths:
+      - '.github/workflows/bazarclub-dev-catalogue.yml'
+permissions:
+  contents: write
+concurrency:
+  group: bazarclub-dev-catalogue
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node bazarclub-recommendations/sync-dev-catalogue.mjs
+      - name: Save public catalogue subset
+        run: |
+          git config user.name 'BAZARclub catalogue'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bazarclub-recommendations/dev-catalogue.json
+          git diff --cached --quiet || git commit -m 'Refresh dev recommendation catalogue'
+          git push
