@@ -653,7 +653,16 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       }
     }
     list.replaceChildren(...fresh.childNodes);
-    desktop.replaceChildren(...freshDesktop.childNodes);mobile.replaceChildren(...freshMobile.childNodes);
+    // Keep native payment widgets connected: moving/replacing an iframe destroys its session.
+    const controls='.rdc-cart-button-primary,[id^="paypal-button-container"],[id^="rdc-shop-amazon_pay"],iframe';
+    for(const [current,next] of [[desktop,freshDesktop],[mobile,freshMobile]]){
+      const protectedRow=[...current.rows].find(r=>r.querySelector(controls));
+      const oldRows=[...current.rows].filter(r=>!r.querySelector(controls));
+      const newRows=[...next.rows].filter(r=>!r.querySelector(controls));
+      const body=protectedRow?.parentElement||current.tBodies[0]||current;
+      oldRows.forEach(r=>r.remove());
+      newRows.forEach(r=>body.insertBefore(r,protectedRow||null));
+    }
     const count=main.querySelector('#rdc-header-total-products'),freshCount=doc.querySelector('#rdc-header-total-products');
     if(count&&freshCount)count.textContent=freshCount.textContent;
     window.dispatchEvent(new CustomEvent('bazarclub:cart-updated'));
