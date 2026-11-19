@@ -573,6 +573,30 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
   if(typeof window!=='undefined')install(window);
 })();
 
+// Redicom's payable total includes the applied codes and delivery. Gift cards
+// remain excluded at their displayed line value; never count delivery as goods.
+function eligibleAfterDiscount(main) {
+  const parse = raw => {
+    if (!raw || !/\d/.test(raw)) return NaN;
+    return Math.round(Number(raw.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.')) * 100);
+  };
+  const lines = [...main.querySelectorAll('[id^="rdc-prd-dkt-"]')];
+  let eligible = 0, gift = 0;
+  if (!lines.length) return NaN;
+  for (const line of lines) {
+    const ref = line.querySelector('.rdc-shop-prd-reference-value')?.textContent.trim().replace(/^#/, '').split('|')[0];
+    const quantity = Number(line.querySelector('input.qtd')?.value || line.querySelector('select.qnt-select')?.value);
+    const price = parse(line.querySelector('.rdc-shop-prd-price-current')?.textContent);
+    if (!ref || !Number.isSafeInteger(quantity) || quantity < 1 || !Number.isSafeInteger(price) || price < 0) return NaN;
+    if (ref === 'CP-ONLINE') gift += price * quantity;
+    else eligible += price * quantity;
+  }
+  const payable = parse(main.querySelector('#rdc-shop-order-resume-desktop .rdc-shop-prd-price-total')?.textContent);
+  const shipping = parse(main.querySelector('#shipping')?.closest('tr')?.querySelector('.rdc-shop-prd-price-current')?.textContent);
+  if (!Number.isSafeInteger(payable) || !Number.isSafeInteger(shipping) || payable < 0 || shipping < 0) return NaN;
+  return Math.min(eligible, Math.max(0, payable - shipping - gift));
+}
+
 const cartTranslations=[
  ['5€ EXTRA PARA MEMBROS','EXTRA €5 FOR MEMBERS','5€ EXTRA PARA MIEMBROS'],
  ['Estás quase!','Almost there!','¡Ya casi estás!'],['Faltam','You need','Te faltan'],
@@ -619,15 +643,7 @@ function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
   const money=n=>(n/100).toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
   let last='',member=window.BazarClubForm?.isMember()===true;
   function update(){
-    const lines=[...main.querySelectorAll('[id^="rdc-prd-dkt-"]')];
-    const parse=raw=>Math.round(Number((raw||'').replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.'))*100);
-    const total=lines.length?lines.reduce((sum,line)=>{
-      const ref=line.querySelector('.rdc-shop-prd-reference-value')?.textContent.trim().replace(/^#/,'').split('|')[0];
-      const quantity=Number(line.querySelector('input.qtd')?.value||line.querySelector('select.qnt-select')?.value);
-      const price=parse(line.querySelector('.rdc-shop-prd-price-current')?.textContent);
-      if(!ref||!Number.isInteger(quantity)||quantity<1||!Number.isSafeInteger(price))return NaN;
-      return sum+(ref==='CP-ONLINE'?0:price*quantity);
-    },0):NaN;
+    const total=eligibleAfterDiscount(main);
     let date=new URLSearchParams(location.search).get('bf-date');
     if(!/^2026-11-(0[1-9]|[12]\d|30)$/.test(date||''))date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
     const key=[total,date,member].join('|');if(key===last)return;last=key;
@@ -717,7 +733,7 @@ function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
     if(!/^2026-11-(0[1-9]|[12]\d|30)$/.test(date||''))date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
     if(items.some(p=>!Number.isSafeInteger(p.quantity)||p.quantity<1||!Number.isSafeInteger(p.unitBeforeMemberCents)||p.unitBeforeMemberCents<0))return;
     try{
-      const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/rita-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items,date,member:true}),signal:controller.signal,credentials:'omit'});
+      const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/rita-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items,date,member:true,subtotalAfterCodeCents:subtotalCents}),signal:controller.signal,credentials:'omit'});
       if(!response.ok)throw Error('Catalogue unavailable');const data=await response.json();
       if(last!==key||!Array.isArray(data.products))return;
       for(const p of data.products.slice(0,8)){
