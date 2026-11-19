@@ -9,7 +9,11 @@ const sourceRows=csvRows(text);
 const fields=['item_id','title','availability','price','sale_price','image_url','url','brand','color'];
 // Only fields already published in the shop's public feed; no stock counts or sales.
 const grouped=new Map();
-for(const row of sourceRows){const key=row.item_id.split('|')[0],old=grouped.get(key);if(!old||old.availability!=='in_stock'&&row.availability==='in_stock')grouped.set(key,Object.fromEntries(fields.map(k=>[k,row[k]||''])));}
+for(const row of sourceRows){
+ const key=row.item_id.split('|')[0],old=grouped.get(key),variants=old?.variants||[];
+ variants.push({sku:row.item_id,size:row.size||row.item_id.split('|')[1],availability:row.availability,price:row.price,sale_price:row.sale_price||''});
+ if(!old||old.availability!=='in_stock'&&row.availability==='in_stock')grouped.set(key,{...Object.fromEntries(fields.map(k=>[k,row[k]||''])),variants});
+}
 if(grouped.size<1000)throw Error('Incomplete public source');
 await fs.writeFile(new URL('./public-source.json',import.meta.url),JSON.stringify({modified,generatedAt:new Date().toISOString(),rows:[...grouped.values()]}));
 const groups=new Set();
