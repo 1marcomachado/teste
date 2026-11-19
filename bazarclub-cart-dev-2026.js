@@ -602,7 +602,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
     const lead=date<'2026-11-26'?'acesso antecipado a 26 de novembro + 5€ extra acumuláveis. ':date==='2026-11-26'?'acesso antecipado hoje + 5€ extra acumuláveis. ':'5€ extra para membros, acumuláveis com os descontos da Black Friday. ';
     invite.children[1].innerHTML=lead+'<u>Torna-te membro aqui</u>';
     invite.hidden=member || date>'2026-11-30';
-    panel.hidden=!Number.isFinite(total) || date<'2026-11-26' || date>'2026-11-30';
+    panel.hidden=!member || !Number.isFinite(total) || date<'2026-11-26' || date>'2026-11-30';
     if(panel.hidden)return;
     const missing=Math.max(0,11990-total);
     copy.innerHTML=missing ? '<strong>Estás quase!</strong> Faltam <strong class="bc-cart-missing">'+money(missing)+'</strong> para poderes usar os teus <strong>5€ extra</strong> (em compras a partir de 119,90 €).' : '<strong>Boa! Já chegaste aos 119,90 €.</strong> Os teus 5€ extra já podem ser descontados nesta compra.';
@@ -675,9 +675,13 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
     controller?.abort();section.hidden=true;track.replaceChildren();
     if(anchor.hidden||!Number.isSafeInteger(subtotalCents)||subtotalCents>=11990||!products.length||skus.some(s=>!s))return;
     controller=new AbortController();
-    const title=products[0].querySelector('.rdc-shop-prd-title')?.textContent.trim()||'';
+    const parseMoney=raw=>Math.round(Number((raw||'').replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.'))*100);
+    const items=products.map((p,i)=>({sku:skus[i],quantity:Number(p.querySelector('input.qtd')?.value||p.querySelector('select.qnt-select')?.value),unitBeforeMemberCents:parseMoney(p.querySelector('.rdc-shop-prd-price-current')?.textContent)}));
+    let date=new URLSearchParams(location.search).get('bf-date');
+    if(!/^2026-11-(0[1-9]|[12]\d|30)$/.test(date||''))date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
+    if(items.some(p=>!Number.isSafeInteger(p.quantity)||p.quantity<1||!Number.isSafeInteger(p.unitBeforeMemberCents)||p.unitBeforeMemberCents<0))return;
     try{
-      const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({skus,title,subtotalCents}),signal:controller.signal,credentials:'omit'});
+      const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/rita-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items,date,member:true}),signal:controller.signal,credentials:'omit'});
       if(!response.ok)throw Error('Catalogue unavailable');const data=await response.json();
       if(last!==key||!Array.isArray(data.products))return;
       for(const p of data.products.slice(0,12)){
@@ -689,6 +693,12 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
         const price=document.createElement('p');price.className='bc-rec-price';
         if(p.originalPriceCents>p.priceCents){const old=document.createElement('del');old.textContent=money(p.originalPriceCents);price.append(old,' ');}
         const current=document.createElement('strong');current.textContent=money(p.priceCents);price.append(current);
+        let giftSelect;
+        if(p.kind==='gift'){
+          giftSelect=document.createElement('select');giftSelect.className='bc-rec-size';giftSelect.setAttribute('aria-label','Valor do cartão presente');
+          for(const value of p.values||[])if(Number.isSafeInteger(value)&&value>0)giftSelect.add(new Option(money(value),String(value)));
+          giftSelect.value=String(p.priceCents);giftSelect.onchange=()=>{current.textContent=money(Number(giftSelect.value));};
+        }
         const link=document.createElement('button');link.type='button';link.className='bc-rec-add';link.textContent='ADICIONAR';link.setAttribute('aria-label','Adicionar '+p.name);
         const status=document.createElement('p');status.className='bc-rec-status';status.setAttribute('role','status');
         let variants,select,busy=false,added=false;
@@ -704,13 +714,15 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
               variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>0&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
               if(!variants.length)throw Error('Este artigo já não está disponível.');
               const unique=new Map(variants.map(v=>[v.id,v]));variants=[...unique.values()];
+              if(!giftSelect){
               select=document.createElement('select');select.className='bc-rec-size';select.setAttribute('aria-label','Tamanho de '+p.name);
               const placeholder=new Option('Seleciona o tamanho','');select.add(placeholder);
               variants.forEach(v=>select.add(new Option(v.size,v.id)));card.insertBefore(select,link);
               if(variants.length===1&&/unic|únic|one size/i.test(variants[0].size)){select.value=variants[0].id;select.hidden=true;}
               else {status.textContent='Seleciona o tamanho para adicionar.';select.focus();return;}
+              }
             }
-            const selected=variants.find(v=>v.id===select.value);if(!selected){status.textContent='Seleciona o tamanho para adicionar.';select.focus();return;}
+            const selected=giftSelect?variants.find(v=>Number(v.sku.split('|')[1])*100===Number(giftSelect.value)):variants.find(v=>v.id===select.value);if(!selected){status.textContent=giftSelect?'Este valor já não está disponível.':'Seleciona o tamanho para adicionar.';(giftSelect||select).focus();return;}
             const response=await fetch('/api/api.php/addToBasket/5/0/'+selected.id+'/1/0',{credentials:'same-origin',cache:'no-store'});
             if(!response.ok)throw Error('Não foi possível adicionar. Tenta novamente.');
             const data=await response.json();
@@ -720,7 +732,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
           }catch(e){status.textContent=/^(Este artigo|Não foi possível)/.test(e.message)?e.message:'Não foi possível adicionar este artigo. Tenta novamente.';}
           finally{busy=false;link.disabled=added;}
         };
-        card.append(picture,name,price,link,status);track.append(card);
+        card.append(picture,name,price);if(giftSelect)card.append(giftSelect);card.append(link,status);track.append(card);
       }
       section.hidden=!track.children.length;
       section.querySelector('header>div').hidden=track.children.length<2;
