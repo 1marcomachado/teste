@@ -28,6 +28,6 @@ jobs:
         run: |
           git config user.name 'BAZARclub catalogue'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add bazarclub-recommendations/dev-catalogue.json
+          git add bazarclub-recommendations/dev-catalogue.json bazarclub-recommendations/public-source.json
           git diff --cached --quiet || git commit -m 'Refresh dev recommendation catalogue'
           git push
