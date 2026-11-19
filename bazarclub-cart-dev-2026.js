@@ -672,6 +672,7 @@ function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
 })();
 
 function orderCartSuggestions(products,missingCents){
+  if(products.some(p=>p.modalityFallback))return [...orderCartSuggestions(products.filter(p=>!p.modalityFallback),missingCents),...orderCartSuggestions(products.filter(p=>p.modalityFallback).map(p=>({...p,modalityFallback:false})),missingCents)];
   const near=[...products].sort((a,b)=>Math.abs(a.priceCents-missingCents)-Math.abs(b.priceCents-missingCents));
   const ordered=near.splice(0,4),rest=near.sort((a,b)=>b.priceCents-a.priceCents);
   while(rest.length){ordered.push(rest.shift());if(rest.length)ordered.push(rest.pop());}
