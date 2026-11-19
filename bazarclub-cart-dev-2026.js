@@ -715,7 +715,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
               const probe=new TextDecoder().decode(bytes);
               const charset=(page.headers.get('Content-Type')||'').match(/charset=([^;\s]+)/i)?.[1]||probe.match(/charset=["']?([^\s"'>;]+)/i)?.[1]||'utf-8';
               const doc=new DOMParser().parseFromString(new TextDecoder(charset).decode(bytes),'text/html');
-              variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>0&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
+              variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>0&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group&&(!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod')))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
               if(!variants.length)throw Error('Este artigo já não está disponível.');
               const unique=new Map(variants.map(v=>[v.id,v]));variants=[...unique.values()];
               if(!giftSelect){
