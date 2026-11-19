@@ -671,6 +671,12 @@ function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
   update();
 })();
 
+function orderCartSuggestions(products,missingCents){
+  const near=[...products].sort((a,b)=>Math.abs(a.priceCents-missingCents)-Math.abs(b.priceCents-missingCents));
+  const ordered=near.splice(0,4),rest=near.sort((a,b)=>b.priceCents-a.priceCents);
+  while(rest.length){ordered.push(rest.shift());if(rest.length)ordered.push(rest.pop());}
+  return ordered;
+}
 (function(){
   const main=document.querySelector('.ec_shopping_bag'),anchor=document.querySelector('.bc-cart-progress');
   if(!main||!anchor)return;
@@ -743,7 +749,7 @@ function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
       const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/rita-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items,date,member:true,subtotalAfterCodeCents:subtotalCents}),signal:controller.signal,credentials:'omit'});
       if(!response.ok)throw Error('Catalogue unavailable');const data=await response.json();
       if(last!==key||!Array.isArray(data.products))return;
-      for(const p of data.products.slice(0,16)){
+      for(const p of orderCartSuggestions(data.products.slice(0,16),11990-subtotalCents)){
         if(p.kind==='gift'||p.group==='CP-ONLINE')continue;
         const url=new URL(p.url),img=new URL(p.image);
         if(url.origin!==location.origin||img.protocol!=='https:'||!Number.isSafeInteger(p.priceCents)||p.priceCents<=0)continue;
