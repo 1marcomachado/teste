@@ -184,6 +184,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       copy.replaceChildren(lead,document.createTextNode(tr(benefit)+' '),end);
     }else copy.textContent=tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
     status('');
+    if(active)window.dispatchEvent(new CustomEvent('bazarclub:preview-result',{detail:{kind}}));
     result.querySelector('h2').focus();
   }
   const previous = {success:window._show_thank_you, error:window._show_error};
