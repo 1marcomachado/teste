@@ -2,7 +2,7 @@ name: BAZARclub dev catalogue
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17,47 * * * *'
   push:
     paths:
       - '.github/workflows/bazarclub-dev-catalogue.yml'
@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
