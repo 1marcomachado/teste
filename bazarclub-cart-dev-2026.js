@@ -573,6 +573,32 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
   if(typeof window!=='undefined')install(window);
 })();
 
+const cartTranslations=[
+ ['5€ EXTRA PARA MEMBROS','EXTRA €5 FOR MEMBERS','5€ EXTRA PARA MIEMBROS'],
+ ['Estás quase!','Almost there!','¡Ya casi estás!'],['Faltam','You need','Te faltan'],
+ ['para poderes usar os teus','to use your','para poder utilizar tus'],['5€ extra','extra €5','5€ extra'],
+ ['(em compras a partir de 119,90 €).','(on purchases of €119.90 or more).','(en compras a partir de 119,90 €).'],
+ ['Boa! Já chegaste aos 119,90 €.','Great! You have reached €119.90.','¡Genial! Ya has llegado a los 119,90 €.'],
+ ['Os teus 5€ extra já podem ser descontados nesta compra.','Your extra €5 can now be deducted from this purchase.','Tus 5€ extra ya pueden descontarse en esta compra.'],
+ ['Torna-te membro aqui','Become a member here','Hazte miembro aquí'],
+ ['acesso antecipado a 26 de novembro + 5€ extra acumuláveis.','early access on 26 November + an extra €5 to combine with discounts.','acceso anticipado el 26 de noviembre + 5€ extra acumulables.'],
+ ['acesso antecipado hoje + 5€ extra acumuláveis.','early access today + an extra €5 to combine with discounts.','acceso anticipado hoy + 5€ extra acumulables.'],
+ ['5€ extra para membros, acumuláveis com os descontos da Black Friday.','An extra €5 for members, to combine with Black Friday discounts.','5€ extra para miembros, acumulables con los descuentos del Black Friday.'],
+ ['Junta um destes artigos e chega lá','Add one of these items to reach the minimum','Añade uno de estos artículos y llega al mínimo'],
+ ['Artigos anteriores','Previous items','Artículos anteriores'],['Artigos seguintes','Next items','Artículos siguientes'],
+ ['Artigos recomendados','Recommended items','Artículos recomendados'],['ADICIONAR','ADD','AÑADIR'],
+ ['Seleciona o tamanho','Select a size','Selecciona la talla'],['Seleciona o tamanho para adicionar.','Select a size to add the item.','Selecciona la talla para añadirlo.'],
+ ['Este artigo já não está disponível.','This item is no longer available.','Este artículo ya no está disponible.'],
+ ['Artigo adicionado.','Item added.','Artículo añadido.'],
+ ['Não foi possível adicionar este artigo. Tenta novamente.','Unable to add this item. Try again.','No se ha podido añadir este artículo. Inténtalo de nuevo.'],
+ ['Vantagem BAZARclub','BAZARclub benefit','Ventaja BAZARclub'],
+ ['Valor para atingir os 119,90 euros','Amount towards 119.90 euros','Importe para alcanzar los 119,90 euros']
+];
+const cartLang=window.BazarClubI18n.language(window.BazarClubFormConfig.language),cartIndex={pt:0,en:1,es:2}[cartLang];
+const cartMap=new Map(cartTranslations.map(r=>[r[0],r[cartIndex]]));
+function cartTr(text){return cartMap.get(text)??text;}
+function localizeCart(node){window.BazarClubI18n.localize(node,cartTr);}
+
 (function(){
   const main=document.querySelector('.ec_shopping_bag');
   const productList=main.querySelector('.wrapper-shoppingbag-product-list');
@@ -591,12 +617,17 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
   productList.after(wrapper);
   const panel=wrapper.querySelector('section'),copy=panel.querySelector('.bc-cart-copy'),meter=panel.querySelector('.bc-cart-meter');
   const money=n=>(n/100).toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
-  let last='',member=false;
+  let last='',member=window.BazarClubForm?.isMember()===true;
   function update(){
-    const rows=[...main.querySelectorAll('tr')];
-    const row=rows.find(r=>/^(valor dos produtos|products value|valor de los productos)$/i.test(r.cells[0]?.textContent.trim()||''));
-    const raw=row?.cells[1]?.textContent;
-    const total=raw ? Math.round(Number(raw.replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.'))*100) : NaN;
+    const lines=[...main.querySelectorAll('[id^="rdc-prd-dkt-"]')];
+    const parse=raw=>Math.round(Number((raw||'').replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.'))*100);
+    const total=lines.length?lines.reduce((sum,line)=>{
+      const ref=line.querySelector('.rdc-shop-prd-reference-value')?.textContent.trim().replace(/^#/,'').split('|')[0];
+      const quantity=Number(line.querySelector('input.qtd')?.value||line.querySelector('select.qnt-select')?.value);
+      const price=parse(line.querySelector('.rdc-shop-prd-price-current')?.textContent);
+      if(!ref||!Number.isInteger(quantity)||quantity<1||!Number.isSafeInteger(price))return NaN;
+      return sum+(ref==='CP-ONLINE'?0:price*quantity);
+    },0):NaN;
     let date=new URLSearchParams(location.search).get('bf-date');
     if(!/^2026-11-(0[1-9]|[12]\d|30)$/.test(date||''))date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
     const key=[total,date,member].join('|');if(key===last)return;last=key;
@@ -604,12 +635,12 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
     invite.children[1].innerHTML=lead+'<u>Torna-te membro aqui</u>';
     invite.hidden=member || date>'2026-11-30';
     panel.hidden=!member || !Number.isFinite(total) || date<'2026-11-26' || date>'2026-11-30';
-    if(panel.hidden)return;
+    localizeCart(invite);if(panel.hidden)return;
     const missing=Math.max(0,11990-total);
     copy.innerHTML=missing ? '<strong>Estás quase!</strong> Faltam <strong class="bc-cart-missing">'+money(missing)+'</strong> para poderes usar os teus <strong>5€ extra</strong> (em compras a partir de 119,90 €).' : '<strong>Boa! Já chegaste aos 119,90 €.</strong> Os teus 5€ extra já podem ser descontados nesta compra.';
     meter.setAttribute('aria-valuenow',String(Math.min(total,11990)/100));
     meter.firstElementChild.style.width=Math.min(100,total/11990*100)+'%';
-    panel.querySelector('.bc-cart-values span').textContent=money(total);
+    panel.querySelector('.bc-cart-values span').textContent=money(total);localizeCart(panel);
   }
   let scheduled=false;
   new MutationObserver(records=>{
@@ -617,6 +648,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
     if(!scheduled){scheduled=true;requestAnimationFrame(()=>{scheduled=false;update();});}
   }).observe(main,{childList:true,subtree:true,characterData:true});
   window.addEventListener('bazarclub:preview-result',()=>{member=true;update();});
+  window.addEventListener('bazarclub:membership',e=>{member=e.detail?.subscribed===true;update();});
   update();
 })();
 
@@ -688,7 +720,8 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       const response=await fetch('https://bzrac.peboys.workers.dev/recommendations/rita-review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items,date,member:true}),signal:controller.signal,credentials:'omit'});
       if(!response.ok)throw Error('Catalogue unavailable');const data=await response.json();
       if(last!==key||!Array.isArray(data.products))return;
-      for(const p of data.products.slice(0,12)){
+      for(const p of data.products.slice(0,8)){
+        if(p.kind==='gift'||p.group==='CP-ONLINE')continue;
         const url=new URL(p.url),img=new URL(p.image);
         if(url.origin!==location.origin||img.protocol!=='https:'||!Number.isSafeInteger(p.priceCents)||p.priceCents<=0)continue;
         const card=document.createElement('article');card.className='bc-rec-card';
@@ -715,7 +748,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
               const probe=new TextDecoder().decode(bytes);
               const charset=(page.headers.get('Content-Type')||'').match(/charset=([^;\s]+)/i)?.[1]||probe.match(/charset=["']?([^\s"'>;]+)/i)?.[1]||'utf-8';
               const doc=new DOMParser().parseFromString(new TextDecoder(charset).decode(bytes),'text/html');
-              variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>0&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group&&(!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod')))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
+              variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>=3&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group&&(!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod')))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
               if(!variants.length)throw Error('Este artigo já não está disponível.');
               const unique=new Map(variants.map(v=>[v.id,v]));variants=[...unique.values()];
               if(!giftSelect){
@@ -734,11 +767,11 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
             added=true;status.textContent='Artigo adicionado.';
             try{await refreshCart();}catch{status.textContent='Artigo adicionado. Atualiza a página para veres o carrinho atualizado.';}
           }catch(e){status.textContent=/^(Este artigo|Não foi possível)/.test(e.message)?e.message:'Não foi possível adicionar este artigo. Tenta novamente.';}
-          finally{busy=false;link.disabled=added;}
+          finally{localizeCart(card);busy=false;link.disabled=added;}
         };
         card.append(picture,name,price);if(giftSelect)card.append(giftSelect);card.append(link,status);track.append(card);
       }
-      section.hidden=!track.children.length;requestAnimationFrame(updateArrows);
+      localizeCart(section);section.hidden=!track.children.length;requestAnimationFrame(updateArrows);
       section.querySelector('header>div').hidden=track.children.length<2;
     }catch(e){if(e.name!=='AbortError')console.warn('BAZARclub: recomendações temporariamente indisponíveis.');}
   }
