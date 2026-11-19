@@ -779,7 +779,7 @@ function orderCartSuggestions(products,missingCents){
         function showPicker(){
           if(!picker.matches(':popover-open')){closePicker();activePicker=picker;picker.showPopover();}
           const r=link.getBoundingClientRect(),w=picker.offsetWidth,h=picker.offsetHeight;
-          const left=Math.max(8,Math.min(r.left,innerWidth-w-8));
+          const left=Math.max(8,Math.min(r.left,document.documentElement.clientWidth-w-8));
           picker.style.left=left+'px';
           const above=r.top-h-12>=8;
           picker.dataset.side=above?'above':'below';
@@ -832,6 +832,7 @@ function orderCartSuggestions(products,missingCents){
   new MutationObserver(records=>{if(records.every(r=>section.contains(r.target)))return;clearTimeout(timer);timer=setTimeout(update,150);}).observe(main,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden','aria-valuenow']});
   update();
 })();
+
 
 
 }
