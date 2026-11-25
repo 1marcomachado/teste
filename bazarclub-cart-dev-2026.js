@@ -768,7 +768,7 @@ function orderCartSuggestions(products,missingCents){
         }
         const link=document.createElement('button');link.type='button';link.className='bc-rec-add';link.textContent='ADICIONAR';link.setAttribute('aria-label','Adicionar '+p.name);
         const status=document.createElement('p');status.className='bc-rec-status';status.setAttribute('role','status');
-        let variants,select,picker,confirm,busy=false,added=false;
+        let variants,select,picker,confirm,busy=false,added=false,availableSizeCount=0;
         function ensurePicker(){
           select=document.createElement('select');select.className='bc-rec-size';select.setAttribute('aria-label','Tamanho de '+p.name);select.hidden=true;
               picker=document.createElement('div');picker.className='bc-size-picker';picker.popover='auto';picker.id='bc-size-'+p.group.replace(/[^a-z0-9-]/gi,'');picker.setAttribute('role','dialog');picker.tabIndex=-1;picker.setAttribute('aria-label',cartTr('Seleciona o tamanho')+' — '+p.name);
@@ -799,11 +799,13 @@ function orderCartSuggestions(products,missingCents){
               const probe=new TextDecoder().decode(bytes);
               const charset=(page.headers.get('Content-Type')||'').match(/charset=([^;\s]+)/i)?.[1]||probe.match(/charset=["']?([^\s"'>;]+)/i)?.[1]||'utf-8';
               const doc=new DOMParser().parseFromString(new TextDecoder(charset).decode(bytes),'text/html');
-              variants=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>=3&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group&&(!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod')))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
+              const available=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>=3&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group);
+              availableSizeCount=new Set(available.map(e=>e.getAttribute('value'))).size;
+              variants=available.filter(e=>!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod'))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
               if(!variants.length)throw Error('Este artigo já não está disponível.');
               const unique=new Map(variants.map(v=>[v.id,v]));variants=[...unique.values()];
             }
-            if(!giftSelect&&variants.length>1){
+            if(!giftSelect&&availableSizeCount>1){
               if(!picker){
                 ensurePicker();
                 const placeholder=new Option(cartTr('Tamanho'),'');placeholder.disabled=true;select.add(placeholder);
@@ -812,7 +814,7 @@ function orderCartSuggestions(products,missingCents){
               if(!confirmed){showPicker();return;}
             }
             if(confirm)confirm.disabled=true;
-            const selected=giftSelect?variants.find(v=>Number(v.sku.split('|')[1])*100===Number(giftSelect.value)):variants.length===1?variants[0]:variants.find(v=>v.id===select.value);if(!selected){status.textContent=giftSelect?'Este valor já não está disponível.':'Seleciona o tamanho para adicionar.';(giftSelect||select).focus();return;}
+            const selected=giftSelect?variants.find(v=>Number(v.sku.split('|')[1])*100===Number(giftSelect.value)):availableSizeCount===1?variants[0]:variants.find(v=>v.id===select.value);if(!selected){status.textContent=giftSelect?'Este valor já não está disponível.':'Seleciona o tamanho para adicionar.';(giftSelect||select).focus();return;}
             const response=await fetch('/api/api.php/addToBasket/5/0/'+selected.id+'/1/0',{credentials:'same-origin',cache:'no-store'});
             if(!response.ok)throw Error('Não foi possível adicionar. Tenta novamente.');
             const data=await response.json();
