@@ -742,7 +742,7 @@ function orderCartSuggestions(products,missingCents){
     if(anchor.hidden||!Number.isSafeInteger(subtotalCents)||subtotalCents>=11990||!products.length||skus.some(s=>!s))return;
     controller=new AbortController();
     const parseMoney=raw=>Math.round(Number((raw||'').replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',','.'))*100);
-    const items=products.map((p,i)=>({sku:skus[i],quantity:Number(p.querySelector('input.qtd')?.value||p.querySelector('select.qnt-select')?.value),unitBeforeMemberCents:parseMoney(p.querySelector('.rdc-shop-prd-price-current')?.textContent)}));
+    const items=products.map((p,i)=>{const quantity=Number(p.querySelector('input.qtd')?.value||p.querySelector('select.qnt-select')?.value);return {sku:skus[i],quantity,unitBeforeMemberCents:Math.round(parseMoney(p.querySelector('.rdc-shop-prd-price-current')?.textContent)/quantity)};});
     let date=new URLSearchParams(location.search).get('bf-date');
     if(!/^2026-11-(0[1-9]|[12]\d|30)$/.test(date||''))date=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
     if(items.some(p=>!Number.isSafeInteger(p.quantity)||p.quantity<1||!Number.isSafeInteger(p.unitBeforeMemberCents)||p.unitBeforeMemberCents<0))return;
