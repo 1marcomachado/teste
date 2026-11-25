@@ -876,6 +876,9 @@ function orderCartSuggestions(products,missingCents){
   async function update(){
     if(busy)return;
     const current=applied(),total=eligibleAfterDiscount(main),date=day();
+    // A rendered voucher proves Redicom accepted the last application. Allow
+    // the same reserved voucher again if the basket later drops and recovers.
+    if(current)try{sessionStorage.removeItem('bc-voucher-apply-'+current.code);}catch{}
     if(current&&!checked){blocked=true;message(0);}
     if(!current && date!=='2026-11-26')return;
     if(current && (date!=='2026-11-26'||!Number.isFinite(total)||total<11990||(checked&&!member))){remove(current);return;}
