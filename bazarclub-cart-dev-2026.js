@@ -596,7 +596,17 @@ function eligibleAfterDiscount(main) {
   const payable = parse(main.querySelector('#rdc-shop-order-resume-desktop .rdc-shop-prd-price-total')?.textContent);
   const shipping = parse(main.querySelector('#shipping')?.closest('tr')?.querySelector('.rdc-shop-prd-price-current')?.textContent);
   if (!Number.isSafeInteger(payable) || !Number.isSafeInteger(shipping) || payable < 0 || shipping < 0) return NaN;
-  return Math.min(eligible, Math.max(0, payable - shipping - gift));
+  // Only restore this campaign's payment voucher. Percentage coupons still
+  // reduce the qualifying total; duplicate mobile markup must not count twice.
+  let ownVoucher=0;
+  for(const row of main.querySelectorAll('#rdc-shop-order-resume-desktop tr')) {
+    const code=row.querySelector('.voucher')?.textContent.trim();
+    if(code && (/^BZ26[A-F0-9]{24}$/.test(code)||code==='BFA5EUR')) {
+      const value=Math.abs(parse(row.querySelector('.rdc-shop-prd-price-current')?.textContent));
+      if(Number.isSafeInteger(value))ownVoucher+=Math.min(500,value);
+    }
+  }
+  return Math.min(eligible, Math.max(0, payable + ownVoucher - shipping - gift));
 }
 
 const cartTranslations=[
@@ -840,6 +850,70 @@ function orderCartSuggestions(products,missingCents){
 })();
 
 
+
+(function(){
+  if(window.BazarClubFormConfig?.preview)return;
+  const main=document.querySelector('.ec_shopping_bag');if(!main)return;
+  const own=code=>/^BZ26[A-F0-9]{24}$/.test(code)||code==='BFA5EUR';
+  const day=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
+  let checked=false,member=false,busy=false,last='',blocked=false;
+  const lang=window.BazarClubFormConfig?.language||'pt';
+  const copy={pt:['A validar os teus 5€ extra…','Não foi possível aplicar os 5€ extra. Tenta novamente antes de continuar.','Os 5€ extra foram aplicados.'],en:['Checking your extra €5…','Unable to apply the extra €5. Please try again before continuing.','Your extra €5 has been applied.'],es:['Comprobando tus 5€ extra…','No se han podido aplicar los 5€ extra. Inténtalo de nuevo antes de continuar.','Tus 5€ extra se han aplicado.']}[lang]||['A validar os teus 5€ extra…','Não foi possível aplicar os 5€ extra. Tenta novamente antes de continuar.','Os 5€ extra foram aplicados.'];
+  const note=document.createElement('p');note.className='bc-voucher-status';note.setAttribute('role','status');note.hidden=true;
+  main.querySelector('.bc-cart-wrapper')?.appendChild(note);
+  const message=i=>{note.textContent=copy[i];note.hidden=false;};
+  function applied(){
+    const rows=[...main.querySelectorAll('#rdc-shop-order-resume-desktop tr')];
+    return rows.map(row=>({code:row.querySelector('.voucher')?.textContent.trim(),link:row.querySelector('a[href*="delVale"]')})).find(v=>v.code&&own(v.code));
+  }
+  function remove(v){
+    blocked=true;message(0);
+    if(!v.link){message(1);return;}
+    const key='bc-voucher-remove-'+v.code;
+    try{if(sessionStorage.getItem(key)){message(1);return;}sessionStorage.setItem(key,'1');}catch{}
+    v.link.click();
+  }
+  async function update(){
+    if(busy)return;
+    const current=applied(),total=eligibleAfterDiscount(main),date=day();
+    if(current&&!checked){blocked=true;message(0);}
+    if(!current && date!=='2026-11-26')return;
+    if(current && (date!=='2026-11-26'||!Number.isFinite(total)||total<11990||(checked&&!member))){remove(current);return;}
+    if(!checked||!member||total<11990||!Number.isFinite(total))return;
+    let saved;try{saved=JSON.parse(localStorage.getItem('bazarclub-recognition-2026'));}catch{}
+    if(!saved?.token||saved.expiresAt<=Date.now())return;
+    const key=[total,current?.code||'',saved.token].join('|');if(key===last)return;last=key;
+    busy=true;blocked=true;message(0);
+    try{
+      const response=await fetch('https://bzrac.peboys.workers.dev/vouchers/claim',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:saved.token,eligibleCents:total}),credentials:'omit',cache:'no-store',signal:AbortSignal.timeout(18000)});
+      const data=await response.json();
+      if(!response.ok||data.status!=='assigned'||!/^BZ26[A-F0-9]{24}$/.test(data.code)||data.amountCents!==500)throw Error('unavailable');
+      // Re-read after the async request: the shopper may have changed quantities.
+      const latest=eligibleAfterDiscount(main);
+      if(!Number.isFinite(latest)||latest<11990||day()!=='2026-11-26'||!member){last='';blocked=!!current;return;}
+      if(current){if(current.code!==data.code){remove(current);return;}try{sessionStorage.removeItem('bc-voucher-remove-'+current.code);}catch{}blocked=false;message(2);return;}
+      const attempt='bc-voucher-apply-'+data.code;
+      if(sessionStorage.getItem(attempt))throw Error('already_attempted');
+      const form=main.querySelector('#rdc-form-voucher-desktop'),input=form?.querySelector('[name="gid"]'),submit=form?.querySelector('[type="submit"]');
+      if(!input||!submit)throw Error('missing_form');
+      sessionStorage.setItem(attempt,'1');input.value=data.code;
+      input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));submit.click();
+      setTimeout(()=>{if(!applied()){blocked=false;message(1);}},5000);
+    }catch{message(1);blocked=!!current;}
+    finally{busy=false;}
+  }
+  // Prevent advancing while an invalid voucher is being removed or checked.
+  main.addEventListener('click',event=>{
+    const target=event.target.closest('a,button,input[type="submit"]');
+    if(!target||target.closest('form[name="frmVales"]'))return;
+    if((busy||blocked)&&/continuar|continue|continuar compra|finalizar/i.test(target.textContent||target.value||'')){event.preventDefault();event.stopImmediatePropagation();note.scrollIntoView({block:'nearest'});}
+  },true);
+  window.addEventListener('bazarclub:membership',e=>{checked=true;member=e.detail?.subscribed===true;last='';update();});
+  let queued=false;new MutationObserver(records=>{if(records.every(r=>r.target===note||note.contains(r.target)))return;if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;update();});}}).observe(main,{childList:true,subtree:true,characterData:true});
+  // Already resolved membership is possible when this bundle loads after the form.
+  if(window.BazarClubForm?.isMember()===true){checked=true;member=true;}
+  update();
+})();
 
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
