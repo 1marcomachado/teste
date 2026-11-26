@@ -866,10 +866,11 @@ function orderCartSuggestions(products,missingCents){
     if(!response.ok||new URL(response.url).origin!==location.origin)throw Error('response');
     return response;
   }
-  async function refresh(before){
+  async function refresh(before,verify){
     const response=await request('/checkout/v1/?id=1');
     const doc=new DOMParser().parseFromString(await response.text(),'text/html');
     if(signature(doc)!==before||signature(document)!==before)throw Error('cart_changed');
+    if(verify&&!verify(doc))throw Error('response');
     const selectors=['#rdc-shop-order-resume-desktop table','table.resumeValues'];
     const pairs=selectors.map(s=>[document.querySelector(s),doc.querySelector(s)]);
     if(pairs.some(([a,b])=>!a||!b)||!doc.querySelector('#rdc-shop-order-resume-desktop .rdc-shop-prd-price-total'))throw Error('summary');
@@ -885,7 +886,7 @@ function orderCartSuggestions(products,missingCents){
     if(api.busy)return false;
     api.busy=true;main.inert=true;main.setAttribute('aria-busy','true');
     const before=signature(document);banner.textContent='A confirmar descontos e totais na loja…';
-    try{await action();await refresh(before);banner.textContent='Resumo atualizado sem recarregar. Totais confirmados pela Redicom.';return true;}
+    try{const verify=await action();await refresh(before,typeof verify==='function'?verify:null);banner.textContent='Resumo atualizado sem recarregar. Totais confirmados pela Redicom.';return true;}
     catch(error){api.failed=true;console.warn('BAZARclub async test:', ['response','cart_changed','summary','shipping_changed','native_confirmation_required','promotion','unknown_response'].includes(error.message)?error.message:'network_or_dom');fallback();return false;}
     finally{if(!api.failed){api.busy=false;main.inert=false;main.removeAttribute('aria-busy');window.dispatchEvent(new Event('bc-cart-refreshed'));}}
   }
@@ -894,9 +895,13 @@ function orderCartSuggestions(products,missingCents){
     const response=await request('/checkout/v1/actions_vale.php',{method:'POST',body,headers:{'X-Requested-With':'XMLHttpRequest'}});
     const raw=await response.text();let value;try{value=JSON.parse(raw);}catch{value=raw;}
     const type=typeof value==='object'?(Array.isArray(value)&&value.length===0?0:Number(value.tp)):Number(String(value).split('||')[0]);
-    if(type===1||type===3||!Number.isFinite(type)){console.warn('BAZARclub native response type:',type);throw Error('native_confirmation_required');}
+    if(type===1||type===3)throw Error('native_confirmation_required');
     if(type===2){const id=typeof value==='object'?value.p:String(value).split('||')[1];if(!/^\d+$/.test(String(id)))throw Error('promotion');await request('/checkout/v1/actions_use_vales.php?'+new URLSearchParams({idc:id,code,return_id:'1'}));}
-    else if(type!==0)throw Error('unknown_response');
+    // Some native success responses have no tp. Only the rendered server cart
+    // can establish success; never infer it from an empty or unknown response.
+    return doc=>code==='BF26'
+      ? [...doc.querySelectorAll('#rdc-shop-order-resume-desktop tr')].some(r=>r.querySelector('a[href*="delVoucher"]')&&/20\s*%/.test(r.textContent))
+      : [...doc.querySelectorAll('#rdc-shop-order-resume-desktop .voucher')].some(e=>e.textContent.trim()===code);
   });
   // Only the reserved link intercepts removals. Manual code forms keep native validation.
   main.addEventListener('click',event=>{
