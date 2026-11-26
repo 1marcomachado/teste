@@ -865,6 +865,34 @@ function orderCartSuggestions(products,missingCents){
   originalCopy?.after(note);
   const showStatus=text=>{note.textContent=text;note.hidden=false;if(originalCopy)originalCopy.hidden=true;};
   const message=i=>showStatus(copy[i]);
+  // Native Redicom submission still reloads the confirmed cart totals.
+  const scrollKey='bc-cart-auto-scroll';
+  try{
+    const saved=JSON.parse(sessionStorage.getItem(scrollKey)||'null');
+    sessionStorage.removeItem(scrollKey);
+    if(saved&&saved.path===location.pathname&&Date.now()-saved.at<30000){
+      const restore=()=>window.scrollTo({top:saved.y,left:0,behavior:'instant'});
+      requestAnimationFrame(()=>requestAnimationFrame(restore));
+      if(document.readyState!=='complete')window.addEventListener('load',restore,{once:true});
+    }
+  }catch{}
+  function submitAutomatic(input,submit,code){
+    // Hide before assigning: neither BF26 nor the member's voucher flashes.
+    const previous=input.getAttribute('style');
+    input.style.setProperty('color','transparent','important');
+    input.style.setProperty('caret-color','transparent','important');
+    input.style.setProperty('text-shadow','none','important');
+    try{sessionStorage.setItem(scrollKey,JSON.stringify({path:location.pathname,y:window.scrollY,at:Date.now()}));}catch{}
+    input.value=code;
+    input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));
+    const restore=()=>{
+      if(input.value===code)input.value='';
+      if(previous===null)input.removeAttribute('style');else input.setAttribute('style',previous);
+    };
+    try{submit.click();}catch(error){restore();throw error;}
+    // A rejected submission must leave manual code entry usable again.
+    setTimeout(restore,5000);
+  }
   function memberDiscount(){
     const coupons=[...main.querySelectorAll('#rdc-shop-order-resume-desktop a[href*="delVoucher="]')];
     // Preserve an already applied coupon; Redicom decides its compatibility.
@@ -877,7 +905,7 @@ function orderCartSuggestions(products,missingCents){
       if(!input||!submit)throw Error('missing_form');
       sessionStorage.setItem('bc-bf26-attempt',fingerprint);busy=true;blocked=true;
       showStatus(({pt:'A aplicar a tua vantagem de membro…',en:'Applying your member benefit…',es:'Aplicando tu ventaja de miembro…'})[lang]||'A aplicar a tua vantagem de membro…');
-      input.value='BF26';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));submit.click();
+      submitAutomatic(input,submit,'BF26');
       setTimeout(()=>{busy=false;blocked=false;last='';update();},5000);
     }catch{busy=false;blocked=false;failed();}
     return false;
@@ -922,8 +950,7 @@ function orderCartSuggestions(products,missingCents){
       if(sessionStorage.getItem(attempt))throw Error('already_attempted');
       const form=main.querySelector('#rdc-form-voucher-desktop'),input=form?.querySelector('[name="gid"]'),submit=form?.querySelector('[type="submit"]');
       if(!input||!submit)throw Error('missing_form');
-      sessionStorage.setItem(attempt,'1');input.value=data.code;
-      input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));submit.click();
+      sessionStorage.setItem(attempt,'1');submitAutomatic(input,submit,data.code);
       setTimeout(()=>{if(!applied()){blocked=false;message(1);}},5000);
     }catch{message(1);blocked=!!current;}
     finally{busy=false;}
