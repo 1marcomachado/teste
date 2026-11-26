@@ -859,21 +859,23 @@ function orderCartSuggestions(products,missingCents){
   let checked=false,member=false,busy=false,last='',blocked=false;
   const lang=window.BazarClubFormConfig?.language||'pt';
   const copy={pt:['A validar os teus 5€ extra…','Não foi possível aplicar os 5€ extra. Tenta novamente antes de continuar.','Os 5€ extra foram aplicados.'],en:['Checking your extra €5…','Unable to apply the extra €5. Please try again before continuing.','Your extra €5 has been applied.'],es:['Comprobando tus 5€ extra…','No se han podido aplicar los 5€ extra. Inténtalo de nuevo antes de continuar.','Tus 5€ extra se han aplicado.']}[lang]||['A validar os teus 5€ extra…','Não foi possível aplicar os 5€ extra. Tenta novamente antes de continuar.','Os 5€ extra foram aplicados.'];
-  const note=document.createElement('p');note.className='bc-voucher-status';note.setAttribute('role','status');note.hidden=true;
-  main.querySelector('.bc-cart-wrapper')?.appendChild(note);
-  const message=i=>{note.textContent=copy[i];note.hidden=false;};
+  const originalCopy=main.querySelector('.bc-cart-summary .bc-cart-copy');
+  const note=document.createElement('p');note.className='bc-cart-copy bc-voucher-status';note.setAttribute('role','status');note.hidden=true;
+  originalCopy?.after(note);
+  const showStatus=text=>{note.textContent=text;note.hidden=false;if(originalCopy)originalCopy.hidden=true;};
+  const message=i=>showStatus(copy[i]);
   function memberDiscount(){
     const coupons=[...main.querySelectorAll('#rdc-shop-order-resume-desktop a[href*="delVoucher="]')];
     // Preserve an already applied coupon; Redicom decides its compatibility.
     if(coupons.length){try{sessionStorage.removeItem('bc-bf26-attempt');}catch{}return true;}
     const fingerprint=[...main.querySelectorAll('[id^="rdc-prd-dkt-"]')].map(row=>[row.querySelector('.rdc-shop-prd-reference-value')?.textContent,row.querySelector('input.qtd')?.value,row.querySelector('.rdc-shop-prd-price-current')?.textContent].join(':')).join('|');
-    const failed=()=>{note.textContent=({pt:'Não foi possível aplicar a vantagem de membro. Verifica o código promocional antes de continuar.',en:'Unable to apply the member benefit. Check the promotional code before continuing.',es:'No se ha podido aplicar la ventaja de miembro. Comprueba el código promocional antes de continuar.'})[lang]||'Não foi possível aplicar a vantagem de membro.';note.hidden=false;};
+    const failed=()=>showStatus(({pt:'Não foi possível aplicar a vantagem de membro. Verifica o código promocional antes de continuar.',en:'Unable to apply the member benefit. Check the promotional code before continuing.',es:'No se ha podido aplicar la ventaja de miembro. Comprueba el código promocional antes de continuar.'})[lang]||'Não foi possível aplicar a vantagem de membro.');
     try{
       if(!fingerprint||sessionStorage.getItem('bc-bf26-attempt')===fingerprint){failed();blocked=false;return false;}
       const form=main.querySelector('#rdc-form-voucher-desktop'),input=form?.querySelector('[name="gid"]'),submit=form?.querySelector('[type="submit"]');
       if(!input||!submit)throw Error('missing_form');
       sessionStorage.setItem('bc-bf26-attempt',fingerprint);busy=true;blocked=true;
-      note.textContent=({pt:'A aplicar a tua vantagem de membro…',en:'Applying your member benefit…',es:'Aplicando tu ventaja de miembro…'})[lang]||'A aplicar a tua vantagem de membro…';note.hidden=false;
+      showStatus(({pt:'A aplicar a tua vantagem de membro…',en:'Applying your member benefit…',es:'Aplicando tu ventaja de miembro…'})[lang]||'A aplicar a tua vantagem de membro…');
       input.value='BF26';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));submit.click();
       setTimeout(()=>{busy=false;blocked=false;last='';update();},5000);
     }catch{busy=false;blocked=false;failed();}
@@ -902,7 +904,7 @@ function orderCartSuggestions(products,missingCents){
     if(!checked||!member)return;
     // BF26 is applied first, including baskets below the extra-5-euro minimum.
     if(date==='2026-11-26'&&!memberDiscount())return;
-    if(total<11990||!Number.isFinite(total))return;
+    if(total<11990||!Number.isFinite(total)){note.hidden=true;if(originalCopy)originalCopy.hidden=false;return;}
     let saved;try{saved=JSON.parse(localStorage.getItem('bazarclub-recognition-2026'));}catch{}
     if(!saved?.token||saved.expiresAt<=Date.now())return;
     const key=[total,current?.code||'',saved.token].join('|');if(key===last)return;last=key;
