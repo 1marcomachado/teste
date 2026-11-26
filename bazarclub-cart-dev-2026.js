@@ -862,6 +862,23 @@ function orderCartSuggestions(products,missingCents){
   const note=document.createElement('p');note.className='bc-voucher-status';note.setAttribute('role','status');note.hidden=true;
   main.querySelector('.bc-cart-wrapper')?.appendChild(note);
   const message=i=>{note.textContent=copy[i];note.hidden=false;};
+  function memberDiscount(){
+    const coupons=[...main.querySelectorAll('#rdc-shop-order-resume-desktop a[href*="delVoucher="]')];
+    // Preserve an already applied coupon; Redicom decides its compatibility.
+    if(coupons.length){try{sessionStorage.removeItem('bc-bf26-attempt');}catch{}return true;}
+    const fingerprint=[...main.querySelectorAll('[id^="rdc-prd-dkt-"]')].map(row=>[row.querySelector('.rdc-shop-prd-reference-value')?.textContent,row.querySelector('input.qtd')?.value,row.querySelector('.rdc-shop-prd-price-current')?.textContent].join(':')).join('|');
+    const failed=()=>{note.textContent=({pt:'Não foi possível aplicar a vantagem de membro. Verifica o código promocional antes de continuar.',en:'Unable to apply the member benefit. Check the promotional code before continuing.',es:'No se ha podido aplicar la ventaja de miembro. Comprueba el código promocional antes de continuar.'})[lang]||'Não foi possível aplicar a vantagem de membro.';note.hidden=false;};
+    try{
+      if(!fingerprint||sessionStorage.getItem('bc-bf26-attempt')===fingerprint){failed();blocked=false;return false;}
+      const form=main.querySelector('#rdc-form-voucher-desktop'),input=form?.querySelector('[name="gid"]'),submit=form?.querySelector('[type="submit"]');
+      if(!input||!submit)throw Error('missing_form');
+      sessionStorage.setItem('bc-bf26-attempt',fingerprint);busy=true;blocked=true;
+      note.textContent=({pt:'A aplicar a tua vantagem de membro…',en:'Applying your member benefit…',es:'Aplicando tu ventaja de miembro…'})[lang]||'A aplicar a tua vantagem de membro…';note.hidden=false;
+      input.value='BF26';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));submit.click();
+      setTimeout(()=>{busy=false;blocked=false;last='';update();},5000);
+    }catch{busy=false;blocked=false;failed();}
+    return false;
+  }
   function applied(){
     const rows=[...main.querySelectorAll('#rdc-shop-order-resume-desktop tr')];
     return rows.map(row=>({code:row.querySelector('.voucher')?.textContent.trim(),link:row.querySelector('a[href*="delVale"]')})).find(v=>v.code&&own(v.code));
@@ -882,7 +899,10 @@ function orderCartSuggestions(products,missingCents){
     if(current&&!checked){blocked=true;message(0);}
     if(!current && date!=='2026-11-26')return;
     if(current && (date!=='2026-11-26'||!Number.isFinite(total)||total<11990||(checked&&!member))){remove(current);return;}
-    if(!checked||!member||total<11990||!Number.isFinite(total))return;
+    if(!checked||!member)return;
+    // BF26 is applied first, including baskets below the extra-5-euro minimum.
+    if(date==='2026-11-26'&&!memberDiscount())return;
+    if(total<11990||!Number.isFinite(total))return;
     let saved;try{saved=JSON.parse(localStorage.getItem('bazarclub-recognition-2026'));}catch{}
     if(!saved?.token||saved.expiresAt<=Date.now())return;
     const key=[total,current?.code||'',saved.token].join('|');if(key===last)return;last=key;
