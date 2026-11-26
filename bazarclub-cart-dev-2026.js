@@ -886,7 +886,7 @@ function orderCartSuggestions(products,missingCents){
     api.busy=true;main.inert=true;main.setAttribute('aria-busy','true');
     const before=signature(document);banner.textContent='A confirmar descontos e totais na loja…';
     try{await action();await refresh(before);banner.textContent='Resumo atualizado sem recarregar. Totais confirmados pela Redicom.';return true;}
-    catch{api.failed=true;fallback();return false;}
+    catch(error){api.failed=true;console.warn('BAZARclub async test:', ['response','cart_changed','summary','shipping_changed','native_confirmation_required','promotion','unknown_response'].includes(error.message)?error.message:'network_or_dom');fallback();return false;}
     finally{if(!api.failed){api.busy=false;main.inert=false;main.removeAttribute('aria-busy');window.dispatchEvent(new Event('bc-cart-refreshed'));}}
   }
   api.apply=code=>run(async()=>{
