@@ -326,7 +326,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       const button=form.querySelector('button'); button.disabled=true; busy=true; status('A verificar a tua adesão…');
       try {
         if (config.preview) { form.reset(); showResult('member'); return; }
-        const data=await checkMembership({email:form.elements.email.value.trim(),requestWelcome:!config.memberCheckOnly});
+        const data=await checkMembership({email:form.elements.email.value.trim(),requestWelcome:!config.memberCheckOnly&&new URLSearchParams(location.search).get('bf-async-test')!=='1'});
         if (data.subscribed) { if(config.memberCheckOnly){const u=new URL(location.href);u.searchParams.delete('bf-member-check-only');history.replaceState(null,'',u.href);} form.reset(); showResult('member'); }
         else status('Não encontrámos uma subscrição ativa com este email. Podes aderir no separador “Ainda não sou membro”.');
       } catch { status('Não foi possível verificar a adesão. Tenta novamente.'); }
@@ -336,7 +336,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       e.preventDefault(); if (busy) return;
       const form = e.currentTarget;
       if (!form.reportValidity()) return;
-      if(config.memberCheckOnly){status('Usa o separador Já sou membro para esta verificação.');return;}
+      if(config.memberCheckOnly||new URLSearchParams(location.search).get('bf-async-test')==='1'){status('Usa o separador Já sou membro para esta verificação.');return;}
       const values = Object.fromEntries(new FormData(form));
       values.consent = form.elements.consent.checked;
       const country = document.querySelector('#country option:checked');
@@ -853,6 +853,60 @@ function orderCartSuggestions(products,missingCents){
 
 
 (function(){
+  if(new URLSearchParams(location.search).get('bf-async-test')!=='1'||window.BazarClubFormConfig?.preview)return;
+  const main=document.querySelector('.ec_shopping_bag');if(!main)return;
+  const api={busy:false};window.BazarClubCartAsync=api;
+  const banner=document.createElement('p');banner.id='bc-async-test-status';banner.setAttribute('role','status');
+  banner.textContent='Teste reservado: atualização sem recarregar. Nenhuma compra será concluída automaticamente.';
+  banner.style.cssText='padding:12px;border:1px solid #ccc;background:#fff;font-size:12px';main.prepend(banner);
+  const signature=root=>JSON.stringify([...root.querySelectorAll('[id^="rdc-prd-dkt-"]')].map(r=>[r.id,r.querySelector('input.qtd')?.value]));
+  const fallback=()=>{banner.textContent='A recuperar o resumo confirmado pela loja…';const url=new URL(location.href);url.searchParams.delete('bf-async-test');location.replace(url.href);};
+  async function request(url,options={}){
+    const response=await fetch(url,{credentials:'same-origin',cache:'no-store',...options,signal:AbortSignal.timeout(15000)});
+    if(!response.ok||new URL(response.url).origin!==location.origin)throw Error('response');
+    return response;
+  }
+  async function refresh(before){
+    const response=await request('/checkout/v1/?id=1');
+    const doc=new DOMParser().parseFromString(await response.text(),'text/html');
+    if(signature(doc)!==before||signature(document)!==before)throw Error('cart_changed');
+    const selectors=['#rdc-shop-order-resume-desktop table','table.resumeValues'];
+    const pairs=selectors.map(s=>[document.querySelector(s),doc.querySelector(s)]);
+    if(pairs.some(([a,b])=>!a||!b)||!doc.querySelector('#rdc-shop-order-resume-desktop .rdc-shop-prd-price-total'))throw Error('summary');
+    if(document.querySelector('#shipping')?.value!==doc.querySelector('#shipping')?.value)throw Error('shipping_changed');
+    // Replace server-rendered totals, never calculate a discount in the browser.
+    for(const [old,fresh] of pairs){fresh.querySelectorAll('script').forEach(n=>n.remove());old.replaceWith(fresh);}
+    for(const row of doc.querySelectorAll('[id^="rdc-prd-dkt-"]')){
+      const old=document.getElementById(row.id)?.querySelector('.rdc-shop-prd-price-current');
+      const fresh=row.querySelector('.rdc-shop-prd-price-current');if(old&&fresh)old.replaceChildren(...fresh.childNodes);
+    }
+  }
+  async function run(action){
+    if(api.busy)return false;
+    api.busy=true;main.inert=true;main.setAttribute('aria-busy','true');
+    const before=signature(document);banner.textContent='A confirmar descontos e totais na loja…';
+    try{await action();await refresh(before);banner.textContent='Resumo atualizado sem recarregar. Totais confirmados pela Redicom.';return true;}
+    catch{api.failed=true;fallback();return false;}
+    finally{if(!api.failed){api.busy=false;main.inert=false;main.removeAttribute('aria-busy');window.dispatchEvent(new Event('bc-cart-refreshed'));}}
+  }
+  api.apply=code=>run(async()=>{
+    const body=new URLSearchParams({ship:document.querySelector('#shipping')?.value||'0',cp:'',distrito:'',gid:code});
+    const response=await request('/checkout/v1/actions_vale.php',{method:'POST',body});
+    const raw=await response.text();let value;try{value=JSON.parse(raw);}catch{value=raw;}
+    const type=typeof value==='object'?(Array.isArray(value)&&value.length===0?0:Number(value.tp)):Number(String(value).split('||')[0]);
+    if(type===1||type===3||!Number.isFinite(type))throw Error('native_confirmation_required');
+    if(type===2){const id=typeof value==='object'?value.p:String(value).split('||')[1];if(!/^\d+$/.test(String(id)))throw Error('promotion');await request('/checkout/v1/actions_use_vales.php?'+new URLSearchParams({idc:id,code,return_id:'1'}));}
+    else if(type!==0)throw Error('unknown_response');
+  });
+  // Only the reserved link intercepts removals. Manual code forms keep native validation.
+  main.addEventListener('click',event=>{
+    const link=event.target.closest('a[href*="delVale"],a[href*="delVoucher"]');if(!link)return;
+    event.preventDefault();event.stopImmediatePropagation();if(api.busy)return;
+    run(()=>request(link.href));
+  },true);
+})();
+
+(function(){
   if(window.BazarClubFormConfig?.preview)return;
   const main=document.querySelector('.ec_shopping_bag');if(!main)return;
   const own=code=>/^BZ26[A-F0-9]{24}$/.test(code)||code==='BFA5EUR';
@@ -877,6 +931,7 @@ function orderCartSuggestions(products,missingCents){
     }
   }catch{}
   function submitAutomatic(input,submit,code){
+    if(window.BazarClubCartAsync){window.BazarClubCartAsync.apply(code);return;}
     // Hide before assigning: neither BF26 nor the member's voucher flashes.
     const previous=input.getAttribute('style');
     input.style.setProperty('color','transparent','important');
@@ -922,7 +977,7 @@ function orderCartSuggestions(products,missingCents){
     v.link.click();
   }
   async function update(){
-    if(busy)return;
+    if(busy||window.BazarClubCartAsync?.busy)return;
     const current=applied(),total=eligibleAfterDiscount(main),date=day();
     // A rendered voucher proves Redicom accepted the last application. Allow
     // the same reserved voucher again if the basket later drops and recovers.
@@ -962,6 +1017,7 @@ function orderCartSuggestions(products,missingCents){
     if((busy||blocked)&&/continuar|continue|continuar compra|finalizar/i.test(target.textContent||target.value||'')){event.preventDefault();event.stopImmediatePropagation();note.scrollIntoView({block:'nearest'});}
   },true);
   window.addEventListener('bazarclub:membership',e=>{checked=true;member=e.detail?.subscribed===true;last='';update();});
+  window.addEventListener('bc-cart-refreshed',()=>{busy=false;blocked=false;last='';update();});
   let queued=false;new MutationObserver(records=>{if(records.every(r=>r.target===note||note.contains(r.target)))return;if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;update();});}}).observe(main,{childList:true,subtree:true,characterData:true});
   // Already resolved membership is possible when this bundle loads after the form.
   if(window.BazarClubForm?.isMember()===true){checked=true;member=true;}
