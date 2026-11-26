@@ -891,10 +891,10 @@ function orderCartSuggestions(products,missingCents){
   }
   api.apply=code=>run(async()=>{
     const body=new URLSearchParams({ship:document.querySelector('#shipping')?.value||'0',cp:'',distrito:'',gid:code});
-    const response=await request('/checkout/v1/actions_vale.php',{method:'POST',body});
+    const response=await request('/checkout/v1/actions_vale.php',{method:'POST',body,headers:{'X-Requested-With':'XMLHttpRequest'}});
     const raw=await response.text();let value;try{value=JSON.parse(raw);}catch{value=raw;}
     const type=typeof value==='object'?(Array.isArray(value)&&value.length===0?0:Number(value.tp)):Number(String(value).split('||')[0]);
-    if(type===1||type===3||!Number.isFinite(type))throw Error('native_confirmation_required');
+    if(type===1||type===3||!Number.isFinite(type)){console.warn('BAZARclub native response type:',type);throw Error('native_confirmation_required');}
     if(type===2){const id=typeof value==='object'?value.p:String(value).split('||')[1];if(!/^\d+$/.test(String(id)))throw Error('promotion');await request('/checkout/v1/actions_use_vales.php?'+new URLSearchParams({idc:id,code,return_id:'1'}));}
     else if(type!==0)throw Error('unknown_response');
   });
