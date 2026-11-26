@@ -852,15 +852,28 @@ function orderCartSuggestions(products,missingCents){
 
 
 
+function refreshedCheckoutTracking(doc){
+  const marker='function trakingShoppingBag()';
+  const script=[...doc.querySelectorAll('script')].find(s=>s.textContent.includes(marker));
+  if(!script)throw Error('tracking_missing');
+  const source=script.textContent.slice(script.textContent.indexOf(marker)).trim();
+  // Compile only the native function expression. Do not execute page scripts
+  // or emit another view_cart/begin_checkout while refreshing the summary.
+  const fn=new Function('return ('+source+');')();
+  if(typeof fn!=='function')throw Error('tracking_missing');
+  return fn;
+}
+
 (function(){
-  if(new URLSearchParams(location.search).get('bf-async-test')!=='1'||window.BazarClubFormConfig?.preview)return;
+  if(new URLSearchParams(location.search).get('bf-async-off')==='1'||window.BazarClubFormConfig?.preview)return;
   const main=document.querySelector('.ec_shopping_bag');if(!main)return;
   const api={busy:false};window.BazarClubCartAsync=api;
   const banner=document.createElement('p');banner.id='bc-async-test-status';banner.setAttribute('role','status');
-  banner.textContent='Teste reservado: atualização sem recarregar. Nenhuma compra será concluída automaticamente.';
-  banner.style.cssText='padding:12px;border:1px solid #ccc;background:#fff;font-size:12px';main.prepend(banner);
+  banner.textContent='';banner.hidden=true;
+  banner.style.cssText='padding:8px 0;font-size:12px';
+  const summary=main.querySelector('.bc-cart-summary');(summary||main).append(banner);
   const signature=root=>JSON.stringify([...root.querySelectorAll('[id^="rdc-prd-dkt-"]')].map(r=>[r.id,r.querySelector('input.qtd')?.value]));
-  const fallback=()=>{banner.textContent='A recuperar o resumo confirmado pela loja…';const url=new URL(location.href);url.searchParams.delete('bf-async-test');location.replace(url.href);};
+  const fallback=()=>{banner.textContent='A atualizar o carrinho…';const url=new URL(location.href);url.searchParams.delete('bf-async-test');url.searchParams.set('bf-async-off','1');location.replace(url.href);};
   async function request(url,options={}){
     const response=await fetch(url,{credentials:'same-origin',cache:'no-store',...options,signal:AbortSignal.timeout(15000)});
     if(!response.ok||new URL(response.url).origin!==location.origin)throw Error('response');
@@ -875,18 +888,20 @@ function orderCartSuggestions(products,missingCents){
     const pairs=selectors.map(s=>[document.querySelector(s),doc.querySelector(s)]);
     if(pairs.some(([a,b])=>!a||!b)||!doc.querySelector('#rdc-shop-order-resume-desktop .rdc-shop-prd-price-total'))throw Error('summary');
     if(document.querySelector('#shipping')?.value!==doc.querySelector('#shipping')?.value)throw Error('shipping_changed');
+    const tracking=typeof window.trakingShoppingBag==='function'?refreshedCheckoutTracking(doc):null;
     // Replace server-rendered totals, never calculate a discount in the browser.
     for(const [old,fresh] of pairs){fresh.querySelectorAll('script').forEach(n=>n.remove());old.replaceWith(fresh);}
     for(const row of doc.querySelectorAll('[id^="rdc-prd-dkt-"]')){
       const old=document.getElementById(row.id)?.querySelector('.rdc-shop-prd-price-current');
       const fresh=row.querySelector('.rdc-shop-prd-price-current');if(old&&fresh)old.replaceChildren(...fresh.childNodes);
     }
+    if(tracking)window.trakingShoppingBag=tracking;
   }
   async function run(action){
     if(api.busy)return false;
     api.busy=true;main.inert=true;main.setAttribute('aria-busy','true');
-    const before=signature(document);banner.textContent='A confirmar descontos e totais na loja…';
-    try{const verify=await action();await refresh(before,typeof verify==='function'?verify:null);banner.textContent='Resumo atualizado sem recarregar. Totais confirmados pela Redicom.';return true;}
+    const before=signature(document);banner.hidden=false;banner.textContent=({pt:'A atualizar os teus descontos…',en:'Updating your discounts…',es:'Actualizando tus descuentos…'})[window.BazarClubFormConfig?.language]||'A atualizar os teus descontos…';
+    try{const verify=await action();await refresh(before,typeof verify==='function'?verify:null);banner.hidden=true;banner.textContent='';return true;}
     catch(error){api.failed=true;console.warn('BAZARclub async test:', ['response','cart_changed','summary','shipping_changed','native_confirmation_required','promotion','unknown_response'].includes(error.message)?error.message:'network_or_dom');fallback();return false;}
     finally{if(!api.failed){api.busy=false;main.inert=false;main.removeAttribute('aria-busy');window.dispatchEvent(new Event('bc-cart-refreshed'));}}
   }
@@ -903,7 +918,7 @@ function orderCartSuggestions(products,missingCents){
       ? [...doc.querySelectorAll('#rdc-shop-order-resume-desktop tr')].some(r=>r.querySelector('a[href*="delVoucher"]')&&/20\s*%/.test(r.textContent))
       : [...doc.querySelectorAll('#rdc-shop-order-resume-desktop .voucher')].some(e=>e.textContent.trim()===code);
   });
-  // Only the reserved link intercepts removals. Manual code forms keep native validation.
+  // Manual code forms keep native validation.
   main.addEventListener('click',event=>{
     const link=event.target.closest('a[href*="delVale"],a[href*="delVoucher"]');if(!link)return;
     event.preventDefault();event.stopImmediatePropagation();if(api.busy)return;
