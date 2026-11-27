@@ -891,7 +891,9 @@ function refreshedCheckoutTracking(doc){
   }
   async function refresh(before,verify){
     const response=await request('/checkout/v1/?id=1');
-    const doc=new DOMParser().parseFromString(await response.text(),'text/html');
+    const charset = /charset\s*=\s*["']?([^;\s"']+)/i.exec(response.headers.get('Content-Type') || '');
+    const html = new TextDecoder(charset?.[1] || document.characterSet).decode(await response.arrayBuffer());
+    const doc=new DOMParser().parseFromString(html,'text/html');
     if(signature(doc)!==before||signature(document)!==before)throw Error('cart_changed');
     if(verify&&!verify(doc))throw Error('response');
     const selectors=['#rdc-shop-order-resume-desktop table','table.resumeValues'];
