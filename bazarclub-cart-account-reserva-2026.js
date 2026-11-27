@@ -34,7 +34,7 @@
     const id=preview?'':accountId(window,document);
     window.BazarClubFormConfig={...(window.BazarClubFormConfig||{}),userId:id};
     const script=document.createElement('script');script.defer=true;
-    script.src=preview?'https://cdn.jsdelivr.net/gh/1marcomachado/teste@f940180e920425e0a0f6bdffa89742723cb432fd/bazarclub-cart-dev-2026.js':'https://cdn.jsdelivr.net/gh/1marcomachado/teste@5a4d92729cc5b61dbd706728ea89e8ef77a3abc4/bazarclub-cart-reserva-27-30.js';
+    script.src=preview?'https://cdn.jsdelivr.net/gh/1marcomachado/teste@f940180e920425e0a0f6bdffa89742723cb432fd/bazarclub-cart-dev-2026.js':'https://cdn.jsdelivr.net/gh/1marcomachado/teste@96746f3d7c63e779da17ef21846ef94d09043b56/bazarclub-cart-reserva-27-30.js';
     document.head.appendChild(script);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
