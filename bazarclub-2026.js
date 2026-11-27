@@ -43,7 +43,9 @@ const root=new URL('.',document.currentScript.src);
     ['Já te reconhecemos como membro. ','We recognise you as a member. ','Ya te reconocemos como miembro. '],['A tua adesão está confirmada. ','Your membership is confirmed. ','Tu suscripción está confirmada. '],
     ['A 26 de novembro, tens acesso antecipado à Black Friday.','On 26 November, you get early access to Black Friday.','El 26 de noviembre tienes acceso anticipado al Black Friday.'],
     ['Hoje tens acesso antecipado à Black Friday.','You have early access to Black Friday today.','Hoy tienes acceso anticipado al Black Friday.'],
-    ['O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 30 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 30 de noviembre en compras a partir de 119,90 €.'],
+    ['Só hoje, podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.','Today only, use the extra €5 on eligible purchases of €119.90 or more.','Solo hoy puedes usar los 5€ extra en compras elegibles a partir de 119,90 €.'],
+    ['Podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.','You can use the extra €5 on eligible purchases of €119.90 or more.','Puedes usar los 5€ extra en compras elegibles a partir de 119,90 €.'],
+    ['O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 29 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 29 de noviembre en compras a partir de 119,90 €.'],
     ['Vamos reconhecer a tua adesão neste dispositivo.','We’ll remember your membership on this device.','Recordaremos tu suscripción en este dispositivo.'],
     ['Pré-visualização. Os formulários simulam a adesão e a verificação.','Preview. The forms simulate sign-up and membership verification.','Vista previa. Los formularios simulan la suscripción y la verificación.'],
     ['ADESÃO SIMULADA','SIGN-UP SIMULATED','SUSCRIPCIÓN SIMULADA'],
@@ -96,7 +98,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
 const originalConfig=window.BazarClubFormConfig||{};
 let nativeUserId=originalConfig.userId || '';
 if(!nativeUserId && !demo)for(const entry of window.dataLayer||[]){const id=entry?.user_id || entry?.user_properties?.user_id || (entry?.[0]==='config' && entry?.[2]?.user_id);if(id && !/[{}]/.test(String(id)))nativeUserId=String(id);}
-window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,announcement:true,announcementTarget:'#header',announcementReplace:false,hideNativeAnnouncement:true,useNativeShipping:true,replaceNewsletterLink:true,campaignBar:true,campaignBarTarget:'#main',campaignBarPlacement:'prepend',clubLogo:new URL('74f3863aba1807ce1bb718a3859357d6.png',root).href,campaignArtBase:new URL('campaign-art-2026/',root).href,campaignImage:image('desktop'),campaignImageMobile:image('mobile'),campaignImageSide:image('side'),assetData:Object.fromEntries(["27fd35683d78d84fcdfaf8210f4c3d90.png","3d4b1fd25f95056265f009b9eb76bdcc.png","44b74a0c9f480d3bef17d84790eb9edf.png","4b14242983f2fd1d1be93f3ea553e672.png","f2f7fb52b9cc797862f6ef2553ca9538.png"].map(n=>[n,new URL(n,root).href])),preview:activationState.preview,demoControls:false,...(demo?{reviewMode:true,productPreview,productClubLogo:new URL('83298af6331a206e81540b0912dd9510.png',root).href,autoPopupTest:!productPreview,userId:''}:{})};
+window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,announcement:true,announcementTarget:'#header',announcementReplace:false,hideNativeAnnouncement:true,useNativeShipping:true,replaceNewsletterLink:true,campaignBar:true,campaignBarTarget:'#main',campaignBarPlacement:'prepend',clubLogo:new URL('74f3863aba1807ce1bb718a3859357d6.png',root).href,campaignArtBase:new URL('campaign-art-2026/',root).href,campaignImage:image('desktop'),campaignImageMobile:image('mobile'),campaignImageSide:image('side'),assetData:Object.fromEntries(["27fd35683d78d84fcdfaf8210f4c3d90.png","3d4b1fd25f95056265f009b9eb76bdcc.png","44b74a0c9f480d3bef17d84790eb9edf.png","4b14242983f2fd1d1be93f3ea553e672.png","f2f7fb52b9cc797862f6ef2553ca9538.png"].map(n=>[n,new URL(n,root).href])),preview:activationState.preview,demoControls:false,productPreview,productClubLogo:new URL('83298af6331a206e81540b0912dd9510.png',root).href,...(demo?{reviewMode:true,autoPopupTest:!productPreview,userId:''}:{})};
 (function () {
   'use strict';
   const modes={'#abrir-bf-lateral':'side','#abrir-bf-popup':'popup'};
@@ -198,6 +200,12 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     if(config.preview && /^2026-11-(0[1-9]|[12][0-9]|30)$/.test(date || ''))return date;
     return new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
   }
+  function voucherMessage(date) {
+    if(date>'2026-11-30')return '';
+    if(date==='2026-11-30')return tr('Só hoje, podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.');
+    if(date>='2026-11-27')return tr('O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.');
+    return tr('Podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.');
+  }
   function campaignBenefit(date) {
     if(date<'2026-11-26')return tr('A 26 de novembro, tens acesso antecipado à Black Friday.');
     if(date==='2026-11-26')return tr('Hoje tens acesso antecipado à Black Friday.');
@@ -247,7 +255,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     result.querySelector('h2').textContent=tr(member ? 'BEM-VINDO DE VOLTA!' : active ? 'BEM-VINDO AO BAZARCLUB!' : 'FALTA CONFIRMAR A TUA ADESÃO');
     const date=campaignDate();
     const benefit=campaignBenefit(date);
-    const voucher=date<='2026-11-30' ? tr('O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.') : '';
+    const voucher=voucherMessage(date);
     result.querySelector('.bc-result-copy').textContent=active
         ? [tr(member ? 'Já te reconhecemos como membro. ' : 'A tua adesão está confirmada. ').trim(),benefit,voucher,tr('Vamos reconhecer a tua adesão neste dispositivo.')].filter(Boolean).join(' ')
         : tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
@@ -611,7 +619,17 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const info=d.querySelector('#main.product #fixedDiv .product-info');
     const price=info?.querySelector('.price');
     const name=info?.querySelector('.name');
-    if(!price || !name || !(eve || ['early','blackfriday','final'].includes(currentPhase)))return;
+    if(!price || !name)return;
+    const existing=info.querySelector('.bc-product-preview');
+    if(existing && existing.dataset.date===date)return;
+    if(existing){
+      existing.remove();
+      info.querySelector('.bc-product-flags')?.remove();
+      info.querySelector('.bc-product-preview-date')?.remove();
+      info.classList.remove('bc-product-info-preview');
+    }
+    if(!config.productPreview && !/5\s*€|€\s*5/.test(info.querySelector('.flags')?.textContent || ''))return;
+    if(!(eve || ['early','blackfriday','final'].includes(currentPhase)))return;
 
     const language=config.language || 'pt';
     const labels={
@@ -630,8 +648,7 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
       extra.textContent=t.memberExtra;
       flags.appendChild(extra);
     }
-    info.classList.add('bc-product-info-preview');
-    name.before(flags);
+    if(config.productPreview){info.classList.add('bc-product-info-preview');name.before(flags);}
 
     const card=d.createElement('div');
     card.className='bc-product-preview';
@@ -677,7 +694,8 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     note.className='bc-product-preview-date';
     const label=new Intl.DateTimeFormat(language,{day:'numeric',month:'long',timeZone:'UTC'}).format(new Date(date));
     note.textContent=t.preview+' · '+label;
-    price.after(card,note);
+    price.after(card);
+    if(config.productPreview)card.after(note);
   }
   function install(w){
     const d=w.document,config=w.BazarClubFormConfig||{};
@@ -698,8 +716,8 @@ window.BazarClubFormConfig={...originalConfig,userId:nativeUserId,language:lang,
     const messageGroup=d.createElement('span');messageGroup.className='bc-campaign-message-group';messageGroup.append(text,d.createTextNode(' '),cta);
     link.append(badge,messageGroup,arrow);bar.appendChild(link);
     if(config.campaignBarPlacement==='prepend')target.prepend(bar);else target.insertAdjacentElement('afterend',bar);
-    if(config.productPreview)installProductPreview(d,config,simulated);
     function render(){
+      if(!demo || config.productPreview)installProductPreview(d,config,simulated||lisbonDate(new Date()));
       const value=message(simulated||lisbonDate(new Date()),config.language,member);
       bar.hidden=!value;if(!value)return;
       bar.dataset.phase=value.phase;text.textContent=value.text;cta.textContent=value.cta;

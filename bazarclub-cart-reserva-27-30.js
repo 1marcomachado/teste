@@ -33,7 +33,8 @@ if(!document.querySelector('.wrapper-shoppingbag-product-list'))return;
     ['Já te reconhecemos como membro. ','We recognise you as a member. ','Ya te reconocemos como miembro. '],['A tua adesão está confirmada. ','Your membership is confirmed. ','Tu suscripción está confirmada. '],
     ['A 26 de novembro, tens acesso antecipado à Black Friday.','On 26 November, you get early access to Black Friday.','El 26 de noviembre tienes acceso anticipado al Black Friday.'],
     ['Hoje tens acesso antecipado à Black Friday.','You have early access to Black Friday today.','Hoy tienes acceso anticipado al Black Friday.'],
-    ['O vale de 5€ extra é válido até 30 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 30 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 30 de noviembre en compras a partir de 119,90 €.'],
+    ['Só hoje, podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.','Today only, use the extra €5 on eligible purchases of €119.90 or more.','Solo hoy puedes usar los 5€ extra en compras elegibles a partir de 119,90 €.'],
+    ['O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.','The extra €5 voucher is valid through 29 November on orders of €119.90 or more.','El vale de 5€ extra es válido hasta el 29 de noviembre en compras a partir de 119,90 €.'],
     ['Vamos reconhecer a tua adesão neste dispositivo.','We’ll remember your membership on this device.','Recordaremos tu suscripción en este dispositivo.'],
     ['Pré-visualização. Os formulários simulam a adesão e a verificação.','Preview. The forms simulate sign-up and membership verification.','Vista previa. Los formularios simulan la suscripción y la verificación.'],
     ['ADESÃO SIMULADA','SIGN-UP SIMULATED','SUSCRIPCIÓN SIMULADA'],
@@ -127,6 +128,12 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
     if(config.preview && /^2026-11-(0[1-9]|[12][0-9]|30)$/.test(date || ''))return date;
     return new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Lisbon'});
   }
+  function voucherMessage(date) {
+    if(date>'2026-11-30')return '';
+    if(date==='2026-11-30')return tr('Só hoje, podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.');
+    if(date>='2026-11-27')return tr('O vale de 5€ extra é válido até 29 de novembro em compras a partir de 119,90 €.');
+    return tr('Podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.');
+  }
   function campaignBenefit(date) {
     if(date<'2026-11-26')return tr('A 26 de novembro, tens acesso antecipado à Black Friday.');
     if(date==='2026-11-26')return tr('Hoje tens acesso antecipado à Black Friday.');
@@ -181,6 +188,7 @@ const style=document.createElement('style');style.textContent=".bc-dialog{border
       const benefit=date<'2026-11-26' ? 'No dia 26 de novembro vais ter acesso antecipado + 5€ extra acumuláveis com os descontos da Black Friday.' : date==='2026-11-26' ? 'Tens agora acesso antecipado + 5€ extra acumuláveis com os descontos da Black Friday.' : 'Tens agora 5€ extra acumuláveis com os descontos da Black Friday.';
       const end=document.createElement(date<'2026-11-26'?'span':'b');
       end.textContent=tr(date<'2026-11-26'?'A partir de 26 de novembro, podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.':'Podes usar os 5€ extra em compras elegíveis a partir de 119,90 €.');
+      if(date>='2026-11-27')end.textContent=voucherMessage(date);
       if(date>='2026-11-26')end.style.color='#EF4036';
       copy.replaceChildren(lead,document.createTextNode(tr(benefit)+' '),end);
     }else copy.textContent=tr('Recebemos o teu pedido. Se receberes um email de confirmação, segue as instruções para concluir a adesão. As vantagens ficam disponíveis quando a subscrição estiver ativa.');
@@ -783,6 +791,40 @@ function orderCartSuggestions(products,missingCents){
         const price=document.createElement('p');price.className='bc-rec-price';
         if(p.originalPriceCents>p.priceCents){const old=document.createElement('del');old.textContent=money(p.originalPriceCents);price.append(old,' ');}
         const current=document.createElement('strong');current.textContent=money(p.priceCents);price.append(current);
+        let pendingPage;
+        function readProductPage(){
+          if(!pendingPage)pendingPage=loadProductPage().finally(()=>{pendingPage=null;});
+          return pendingPage;
+        }
+        async function loadProductPage(){
+              const page=await fetch(url.href,{credentials:'same-origin'});if(!page.ok)throw Error('Este artigo já não está disponível.');
+              const bytes=await page.arrayBuffer();
+              const probe=new TextDecoder().decode(bytes);
+              const charset=(page.headers.get('Content-Type')||'').match(/charset=([^;\s]+)/i)?.[1]||probe.match(/charset=["']?([^\s"'>;]+)/i)?.[1]||'utf-8';
+              const doc=new DOMParser().parseFromString(new TextDecoder(charset).decode(bytes),'text/html');
+          return doc;
+        }
+        async function showShopPrice(){
+          try{
+            const doc=await readProductPage();
+            const box=doc.querySelector('#fixedDiv .product-info .price');
+            const actual=box?.querySelector('.current')?.textContent.trim();
+            if(!actual || !/\d/.test(actual) || ![...doc.querySelectorAll('label[sku_pod]')].some(el=>el.getAttribute('sku_pod').split('|')[0]===p.group))throw Error('price_unavailable');
+            const previous=box.querySelector('.old')?.textContent.trim();
+            const old=document.createElement('del');old.textContent=previous||'';
+            current.textContent=actual;
+            price.replaceChildren(...(previous && previous!==actual?[old,' ']:[]),current);
+          }catch{
+            const see=document.createElement('a');see.href=url.href;
+            see.textContent=({en:'View price',es:'Ver precio'})[document.documentElement.lang.slice(0,2)]||'Ver preço';
+            price.replaceChildren(see);
+          }
+        }
+        price.textContent='…';
+        const observePrice=new IntersectionObserver(entries=>{
+          if(entries.some(e=>e.isIntersecting)){observePrice.disconnect();showShopPrice();}
+        },{root:track,rootMargin:'0px 200px'});
+        observePrice.observe(price);
         let giftSelect;
         if(p.kind==='gift'){
           giftSelect=document.createElement('select');giftSelect.className='bc-rec-size';giftSelect.setAttribute('aria-label','Valor do cartão presente');
@@ -817,11 +859,7 @@ function orderCartSuggestions(products,missingCents){
           try{
             if(!variants){link.textContent=cartTr('A carregar tamanhos…');}
             if(!variants){
-              const page=await fetch(url.href,{credentials:'same-origin'});if(!page.ok){if(page.status===404)card.remove();throw Error('Este artigo já não está disponível.');}
-              const bytes=await page.arrayBuffer();
-              const probe=new TextDecoder().decode(bytes);
-              const charset=(page.headers.get('Content-Type')||'').match(/charset=([^;\s]+)/i)?.[1]||probe.match(/charset=["']?([^\s"'>;]+)/i)?.[1]||'utf-8';
-              const doc=new DOMParser().parseFromString(new TextDecoder(charset).decode(bytes),'text/html');
+              const doc=await readProductPage();
               const available=[...doc.querySelectorAll('label[sku_pod][qtd][value]')].filter(e=>Number(e.getAttribute('qtd'))>=3&&/^\d+$/.test(e.getAttribute('value'))&&e.getAttribute('sku_pod').split('|')[0]===p.group);
               availableSizeCount=new Set(available.map(e=>e.getAttribute('value'))).size;
               variants=available.filter(e=>!p.allowedSkus||p.allowedSkus.includes(e.getAttribute('sku_pod'))).map(e=>({id:e.getAttribute('value'),size:e.textContent.trim(),sku:e.getAttribute('sku_pod')}));
